@@ -2,8 +2,9 @@ use rumqttc::{Client, MqttOptions, Packet, QoS};
 use std::time::Duration;
 
 /* TODO: 
- * - Figure out mqtt and actix integration. Need to send 
- *   power level warnings to control panel via WebSocket 
+ * - Figure out mqtt and actix integration. Need to send power
+ *   level warnings from the data MQTT topic to the control 
+ *   panel via WebSocket 
  */
 
 fn main() {

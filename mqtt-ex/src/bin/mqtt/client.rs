@@ -3,7 +3,9 @@ use std::time::Duration;
 
 /* TODO:
  * - Port to ESP32
- * - Create a struct for storing mqtt host, port, and credentials vua toml_cfg
+ * - Update messages to use MSG struct from model in lib.rs
+ * - Add JSON serialization to MSG structs using serde
+ * - Create a struct for storing mqtt host, port, and credentials via toml_cfg
  * - Create a struct for storing wifi ssid and password via toml_cfg
  * - Look into using authentication without encryption... are credentials plain text?
  */

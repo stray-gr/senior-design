@@ -3,6 +3,8 @@ use std::time::Duration;
 use std::thread;
 
 /* TODO:
+ * - Update messages to use MSG struct from model in lib.rs
+ * - Add JSON serialization to MSG structs using serde
  * - Look into using authentication without encryption... are credentials plain text?
  * - For more TODOs, look down below
  */

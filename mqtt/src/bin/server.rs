@@ -39,7 +39,7 @@ fn main() {
                  * - Add unit tests for the thread's function */
                 if msg.topic == data_topic {
                     thread::spawn(move || {
-                        let data = std::str::from_utf8(&msg.payload).unwrap();
+                        let data = String::from_utf8(msg.payload.to_vec()).unwrap();
                         println!("Data recieved from {}: {}", "client", data);
                     });
                 }

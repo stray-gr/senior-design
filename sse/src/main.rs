@@ -3,11 +3,22 @@ use actix_web::{middleware::Logger, App, HttpServer, Responder, get};
 use actix_web_lab::sse;
 use rumqttc::{Client, MqttOptions, Packet, QoS};
 use std::{
+    collections::HashMap,
     sync::OnceLock,
     sync::RwLock,
     thread,
     time::Duration,
 };
+
+/* TODO: 
+ * - Have RwLock use a HashMap, where client UUID's get mapped to their power levels 
+ * - Add new clients to HashMap if UUID not in hash map
+ * - Have clients send a last will when disconnecting, where power level data = "EXIT" 
+ * - When "EXIT" is recieved, remove client from hash map. This prevents memory build up over time
+ * 
+ * NOTE: 
+ * - Update current_txt to use HashMap... can't use HashMap::new() directly on a static 
+ */
 
 fn current_txt() -> &'static RwLock<String> {
     let default: String = String::from("Battery level recieved from client: ???");

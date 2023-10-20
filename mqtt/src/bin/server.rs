@@ -2,9 +2,9 @@ use rumqttc::{Client, MqttOptions, Packet, QoS};
 use std::{thread, time::Duration};
 
 /* TODO:
- * - Update messages to use MSG struct from model in lib.rs
- * - Add JSON serialization to MSG structs using serde
- * - Look into using authentication without encryption... are credentials plain text?
+ * - Update messages to use Data struct from mqtt::messages
+ * - Add JSON serialization to the Data structs using serde
+ * - Get mqtts working
  * - For more TODOs, look down below
  */
 

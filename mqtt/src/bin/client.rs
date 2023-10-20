@@ -2,12 +2,12 @@ use rumqttc::{Client, MqttOptions, Packet, QoS};
 use std::time::Duration;
 
 /* TODO:
+ * - Update messages to use Data struct from mqtt::messages
+ * - Add JSON serialization to the Data structs using serde
  * - Port to ESP32
- * - Update messages to use MSG struct from model in lib.rs
- * - Add JSON serialization to MSG structs using serde
  * - Create a struct for storing mqtt host, port, and credentials via toml_cfg
  * - Create a struct for storing wifi ssid and password via toml_cfg
- * - Look into using authentication without encryption... are credentials plain text?
+ * - Get mqtts working
  */
 
 fn main() {

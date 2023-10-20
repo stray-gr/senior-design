@@ -1,6 +1,5 @@
 use rumqttc::{Client, MqttOptions, Packet, QoS};
-use std::time::Duration;
-use std::thread;
+use std::{thread, time::Duration};
 
 /* TODO:
  * - Update messages to use MSG struct from model in lib.rs

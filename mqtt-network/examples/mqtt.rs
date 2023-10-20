@@ -1,6 +1,5 @@
 use rumqttc::{Client, MqttOptions, Packet, QoS};
-use std::time::Duration;
-use std::thread;
+use std::{thread, time::Duration};
 
 /* EXAMPLE */
 fn main() {

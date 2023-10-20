@@ -1,5 +1,5 @@
 [package]
-name = "mqtt-ex"
+name = "mqtt-network"
 version = "0.1.0"
 edition = "2021"
 
@@ -10,11 +10,11 @@ rumqttc = "0.23.0"
 
 [[bin]]
 name = "client"
-path = "src/bin/mqtt/client.rs"
+path = "src/bin/client.rs"
 
 [[bin]]
 name = "server"
-path = "src/bin/mqtt/server.rs"
+path = "src/bin/server.rs"
 
 [[bin]]
 name = "webserver"

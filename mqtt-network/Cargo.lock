@@ -199,7 +199,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "mqtt-ex"
+name = "mqtt-network"
 version = "0.1.0"
 dependencies = [
  "rumqttc",

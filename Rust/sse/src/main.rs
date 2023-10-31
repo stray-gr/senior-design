@@ -20,10 +20,39 @@ use std::{
  * - Update current_txt to use HashMap... can't use HashMap::new() directly on a static 
  */
 
+
+
 fn current_txt() -> &'static RwLock<String> {
     let default: String = String::from("Battery level recieved from client: ???");
     static TXT: OnceLock<RwLock<String>> = OnceLock::new();
     return TXT.get_or_init(|| RwLock::new(default));
+}
+
+fn monitor_mqtt() {
+    let data_topic  = String::from("data");  // Subscriber
+
+    let mut mqttoptions = MqttOptions::new("webserver", "localhost", 1883);
+    mqttoptions.set_keep_alive(Duration::from_secs(5));
+
+    let (mut client, mut connection) = Client::new(mqttoptions, 10);
+    client.subscribe(&data_topic, QoS::AtMostOnce).unwrap();
+
+    /* REQUIRED: Handle each event in an event loop */ 
+    for (_, notification) in connection.iter().enumerate() {
+        match notification {
+            Ok(rumqttc::Event::Incoming(Packet::Publish(msg))) => {
+                if msg.topic == data_topic {
+                    let data = String::from_utf8(msg.payload.to_vec()).unwrap();
+                    let mut inner_txt = current_txt().write().unwrap();
+                    *inner_txt = data;
+                }
+            },
+            Err(e) => {
+                log::error!("{e:?}");
+            }
+            _ => {}, // Ignore everything else
+        }
+    }
 }
 
 #[get("/")]
@@ -51,33 +80,7 @@ async fn main() -> std::io::Result<()> {
     env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
     log::info!("Starting HTTP server at http://localhost:8080");
     
-    thread::spawn(move || {
-        let data_topic  = String::from("data");  // Subscriber
-
-        let mut mqttoptions = MqttOptions::new("webserver", "localhost", 1883);
-        mqttoptions.set_keep_alive(Duration::from_secs(5));
-
-        let (mut client, mut connection) = Client::new(mqttoptions, 10);
-        client.subscribe(&data_topic, QoS::AtMostOnce).unwrap();
-
-        /* REQUIRED: Handle each event in an event loop */ 
-        for (_, notification) in connection.iter().enumerate() {
-            match notification {
-                Ok(rumqttc::Event::Incoming(Packet::Publish(msg))) => {
-                    if msg.topic == data_topic {
-                        let data = String::from_utf8(msg.payload.to_vec()).unwrap();
-                        let mut inner_txt = current_txt().write().unwrap();
-                        *inner_txt = data;
-                    }
-                },
-                Err(e) => {
-                    log::error!("{e:?}");
-                }
-                _ => {}, // Ignore everything else
-            }
-        }
-    });
-
+    thread::spawn(|| monitor_mqtt());
     HttpServer::new(move || {
         App::new()
             .service(index)

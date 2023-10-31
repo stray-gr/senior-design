@@ -1,0 +1,17 @@
+## TODO
+- [ ] Update the MQTT architecture to use JSON encoded data. Refer to the message struct from teh Rust demo 
+- [ ] Get a MicroPython MQTT client working
+- [ ] Transfer the MicroPython code to hardware when its made available. Then add sensor reading functionality 
+    - [ ] If possible, create an ESP32 WokWi sim that uses the aforementioned MicroPython code and sends sensor data
+- [ ] Create a domain name for the server. This will help when getting the server's cert signed by a valid CA
+- [ ] Update the MQTT architecture to use pre-shared certs for communication over TLS and HTTPS:
+    - One personally signed cert for the MQTT clients
+    - One personally signed cert for the MQTT server 
+    - One signed cert by a publicly known and verified CA (such as Let's Encrypt) for the web server to use
+- [ ] Ensure that the MQTT clients without the proper cert can't publish or subscribe
+- [ ] Create a domain name for the MQTT broker. This will prevent a change in broker IP from being an issue
+- [ ] Get a PostgreSQL instance up and running. Ensure it is accessible by localhost ONLY (no domain name needed)
+- [ ] Integrate DB data entry into the MQTT server
+- [ ] Create batch processing program
+- [ ] Test if templating can substitute-in arrays. If so, use plotly for the dashboard
+- [ ] Finalize control panel and dashboard

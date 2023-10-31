@@ -1,11 +1,9 @@
 ## Input
-- Determine which room will be studied 
 - Generate an OpenWeather API token
-- Design a wireless communication architecture the embedded devices and server can use to communicate
-- Create a script that tests the network architecture by:
-  1. Emulating data input from the embedded devices 
+- ~~Design a wireless communication architecture the embedded devices and server can use to communicate~~
+- Create a series of scripts that can test the network architecture by:
+  1. Emulating data input from the embedded devices
   2. Collecting data from the OpenWeather API and the emulated devices
-  3. Printing the collected data, which showcases the network's software implementation
 - Research battery level, airflow, temperature, and humidity sensors 
 - Acquire embedded devices that can read analog input and transmit data wirelessly 
 - Acquire pre-made sensors, along with the material needed to make any sensors that cannot be bought pre-made 
@@ -13,11 +11,10 @@
 - Program the embedded devices to read and transmit sensor data when prompted to by the server 
 
 ## Processing
-- Create a server-side program that can prompt the embedded devices for data 
-- Create a server-side test script that:
-  1. Prompts the embedded devices for data
+- Create a server-side program that:
+  1. ~~Prompts the embedded devices for data~~
   2. Receives data from the embedded devices and the OpenWeather API
-  3. Prints the collected data, which showcases the network's hardware implementation
+  3. Displays the collected data, which showcases the network's hardware implementation
 - Build an SQL database that stores all of the collected data 
 - Create a server-side data collection/conversion program that:
   1. Collects data from the embedded devices and the OpenWeather API

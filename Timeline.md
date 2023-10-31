@@ -1,10 +1,9 @@
 ## Input
 | Task | Projected Due Date |
 | ---- | ------------------ |
-| Determine which room will be studied | Oct. 30 |
 | Generate an OpenWeather API token | Nov. 6 |
 | Design a wireless communication architecture the embedded devices and server can use to communicate | Nov. 6 |
-| Create a script that tests the network architecture as described in Tasklist.md | Nov. 13 |
+| Create a series of script that test the network architecture as described in Tasklist.md | Nov. 13 |
 | Research battery level, airflow, temperature, and humidity sensors | Nov 20. |
 | Acquire embedded devices that can read analog input and transmit data wirelessly | Nov. 27 |
 | Acquire pre-made sensors, along with the material needed to make any sensors that cannot be bought pre-made | Nov. 27 |
@@ -17,8 +16,7 @@
 ## Processing
 | Task | Projected Due Date |
 | ---- | ------------------ |
-| Create a server-side program that can prompt the embedded devices for data | Jan. 8 |
-| Create a server-side test script as described in Tasklist.md | Jan. 15 |
+| Create a server-side program as described in Tasklist.md | Jan. 15 |
 | Build an SQL database that stores all of the collected data | Jan. 22 |
 | Create a server-side data collection/conversion program as described in Tasklist.md | Jan. 29 |
 | Create server-side batch-processing program as described in Tasklist.md | Feb. 5 |

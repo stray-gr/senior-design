@@ -1,0 +1,22 @@
+{
+    // Loaded Stubs:  micropython-esp32-stubs  micropython-stdlib-stubs 
+    
+    "python.languageServer": "Pylance",
+    "python.analysis.autoSearchPath": true,
+    "python.autoComplete.extraPaths": [".micropy/micropython_esp32_stubs-1.21.0.post2", ".micropy/micropython_stdlib_stubs-1.0.0/stdlib", ".micropy/BradenM-micropy-stubs-4f5a52a/frozen", ".micropy/wokwi"],
+    "python.analysis.diagnosticSeverityOverrides": { "reportMissingModuleSource": "none" },
+    "python.analysis.typeCheckingMode": "basic",
+    "python.autoComplete.typeshedPaths":  [".micropy/micropython_esp32_stubs-1.21.0.post2", ".micropy/micropython_stdlib_stubs-1.0.0/stdlib", ".micropy/BradenM-micropy-stubs-4f5a52a/frozen", ".micropy/wokwi", "typings"],
+    "python.analysis.typeshedPaths":  [".micropy/micropython_esp32_stubs-1.21.0.post2", ".micropy/micropython_stdlib_stubs-1.0.0/stdlib", ".micropy/BradenM-micropy-stubs-4f5a52a/frozen", ".micropy/wokwi", "typings"],
+    
+    
+
+    "python.linting.enabled": true,
+    "python.linting.pylintEnabled": true,
+    "python.analysis.extraPaths": [
+        ".micropy/micropython_esp32_stubs-1.21.0.post2",
+        ".micropy/micropython_stdlib_stubs-1.0.0/stdlib",
+        ".micropy/BradenM-micropy-stubs-4f5a52a/frozen",
+        ".micropy/wokwi"
+    ]
+}

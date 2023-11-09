@@ -72,7 +72,7 @@ async def ws():
         if DATA_LST != []:
             data = '<div id="broadcast">'
             for item in DATA_LST:
-                data += f'<div>{item.decode('utf-8', 'replace')}</div>'
+                data += f'<div>{item.decode("utf-8", "replace")}</div>'
             data += '</div>'
         DATA_LST_LOCK.release()
 

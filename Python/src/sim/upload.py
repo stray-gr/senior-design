@@ -9,13 +9,16 @@ NOTES:
 
 # TODO Submit as solution for GitHub issue
 import serial
+import os
+
+print(os.getcwd())
 
 # Global Consts
 TELNET_URL = 'rfc2217://localhost:4000'
 BAUD_RATE  = 115200
 MODULES    = ['import machine']
 SRC_FILES  = ['boot.py', 'main.py', 'ugit.py']
-SRC_DIR    = './src/'
+SRC_DIR    = './src/sim/'
 
 # Create serial connection
 ser = serial.serial_for_url(TELNET_URL, baudrate=BAUD_RATE)

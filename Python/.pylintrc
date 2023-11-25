@@ -1,6 +1,6 @@
 [MAIN]
 # Loaded Stubs:  micropython-esp32-stubs  micropython-stdlib-stubs 
-init-hook='import sys;sys.path[1:1]=["src/lib",".micropy/micropython_esp32_stubs-1.21.0.post2", ".micropy/micropython_stdlib_stubs-1.0.0/stdlib", ".micropy/BradenM-micropy-stubs-4f5a52a/frozen", ".micropy/Python",  ]'
+init-hook='import sys;sys.path[1:1]=["src/lib",".micropy/micropython_stdlib_stubs-1.0.0/stdlib", ".micropy/micropython_esp32_stubs-1.21.0.post2", ".micropy/BradenM-micropy-stubs-4f5a52a/frozen", ".micropy/Python",  ]'
 
 [MESSAGES CONTROL]
 # Only show warnings with the listed confidence levels. Leave empty to show

@@ -2,4 +2,4 @@
 version = 1
 firmware = './firmware/ESP32_GENERIC-20231005-v1.21.0.bin'
 elf = './firmware/ESP32_GENERIC-20231005-v1.21.0.elf'
-rfc2217ServerPort = 4000
+rfc2217ServerPort = 4000  # This allows for communication with the simulated board over telnet serial

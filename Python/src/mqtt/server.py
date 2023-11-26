@@ -2,6 +2,9 @@ import asyncio
 import aiomqtt
 import signal
 import sys
+from src.common import MqttData
+
+# Run using: python -m src.mqtt.server
 
 MQTT_HOST      = "localhost"
 DATA_TOPIC     = "data"   # SUB
@@ -12,7 +15,12 @@ async def sub(client: aiomqtt.Client) -> None:
     await client.subscribe(DATA_TOPIC)
     async with client.messages() as messages:
         async for msg in messages:
-            print(msg.payload)
+            try:
+                data = MqttData.try_load_msg(msg.payload)
+            except Exception as err:
+                print(f'ERROR: {err}')
+            else:
+                print(data)
 
 async def pub(client: aiomqtt.Client) -> None:
     while True:

@@ -18,7 +18,7 @@ To install the development environment used by this repo, open the Python folder
 2. Open a new terminal (CTRL + SHIFT + `)
 3. To create a conda environment, which will contain our project's dependencies, run: `conda create -n <your-project-name> python=3.11`. This will create a development environment using conda.
 4. To install Python packages that your project will use, run: `pip install <package name>`. 
-    - In the context of this repo, run: `pip install aiomqtt blacksheep blacksheep-cli micropy-cli pyserial uvicorn[standard] websockets`
+    - In the context of this repo, run: `pip install aiomqtt micropy-cli pyserial starlette uvicorn[standard] websockets`
 5. To install the development dependencies for your project's selected board, first run: `micropy stubs search <board name>`. Then look for the stubs needed for your board in the output. **Note:** The name of your board's subs should be `micropython-<board name>-stubs`  
     - In the context of this project, which uses an ESP32, run: `micropy stubs search esp32`
 6. Once you have determined the name of your board's stubs, install them using: `micropy stubs add <stubs name>`. 
@@ -48,4 +48,4 @@ To install the development environment used by this repo, open the Python folder
 - [Uvicorn Home Page](https://www.uvicorn.org/)
 
 # Interesting Articles
-- The reason I switched from Quart to Blacksheep: [Python Async (ASGI) Web Frameworks Benchmark](https://klen.github.io/py-frameworks-bench/)
+- Here's part of the reason I switched from Quart to Blacksheep: [Python Async (ASGI) Web Frameworks Benchmark](https://klen.github.io/py-frameworks-bench/)

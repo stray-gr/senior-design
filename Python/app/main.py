@@ -4,7 +4,7 @@ from blacksheep.server.rendering.jinja2 import JinjaRenderer
 from blacksheep.settings.html import html_settings
 from app.controllers import control_panel
 
-# Run using: uvicorn src.web.app.main:app --port 8000 --reload
+# Run using: python dev.py
 
 app = Application()
 html_settings.use(JinjaRenderer())

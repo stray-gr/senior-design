@@ -144,3 +144,6 @@ dmypy.json
 .micropy/
 !micropy.json
 !src/lib
+
+### Hidden Module ###
+**/hidden.py

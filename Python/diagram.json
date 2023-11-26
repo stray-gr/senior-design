@@ -3,15 +3,27 @@
   "author": "stray-gr",
   "editor": "wokwi",
   "parts": [
-    {
-      "id": "esp",
-      "type": "wokwi-esp32-devkit-v1",
-      "attrs": { "env": "micropython-20231005-v1.21.0" }
+    { 
+      "id": "esp", 
+      "type": "wokwi-esp32-devkit-v1", 
+      "top": 0, 
+      "left": 0, 
+      "attrs": {"env": "micropython-20231005-v1.21.0"} 
+    },
+    { 
+      "id": "dht1", 
+      "type": "wokwi-dht22", 
+      "top": -18.9, 
+      "left": 157.8, 
+      "attrs": {} 
     }
   ],
   "connections": [
     [ "esp:TX0", "$serialMonitor:RX", "", [] ],
-    [ "esp:RX0", "$serialMonitor:TX", "", [] ]
+    [ "esp:RX0", "$serialMonitor:TX", "", [] ],
+    [ "esp:3V3", "dht1:VCC", "red", [ "v0", "h210.9" ] ],
+    [ "esp:GND.1", "dht1:GND", "black", [ "h0" ] ],
+    [ "esp:D4", "dht1:SDA", "green", [ "h0" ] ]
   ],
   "dependencies": {}
 }

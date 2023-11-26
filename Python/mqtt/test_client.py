@@ -4,14 +4,18 @@ import asyncio
 import signal
 import sys
 import time
-from domain.common import MqttData
+from domain.common import (
+    MqttData, 
+    MQTT_HOST, 
+    MQTT_DATA_TOPIC, 
+    MQTT_LWT_TOPIC,
+    MQTT_TIMER_TOPIC
+)
 from random import uniform
 
-# Run using: python -m mqtt.client <uuid>
+# Run using: python -m mqtt.test_client <uuid>
 
-MQTT_HOST      = "localhost"
-DATA_TOPIC     = "data"   # PUB
-TIMER_TOPIC    = "timer"  # SUB
+HOST, PORT = MQTT_HOST
 
 async def pub(client: aiomqtt.Client) -> None:
     data = MqttData(
@@ -21,11 +25,12 @@ async def pub(client: aiomqtt.Client) -> None:
         uniform(0, 100), 
         uniform(0, 100)
     )
-    await client.publish(DATA_TOPIC, data.to_json())
+    await client.publish(MQTT_DATA_TOPIC, data.to_json())
 
 async def main(uuid):
-    async with aiomqtt.Client(MQTT_HOST, client_id=uuid) as client:
-        await client.subscribe(TIMER_TOPIC)
+    lwt = aiomqtt.Will(MQTT_LWT_TOPIC, uuid)
+    async with aiomqtt.Client(HOST, client_id=uuid, port=PORT, will=lwt) as client:
+        await client.subscribe(MQTT_TIMER_TOPIC)
         async with client.messages() as messages:
             async for msg in messages:
                 print(msg.payload)

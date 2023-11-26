@@ -17,8 +17,8 @@ print(os.getcwd())
 TELNET_URL = 'rfc2217://localhost:4000'
 BAUD_RATE  = 115200
 MODULES    = ['import machine']
-SRC_FILES  = ['boot.py', 'main.py', 'ugit.py']
-SRC_DIR    = './src/sim/'
+SRC_FILES  = ['boot.py', 'main.py']
+SRC_DIR    = './board/'
 
 # Create serial connection
 ser = serial.serial_for_url(TELNET_URL, baudrate=BAUD_RATE)

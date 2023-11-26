@@ -2,9 +2,11 @@
 ## Prerequisites
 - Must have miniconda installed. For intructions on how to install miniconda, refer to: https://docs.conda.io/projects/miniconda/en/latest/
 - Must have VS Code installed with the following extensions:
-    1. Python
-    2. IntelliCode
-    3. Wokwi Simulator (which requires additional set-up)
+    1. Better Jinja
+    2. Even Better TOML
+    3. IntelliCode
+    4. Python
+    5. Wokwi Simulator (which requires additional set-up)
 - For Wokwi Simulator set-up, refer to: https://docs.wokwi.com/vscode/getting-started
 
 ## Instructions for Installing an Existing Development Environment
@@ -14,38 +16,47 @@ To install the development environment used by this repo, open the Python folder
 3. `micropy`
 
 ## Instructions for Creating a Development Environment
-1. Create and open your project's folder in VS Code 
-2. Open a new terminal (CTRL + SHIFT + `)
-3. To create a conda environment, which will contain our project's dependencies, run: `conda create -n <your-project-name> python=3.11`. This will create a development environment using conda.
-4. To install Python packages that your project will use, run: `pip install <package name>`. 
-    - In the context of this repo, run: `pip install aiomqtt micropy-cli pyserial starlette uvicorn[standard] websockets`
-5. To install the development dependencies for your project's selected board, first run: `micropy stubs search <board name>`. Then look for the stubs needed for your board in the output. **Note:** The name of your board's subs should be `micropython-<board name>-stubs`  
+1. Open a new terminal (CTRL + SHIFT + `)
+2. To create a conda environment, which will contain our project's dependencies, run: `conda create -n <your-project-name> python=3.11`. This will create a development environment using conda.
+3. Next, activate the newly created conda environment with: `conda activate <your-project-name>`. Then, install the Python packages that your project will use via: `pip install <package name 1, package name 2, ..., package name n>`. 
+    - In the context of this repo, run: `pip install aiomqtt blacksheep blacksheep-cli micropy-cli pyserial uvicorn[standard] websockets`
+4. Using the blacksheep-cli tool, run `blacksheep create`. Then follow the steps below:
+    - When prompted for a *Project name:*, enter the name of the project's folder. Then hit *ENTER* to proceed
+    - When prompted for a *Project template:*, select **mvc** and hit *ENTER*
+    - When asked if you would like to *Use OpenAPI Documentation? (Y/n)*, enter *n* for no
+    - When prompted for *Library to read settings*, select **essentials-configuration** and hit *ENTER*
+    - When prompted for the *App settings format*, select **TOML** and hit *ENTER*
+5. cd into the project folder created by the blacksheep-cli
+6. To install the development dependencies for your project's selected board, first run: `micropy stubs search <board name>`. Then look for the stubs needed for your board in the output. **Note:** The name of your board's subs should be `micropython-<board name>-stubs`  
     - In the context of this project, which uses an ESP32, run: `micropy stubs search esp32`
-6. Once you have determined the name of your board's stubs, install them using: `micropy stubs add <stubs name>`. 
+7. Once you have determined the name of your board's stubs, install them using: `micropy stubs add <stubs name>`. 
     - For example: `micropy stubs add micropython-esp32-stubs`
-7. To initialize linting for MicroPython, run: `micropy init`. 
-    - When prompted for the *Project Name*, hit *ENTER*
+8. To initialize linting for MicroPython, make sure you are in the project folder created by the blacksheep-cli in step 4. Then run: `micropy init`.
+    - When prompted for the *Project Name*, hit *ENTER*. **WARNING:** Do NOT enter a project name here. The micropy cli will default to the project folder's name
     - When asked to *Choose any Templates to Generate*, select *all* options *except* the Pymakr configuration. This can be done by pressing *a*, and then pressing *SPACE* with Pymakr selected. Hit *ENTER* to proceed 
-    - When asked *Which stubs would you like to use*, select the stlib stubs and the stubs for your board. Then hit *ENTER*
-8. Next, remove *dev-requirements.txt* and *requirements.txt*. These files won't be needed since we will generate an environment.yml from our conda environment.
-9. Generate an *environment.yml* using: `conda env export > environment.yml`. This can be used by others to install the development environment.
-10. Create a firmware folder in the root directory of your project. Then download the MicroPython firmware **.bin** and **.elf** files for your project's board into this directory from: https://micropython.org/download/
-11. In the src folder, create the following sub-folders:
-    - mqtt (which will contain any server side mqtt scripts)
-    - sim (which will contain the code used by the board in the Woki Simulator)
-    - web (which will contain the web server code)
-12. Create a diagram.json for your project's simulator as shown here: https://docs.wokwi.com/diagram-format. This will define the project's configuration in the simulator.
-13. Create a wokwi.toml as shown in this repo. Make sure the firmware and elf variables both point to the **.bin** and **.elf** files you downloaded in step 10.
-14. For the final step, copy *upload.py* from this repo's src/sim folder into your project. This python script allows you to upload the scripts that are to be run on the simulated board. To do so, update the global constants in upload.py as needed
+    - When asked *Which stubs would you like to use*, select the stlib stubs and the stubs for your board. Recall that the stubs for your board should have the following format: `micropython-<board name>-stubs`. Once these two sets of stubs are selected, hit *ENTER*
+9. Next, remove *dev-requirements.txt* and *requirements.txt*. These files won't be needed since we will generate an environment.yml from our conda environment.
+    - Additionally, *pyproject.toml* could be removed if you don't plan on packaging this project as a wheel
+10. Generate an *environment.yml* using: `conda env export > environment.yml`. This can be used by others to install the development environment.
+11. Create a *firmware* folder in the root directory of your project. Then download the MicroPython firmware **.bin** and **.elf** files for your project's board into this directory from: https://micropython.org/download/.
+12. Rename the *src* folder to *board*. This folder will contain the MicroPython code that will be used by your board.
+13. Create an *mqtt* folder in the root directory of your project. This folder will contain any server side mqtt scripts.
+14. Create a diagram.json for your project's simulator as shown here: https://docs.wokwi.com/diagram-format. This will define the project's configuration in the simulator.
+15. Create a wokwi.toml as shown in this repo. Make sure the firmware and elf variables both point to the **.bin** and **.elf** files you downloaded in step 10.
+16. Copy the *upload.py* from this repo's *board* folder into your project. This python script allows you to upload the scripts that are to be run on the simulated board. To do so, update the global constants in upload.py as needed
+17. Copy this repo's *.gitignore*, which will include gitignore patterns for micropy.
+18. Lastly, take a look at:
+    - The app folder generated by the blacksheep-cli. Feel free to modify and remove the example code as you wish
+    - The domain folder also generated by the blacksheep-cli. It currently has example code showing how to create common dataclasses that all of your project can use
 
 # Useful Resources
 - [Conda Command Reference](https://docs.conda.io/projects/conda/en/latest/commands/index.html)
+- [Blacksheep Home Page](https://www.neoteroi.dev/blacksheep/)
+- [Uvicorn Home Page](https://www.uvicorn.org/)
 - [Micropy Cli Home Page](https://micropy-cli.readthedocs.io/en/latest/index.html)
 - [MicroPython Documentation](https://docs.micropython.org/en/latest/)
 - [Wokwi Simulator Documentation](https://docs.wokwi.com/?utm_source=wokwi)
 - [aiomqtt Home Page](https://sbtinstruments.github.io/aiomqtt/)
-- [Blacksheep Home Page](https://www.neoteroi.dev/blacksheep/)
-- [Uvicorn Home Page](https://www.uvicorn.org/)
 
 # Interesting Articles
 - Here's part of the reason I switched from Quart to Blacksheep: [Python Async (ASGI) Web Frameworks Benchmark](https://klen.github.io/py-frameworks-bench/)

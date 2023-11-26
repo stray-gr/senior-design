@@ -1,8 +1,9 @@
 import aiomqtt
 import asyncio
-from blacksheep.server.controllers import Controller
 from blacksheep import WebSocket, ws
-from src.common import MqttData
+from blacksheep.server.controllers import Controller
+from blacksheep.server.responses import view
+from domain.common import MqttData
 
 
 MQTT_HOST  = "localhost"
@@ -15,22 +16,19 @@ BROADCAST_INTERVAL = 2  # Sets broadcast interval to 2s
 class ControlPanel(Controller):
     @ws("/ws")
     async def broadcast(self, websocket: WebSocket):
-        data = '<div id="broadcast">Empty!</div>'
-        await websocket.accept()
+        data = '<div class="border" id="broadcast">Empty!</div>'
         try:
+            await websocket.accept()
             while True:
-                await DEV_DATA_LOCK.acquire()
-                if len(DEV_DATA) != 0:
-                    # TODO: replace with templating via self.view -> /views/control_panel/broadcast.jinja
-                    data = '<div id="broadcast">'
-                    for item in DEV_DATA:
-                        data += f'<div>Hello</div>'
-                    data += '</div>'
-                DEV_DATA_LOCK.release()
+                async with DEV_DATA_LOCK:
+                    if len(DEV_DATA) != 0:
+                        print('cool lol')
+                        raw_data = view('broadcast', {'dev_data_list': DEV_DATA.values()})
+                        data = raw_data.content.body.decode('utf-8', 'replace')
                 await websocket.send_text(data)
                 await asyncio.sleep(BROADCAST_INTERVAL)
         except Exception as err:
-            print(err)
+            print(f'ERROR: {err}')
 
 
 # Background task that checks the data MQTT topic for new messages

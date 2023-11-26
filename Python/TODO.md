@@ -1,7 +1,7 @@
 ## TODO
 - [X] Switch from Quart to Blacksheep and Uvicorn 
 - [X] Update the MQTT architecture to use JSON encoded data. Refer to the message struct from the Rust demo 
-- [ ] Update control panel to use templating
+- [X] Update control panel to use templating
 - [ ] Get an ESP32 Wokwi Sim demo working with the ability to read and send sensor data via MQTT
 - [ ] Get an OTA update system working using an update MQTT topic. Updated files will be gzipped and sent via JWT
 
@@ -15,4 +15,4 @@
 - [ ] Get a PostgreSQL instance up and running. Ensure it is accessible by localhost ONLY (no domain name needed)
 - [ ] Integrate DB data entry into the MQTT server
 - [ ] Create batch processing program that exports plots and KPIs to inline HTML via plotly
-- [ ] Finalize control panel and dashboard
+- [ ] Finalize control panel and dashboard (could use a dedicated front-end framework if HTMX proves too difficult)

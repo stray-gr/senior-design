@@ -13,8 +13,10 @@
   <body>
     <h2>HTMX WS Proof-of-Concept</h2>
     <!-- ws connection and handling -->
-    <div class="d-flex flex-column mb-3 bg-success" hx-ext="ws" ws-connect="ws://127.0.0.1:8000/ws">
-        <div id="broadcast">Default</div>
+    <div hx-ext="ws" ws-connect="ws://127.0.0.1:8000/ws">
+        <div class="container d-flex flex-column justify-content-center row-gap-2" id="broadcast">
+          Default
+        </div>
     </div>
   </body>
 </html>

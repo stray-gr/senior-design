@@ -2,7 +2,7 @@ import asyncio
 import aiomqtt
 import signal
 import sys
-from src.common import MqttData
+from domain.common import MqttData
 
 # Run using: python -m src.mqtt.server
 

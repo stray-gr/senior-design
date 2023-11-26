@@ -4,10 +4,10 @@ import asyncio
 import signal
 import sys
 import time
+from domain.common import MqttData
 from random import uniform
-from src.common import MqttData
 
-# Run using: python -m src.mqtt.client <uuid>
+# Run using: python -m mqtt.client <uuid>
 
 MQTT_HOST      = "localhost"
 DATA_TOPIC     = "data"   # PUB

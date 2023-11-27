@@ -1,13 +1,13 @@
 ## Team GR
 
-### External Advisor
-- Brian Bailey
-  - Email: baileybp4@gmail.com
-
 ### Team Members
 - Gabriel Rodriguez-Padilla
   - Major: Computer Science
   - Email: rodrigg2@mail.uc.edu
+
+### External Advisor
+- Brian Bailey
+  - Email: baileybp4@gmail.com
 
 ### Project Area
 - IoT Analytics

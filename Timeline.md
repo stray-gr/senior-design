@@ -3,7 +3,7 @@
 | ---- | ------------------ |
 | Generate an OpenWeather API token | Nov. 6 |
 | Design a wireless communication architecture the embedded devices and server can use to communicate | Nov. 6 |
-| Create a series of script that test the network architecture as described in Tasklist.md | Nov. 13 |
+| Create a development environment that can test the network architecture | Nov. 13 |
 | Research battery level, airflow, temperature, and humidity sensors | Nov 20. |
 | Acquire embedded devices that can read analog input and transmit data wirelessly | Nov. 27 |
 | Acquire pre-made sensors, along with the material needed to make any sensors that cannot be bought pre-made | Nov. 27 |
@@ -16,13 +16,11 @@
 ## Processing
 | Task | Projected Due Date |
 | ---- | ------------------ |
-| Create a server-side program as described in Tasklist.md | Jan. 15 |
-| Build an SQL database that stores all of the collected data | Jan. 22 |
-| Create a server-side data collection/conversion program as described in Tasklist.md | Jan. 29 |
-| Create server-side batch-processing program as described in Tasklist.md | Feb. 5 |
-| Implement a simple file server API that indexes the web server's static file directory | Feb. 12 |
+| Instantiate an SQL database that stores raw data and file paths of processed data| Jan. 15 |
+| Creata a server-side data collection/conversion program | Jan. 22 |
+| Create a server-side batch-processing program | Jan. 29 |
 
-### Completion of the Processing Subsystem (Feb. 16)
+### Completion of the Processing Subsystem (Feb. 12)
 - Documentation for the processing subsystem will be revised once the processing subsystem can do the following:
   1. Store near real-time data in a log file (which simulates the control panel)
   2. Process and store batches of data
@@ -31,24 +29,14 @@
 ## Output
 | Task | Projected Due Date |
 | ---- | ------------------ |
-| Create a control panel web app as described in Tasklist.md | Feb. 23 |
-| Add websocket communication between the data collection/conversion program and the control panel | Mar. 1 |
-| Create a data visualization dashboard that can retrieve processed data via the file server API   | Mar. 8 |
-| Conduct a short test study to ensure the components are integrated with one another as intended  | Mar. 11 |
+| Create a web server than can serve a control panel and data visualization dashboard | Feb. 23 |
+| Conduct a short test study to ensure the components are integrated with one another as intended  | Mar. 1 |
+| Refine the UI | Mar. 8|
 
 ### Completion of the Output Subsystem (Mar. 15)
 - Provided no bugs were found during the short test study, the remaining time will be used to revise the documentation
 
-## Investigation
-| Task | Projected Due Date |
-| ---- | ------------------ |
-| Using the created data acquisition system, collect data in the room to be studied for 1 week | Mar. 16 - Mar. 23 |
-| Aggregate any standards regarding ventilation, temperature, and humidity requirements for the type of residential room being studied | Mar. 23 |
-| Once the data has been collected, quantify what the issues are using the aggregated standards | Mar. 23 |
-| Perform a root cause analysis to determine why these issues are occurring | Mar. 24 |
-| Research and recommend possible countermeasures as described in Tasklist.md | Mar. 29 |
-  
 ## Preparation for the Senior Design Expo 
-1. The presentation material (outlined in Milestones.md) will be finished **at most two days before the expo**. 
+1. The presentation material outlined by the project's [milestones](Milestones.md) will be finished **at most one week before the expo**. 
    - Note: a majority of the material should've been created during the documentation phases
 2. The remaining time will be used to rehearse the presentation

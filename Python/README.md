@@ -10,6 +10,7 @@
     - [Web Server](#web-server)
 3. [Useful Resources](#useful-resources)
 4. [Related Articles](#related-articles)
+5. [Python Development To Do List](TODO.md)
 
 # Development Environment Set-up
 ## Set-up Prerequisites
@@ -127,4 +128,4 @@ To install the development environment used by this repo, open the Python folder
 
 
 # Related Articles
-- Here's part of the reason I switched from Quart to Blacksheep: [Python Async (ASGI) Web Frameworks Benchmark](https://klen.github.io/py-frameworks-bench/)
+- Here's part of the reason why Blacksheep is being used for the web server: [Python Async (ASGI) Web Frameworks Benchmark](https://klen.github.io/py-frameworks-bench/)

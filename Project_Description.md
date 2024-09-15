@@ -6,8 +6,8 @@
   - Email: rodrigg2@mail.uc.edu
 
 ## External Advisor
-- TBD
-  - Email: TBD
+- Peter Kroeger
+  - Email: peter14mail@gmail.com
 
 ## Project Area
 - IoT Data Aggregation

@@ -32,13 +32,14 @@
 - Integrate the containerized application with the firmware proof-of-concept
 - Ensure that the application can save data to the database and sends an email to maintenance staff when a device disconnects
 
-## 2. Storage Subsytem
+## 2. Storage Subsystem
 - Update the Postgres container to use facility-specific schemas
-- Set up facility-specific users and an API user
-- Ensure that facility-specific users can only:
+- Add the *API Users* table
+- Set up users for each facility and the API. Note that facility-specific schemas are managed by facility staff and the *API Users* table is managed globally by a sys admin
+- Ensure that each facility-specific database user can only:
 	- Read and append entries in their  *Sensor Data* table 
 	- Read, append, and update entries in their *Mailing List* table
-- Ensure that the API user can only read from the *Sensor Data* tables of all facilities
+- Ensure that the API's database user can only read from the *Sensor Data* tables of all facilities and update the *API Users* table
 - Reconfigure the local server container to use a facility-specific user
 
 # Release Build
@@ -55,14 +56,18 @@
 - Ensure the input system behaves as intended
 
 ## 2. Storage Subsystem
-- Add an *API Users* table that only the API user can read and write to
 - Run the Input Subsystem for a few days to ensure that data aggregation is still working correctly
 
 ## 3. Output Subsystem
+- Set up a local Redis Cache docker container
 - Devise a JSON format that allows the API user to specify:
 	- Which facilities to query the data from
 	- What conditions to use when querying the data (e.g. timestamp range)
-- Develop a headless Phoenix API that authenticates users and allows them to query sensor data provided a valid JWT gets sent with the query request
+- Develop a headless Phoenix API that: 
+	1. Authenticates users via username and password
+	2. Returns a JWT to the user and caches the JWT value in a Redis cache for future authentication
+	3. Allows the user to query sensor data based on the arguments supplied in a JSON file, ensuring that a valid JWT was sent with the request
+	4. Returns the queried data to the user as a CSV of HDF file
 
 # Documentation
 ## 1. Guide

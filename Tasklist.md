@@ -1,39 +1,75 @@
-## Input
-- Generate an OpenWeather API token
-- ~~Design a wireless communication architecture the embedded devices and server can use to communicate~~
-- Create a development environment that can test the network architecture by:
-  1. ~~Emulating data input from the embedded devices~~
-  2. ~~Collecting data from the the emulated devices~~
-  3. Collecting data from the OpenWeather API and the emulated devices
-- Research battery level, airflow, and ~~temperature + humidity~~ sensors 
-- Acquire embedded devices that can read analog input and transmit data wirelessly 
-- Acquire pre-made sensors, along with the material needed to make any sensors that cannot be bought pre-made 
-- Create fixtures that the embedded devices and their associated sensors can reside in
-- Program the embedded devices to read and transmit sensor data when prompted to by the server 
+# Proof-of-Concepts
+## 1. Input Subsystem
+### 1a. Firmware
+- Install the following:
+	1. Rancher Desktop
+	2. Espressif's ESP32 Qemu emulator
+	3. The MQTTX CLI Tool
+- Set up a RabbitMQ Docker Container 
+- Create a Rust dev container for ESP32 firmware development
+- Devise message formats for the following types of information using MessagePack:
+	1. Timer pulse messages - left blank
+	2. LWT messages - includes device ID
+	3. Data messages - includes device ID, timestamp, measured temperature, and measured humidity 
+- Develop Rust firmware for the ESP32 that:
+	1. Connects to the RabbitMQ broker using the device's username and password
+	2. Publishes a LWT message with a 1 minute timeout once authenticated to the broker
+	3. Subscribes to the MQTT Pulse Topic
+	4. Publishes a data message to the MQTT Data Topic upon receiving a pulse message
+	5. Reports randomized values for measured temperature and humidity
+- Test the Rust firmware on the ESP32 emulator, using the MQTTX tool to:
+	1. Issue Pulse messages
+	2. Receive LWT and Data messages
 
-## Processing
-- Instantiate an SQL database that stores:
-  - Raw data that hasn't been processed yet
-  - The file paths of all processed data batches. Note that these batches will be stored within the er  batches tatic file or template directory
-- Create a server-side data collection/conversion program that:
-  1. ~~Prompts the embedded devices for data~~
-  2. Collects data from the ~~embedded devices and the~~ OpenWeather API
-  3. ~~Displays the collected data, which showcases the network's hardware implementation~~
-  4. Converts any analog-to-digital data from the devices into human-readable measurements
-  3. Stores the data in the SQL database via an object-relational mapper (ORM) 
-      - Note: Data collected by this program during testing will be sent to a TEST table
-- Create server-side batch-processing program that: 
-  1. Processes batches of data stored in the SQL database in 24-hour increments 
-  2. Stores the processed data plots and KPIs in the web server's file system as an html or template file
-  3. Adds the file path of the processed batch into the SQL database
+### 1b. Local Server
+- Install DBeaver
+- Set up a Postgres Docker Container that has a global superuser, *Sensor Data* table, and *Mailing List* table
+- Create an Elixir dev container for developing a containerized Broadway application that serves as the facility's local server
+- Develop a containerized Broadway application that has:
+	1. A LWT pipeline that batches LWT messages before sending a list of device failures to maintenance staff via Gmail
+	2. A sensor data pipeline that validates live data messages, batches them, and stores them in a global *Sensor Data* table using the Postgres superuser
+	3. A cron job which publishes a message to the MQTT Pulse Topic every 5 seconds via a MQTTX CLI script
+- Integrate the containerized application with the firmware proof-of-concept
+- Ensure that the application can save data to the database and sends an email to maintenance staff when a device disconnects
 
-## Output
-- Create a web server that can serve:
-  1. ~~A control panel web page that can display data in near real-time, along with any low power warnings from the embedded devices (all of which are sent from the server via MQTT)~~
-  2. A data visualization dashboard that can retrieve html files or templates containing processed data 
-- Conduct a short test study to ensure the components are integrated with one another as intended
-- Refine the UI using Boostrap CSS
+## 2. Storage Subsytem
+- Update the Postgres container to use facility-specific schemas
+- Set up facility-specific users and an API user
+- Ensure that facility-specific users can only:
+	- Read and append entries in their  *Sensor Data* table 
+	- Read, append, and update entries in their *Mailing List* table
+- Ensure that the API user can only read from the *Sensor Data* tables of all facilities
+- Reconfigure the local server container to use a facility-specific user
 
-## Preparation for the Senior Design Expo 
-- Put together the presentation material outlined in the project's [Milestones](Milestones.md)
-  - Note: a majority of the material should've been created during the documentation phases
+# Release Build
+## 1. Input Subsystem
+- Purchase ESP32 microcontrollers, breadboards, and DHT11/DHT22 sensors
+- Install espflash
+- Update the Rust firmware to:
+	1. Establish a WIFI connection on device boot and 
+	2. Use a DHT sensor driver to read temperature and humidity data
+- Connect the ESP32 and DHT sensor together via breadboard
+- Flash firmware to the ESP32s
+- Reconfigure the containerized local server to send a pulse every 15 minutes instead of every 5 seconds
+- Deploy a local server to two devices, where each device represents a facility
+- Ensure the input system behaves as intended
+
+## 2. Storage Subsystem
+- Add an *API Users* table that only the API user can read and write to
+- Run the Input Subsystem for a few days to ensure that data aggregation is still working correctly
+
+## 3. Output Subsystem
+- Devise a JSON format that allows the API user to specify:
+	- Which facilities to query the data from
+	- What conditions to use when querying the data (e.g. timestamp range)
+- Develop a headless Phoenix API that authenticates users and allows them to query sensor data provided a valid JWT gets sent with the query request
+
+# Documentation
+## 1. Guide
+- Create a step-by-step guide on how to deploy the data aggregation pipeline
+## 2. Conclusion and Discussion of Alternatives
+- Write a brief discussion post that concludes whether or not this project was a success. This post also discusses alternative solutions and technologies that could be used. 
+
+# Senior Design Expo
+- Create a poster that shows design diagrams and relevant photos of the project
+- Prepare and practice a presentation speech

@@ -1,4 +1,4 @@
-## Gabriel "Gabe" Rodriguez-Padilla
+# Gabriel "Gabe" Rodriguez-Padilla
 
 ## Contact Info
 **Email:** rodrigg2@mail.uc.edu 

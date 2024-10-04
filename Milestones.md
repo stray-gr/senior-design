@@ -46,7 +46,7 @@
 - Deliverables will include a headless Phoenix API that allows authenticated users to query sensor data.
 
 # Completion of Documentation Milestone
-- To reach this milestone, the aforementioned documentation for each milestone must be completed. Additionally, the tasks listed for the [Guide](./Tasklist.md#1-guide) and [Conclusion](./Tasklist.md#2-conclusion-and-discussion-of-alternatives) must also be completed.
+- To reach this milestone, the tasks listed for the [Guide](./Tasklist.md#1-guide) and [Conclusion](./Tasklist.md#2-conclusion-and-discussion-of-alternatives) must be completed.
 - Deliverables will include:
 	1. A guide on how to modify and deploy the data aggregation pipeline
 	2. A project conclusion that includes a discussion of alternatives

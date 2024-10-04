@@ -18,7 +18,7 @@
 ## 2. Storage Subsystem Milestone
 - To reach this milestone, the tasks listed for the [Storage Subsystem](./Tasklist.md#2-storage-subsystem) Proof-of-Concept must be completed. The following documentation must also be completed:
 	- A guide listing out the various database schemas and tables, along with what permissions each user has
-	- Instructions on how to configure and deploy the containerized local server for a given facility
+	- Instructions on how to configure and deploy the global Postgres Database, along with containerized local servers for each facility
 - Deliverables will include:
 	1. A Postgres Database with facility-specific schemas, an *API Users* table, and database users with specific permissions
 	2. An updated local server container image that utilizes a facility-specific user to access their facility's schema

@@ -71,7 +71,7 @@
 
 # Documentation
 ## 1. Guide
-- Create a step-by-step guide on how to deploy the data aggregation pipeline
+- Create a step-by-step guide on how to modify and deploy the data aggregation pipeline
 ## 2. Conclusion and Discussion of Alternatives
 - Write a brief discussion post that concludes whether or not this project was a success. This post also discusses alternative solutions and technologies that could be used. 
 

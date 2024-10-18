@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- include htmx -->
+    <script src="https://unpkg.com/htmx.org@1.9.6"></script>
+    <script src="https://unpkg.com/htmx.org/dist/ext/ws.js"></script>
+    <title>HTMX</title>
+  </head>
+
+  <body>
+    <h2>HTMX Proof-of-Concept</h2>
+
+    <!-- websocket connection -->
+    <div hx-ext="ws" ws-connect="ws://localhost:8080/ws">
+        <div id="target">Default</div>
+    </div>
+  </body>
+</html>

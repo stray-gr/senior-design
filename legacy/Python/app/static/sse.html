@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- include htmx -->
+    <script src="https://unpkg.com/htmx.org@1.9.6"></script>
+    <script src="https://unpkg.com/htmx.org/dist/ext/sse.js"></script>
+    <title>HTMX</title>
+  </head>
+
+  <body>
+    <h2>HTMX SSE Proof-of-Concept</h2>
+
+    <!-- sse connection and event handling -->
+    <div hx-ext="sse" sse-connect="http://127.0.0.1:5000/sse" sse-swap="update">
+        <div>Default</div>
+    </div>
+  </body>
+</html>

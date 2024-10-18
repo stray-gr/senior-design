@@ -1,32 +1,29 @@
 # Table of Contents
-1. [Project Description](Project_Description.md)
-2. [User Stories](User_Stories.md)
+1. [Project Description](./docs/project_description.md)
+2. [User Stories](./docs/user_stories.md)
 3. Design Diagrams
-    - [Level 0](Design_Diagrams/D0.pdf)
-    - [Level 1](Design_Diagrams/D1.pdf)
-    - [Level 2](Design_Diagrams/D2.pdf)
+    - [Level 0](./docs/design_diagrams/D0.pdf)
+    - [Level 1](./docs/design_diagrams/D1.pdf)
+    - [Level 2](./docs/design_diagrams/D2.pdf)
 4. Project Tasks and Timeline
-    - [Task List](Tasklist.md)
-    - [Time Line](Timeline.md)
-5. [ABET Concerns Essay](Essays/constraints-essay-gr.pdf)
-6. [PPT Slideshow](Presentations/Midterm_Presentation.pdf)
+    - [Task List](./docs/tasklist.md)
+    - [Time Line](./docs/timeline.md)
+5. [ABET Concerns Essay](./docs/essays/constraints-essay-gr.pdf)
+6. [PPT Slideshow](./docs/presentations/Midterm_Presentation.pdf)
 7. Self-Assessment Essays
-    - [Team Contract](Essays/team-contract-gr.pdf)
-    - [Capstone Assessment](Essays/capstone-assessment-gr.pdf)
-8. [Professional Bio](Bio_Rodriguez.md)
+    - [Team Contract](./docs/essays/team-contract-gr.pdf)
+    - [Capstone Assessment](./docs/essays/capstone-assessment-gr.pdf)
+8. [Professional Bio](./docs/bio_rodriguez.md)
 9. [Budget](#budget)
 10. [Appendix](#appendix)
 
 ### Note:
 - Since this is a solo project, the *Effort Matrix* assignment was skipped. 
 
-
 # Budget
-- At the moment, no embedded devices or sensors have been purchased. The software used up to this point has also been free to use, with the majority being open source as well. Due to these two conditions, no expenses have been spent on this project as of 11/26/2023.
-
+- TBD
 
 # Appendix
-
 ### During the devlepment of this project, the following two programming languages were considered due to their portability:
 - Rust
 - Python

@@ -11,7 +11,6 @@
 Before starting with either form of installation, make sure to install the following software:
 - VS Code
 - Rancher Desktop
-- MQTTX CLI (install via WSL2 if on Windows)
 
 Additionally, make sure the following VS Code extensions are installed:
 - Dev Containers 

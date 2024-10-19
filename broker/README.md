@@ -17,7 +17,7 @@ Make sure to have the following software installed:
 First, move the previously generated certs and keys into a *certs* folder. Then run the following commands: 
 ```bash
 docker build -t broker .
-docker run --rm --hostname test-broker -p 1883:1883 -p 15672:15672 broker
+docker run --rm --hostname test-broker -p 1883:1883 -p 15672:15672 -it broker
 ```
 
 # MQTT Pub/Sub
@@ -51,5 +51,5 @@ mqttx pub -t '{Topic}' -h 127.0.0.1 -p 1883 -V 5 -u {Dev ID} -P {PSK} -m "hello 
 
 # TODO
 1. ~~Create script that uses `rabbitmqadmin` to declare users, queues, and bindings after docker start~~
-2. Update `firmware/scripts/save_images.sh` to use new users script format
+2. ~~Update `firmware/scripts/save_images.sh` to use new users script format~~
 3. Add TLS

@@ -1,3 +1,3 @@
 #!/bin/bash
-rabbitmqctl add_user "dev1" "PASSword"
-rabbitmqctl add_user "dev2" "passWORD"
+rabbitmqadmin declare user name=dev1 password=passWORD tags=management
+rabbitmqadmin declare user name=dev2 password=PASSword tags=management

@@ -1,15 +1,13 @@
-FROM rabbitmq:4-management
+FROM rabbitmq:4
 
 RUN rabbitmq-plugins enable --offline rabbitmq_mqtt
 
-ADD scripts/users.sh /users.sh
-ADD scripts/perms.sh /perms.sh
-ADD scripts/queues.sh /queues.sh
-ADD scripts/init.sh /init.sh
+COPY certs/ca.crt /certs/ca.crt
+COPY certs/server.crt /certs/server.crt
+COPY certs/server.key /certs/server.key
+COPY rabbitmq.conf /etc/rabbitmq/rabbitmq.conf
 
-RUN chmod +x /users.sh
-RUN chmod +x /perms.sh
-RUN chmod +x /queues.sh
-RUN chmod +x /init.sh
+COPY scripts/ /scripts/
+RUN chmod -R +x /scripts/
 
-CMD [ "/init.sh" ]
+CMD [ "/scripts/init.sh" ]

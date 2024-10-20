@@ -16,6 +16,24 @@ Additionally, make sure the following VS Code extensions are installed:
 - Dev Containers 
 - Docker
 
+Unfortunately, using xtensa prevents the following MQTT cargo crates from working due to the environment's constraints:
+- rumqttc   - only fails with TLS enabled (rustls fails, native requires openssl)
+- ntex-mqtt - relies on Linux Signals
+- paho-mqtt - the paho mqtt c bindings use an rlib, which ends up being unrecognized here
+
+The same goes for the RISCV boards, except rumqttc fails only because the environment fails to find `riscv32-esp-elf-gcc`. This is peciluar
+since the set up for ESP32 RISCV boards required the LLVM toolchain to be installed, not GCC. 
+
+On another note, the esp-idf-svc crate has an MQTT implementation. However, it lacks TLS and MQTT v5 support. In conclusion, Rust still isn't quite ready 
+for major IoT development. The dev container approach is also very slow since it constantly rebuilds artifacts for the esp-idf-sys crate. This means that 
+Rust firmware will have to use unencrypted MQTT and be developed locally on WSL. The following alternatives have since been considered:
+- micropython - python, MQTT v3.1
+- atomvm - erlang, MQTT v3.1
+- ESP-IDF - C, MQTT v5
+- Arduino with wolfSSL and wolfMQTT - C++, MQTT v5 
+
+Note that all alternatives have DHT sensor drivers available, with the ESP-IDF and Arduino options each need their own 3rd party driver
+
 ## From Current Repo
 To install the Rust dev container from this repo, follow these steps:
 1. Open the *firmware* folder in another VS Code window

@@ -1,8 +1,0 @@
-# From template
-/.vscode
-/.embuild
-/target
-/Cargo.lock
-
-# Manually added
-out.bin

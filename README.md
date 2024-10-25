@@ -24,24 +24,27 @@
 - TBD
 
 # Appendix
-### During the devlepment of this project, the following two programming languages were considered due to their portability:
-- Rust
-- Python
+## Rust ESP32 Firmware Development
+Unfortunately, using xtensa prevents the following MQTT cargo crates from working due to the environment's constraints:
+- rumqttc   - only fails with TLS enabled (rustls fails, native-tls requires openssl)
+- ntex-mqtt - relies on Linux Signals
+- paho-mqtt - the paho mqtt c bindings use an rlib, which ends up being unrecognized here
 
-### Python was chosen over Rust for the following reasons:
-1. At the moment, Rust does not have an embedded framework equivalent to MicroPython. This means that code written for a given board could only work on the board in question. This would negatively impact the extensibilty of this project. Note that this is the **main reason** Python was chosen over Rust.
-2. More documentation and tutorials for third-party packages exist for Python than Rust. For example, there are more references for aiomqtt (Python) and umqtt.simple (MicroPython) than there are for rumqttc (Rust) as of early Octover. However, the references for rumqttc seemed to have improved since then.
-3. Python is simpler to learn and understand than Rust. This is due to Rust's very strict typing system and variable lifetime management. Rust's *borrow checker* could also prove difficult to understand for novice software developers. However, the features that make Rust difficult are also what make it safe and performant to program in.
+The same goes for the RISCV boards, except rumqttc fails only because the environment fails to find `riscv32-esp-elf-gcc`. This is peciluar since the set up for ESP32 RISCV boards required the LLVM toolchain to be installed, not GCC. On another note, the esp-idf-svc crate has an MQTT implementation. However, it lacks TLS and MQTT v5 support. 
 
-### Here are some reasons that one could chose Rust over Python in the future:
-1. If hosting Python proved to be expensive due to its lower performance when compared to Rust, then the extra difficulty of Rust could pay off in reduced expenses.
-2. If a Rust embedded framework equivalent to MicroPython or Arduino were to be created, then new developers would only have to learn the basics of Rust. If training said developers is deemed low risk enough, then Rust would be a great way write safe and perfomant code. Note that as time goes on, the documentation for third-party Rust packages will likely continue to improve. This could make learning Rust even easier, thus lowering the risk associated with training developers on Rust.
+As for development using no_std crates, the following issues were encountered:
+- Using embedded-tls and rust-mqtt in a std xtensa environment led to the firmware binaries being too big. This seem to be an issue with the `cargo espflash` tool, where version 3 won't automatically resize the app partition. Though version 2 of this tool doesn't have this issue, it fails to build with the most recent version of Rust being used by the development environment.
+- Using embedded-tls and rust-mqtt in a no_std xtensa environment will actually build. However, rust-mqtt only works with TCP sockets and is not interoperable with embedded-tls. At least embedded-tls works though. This means TCP/HTTP applications can utilize TLS via the embedded-tls crate in such a constrained environment.
 
-### Source Code Overview
-- To view the Rust code that was developed before being abandoned, refer to the [Rust](Rust/) folder.
-- To view and try the Python code that is currently being developed, open the [Python](Python/) folder in VS Code and refer to the folder's [README](Python/README.md).
+ Additionally, the dev container approach can very slow in a std environment since the esp-idf-sys crate will need to rebuild every time project dependencies are edited in the *Cargo.toml* file. In conclusion, Rust still isn't quite ready for major IoT development. This means that Rust firmware will have to use unencrypted MQTT and will need to be developed locally on WSL if a std environment is needed. The following alternatives have since been considered (listed in order of preference):
+- Arduino with wolfSSL and wolfMQTT - C++, MQTT v5 
+- ESP-IDF - C, MQTT v5
+- micropython - python, MQTT v3.1
+- atomvm - erlang, MQTT v3.1
 
-### Licensing
+Note that all alternatives have DHT sensor drivers available, with the ESP-IDF and Arduino options each need their own 3rd party driver.
+
+## Licensing
 - This repo was licensed under the MIT license because it:
     1. Protects any related documenation
     2. Is compatible with the Rust and Python packages being used

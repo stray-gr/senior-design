@@ -129,7 +129,7 @@
         <mxCell id="h80tLXjlkXriCEG6QZvb-42" value="- Upon recieving a pulse from the Pulse Topic, PUB sensor data to the Data Topic" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="h80tLXjlkXriCEG6QZvb-40" vertex="1">
           <mxGeometry y="110" width="140" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="h80tLXjlkXriCEG6QZvb-43" value="- Message payload uses the MessagePack format" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="h80tLXjlkXriCEG6QZvb-40" vertex="1">
+        <mxCell id="h80tLXjlkXriCEG6QZvb-43" value="- Message payload uses the CBOR format" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="h80tLXjlkXriCEG6QZvb-40" vertex="1">
           <mxGeometry y="170" width="140" height="50" as="geometry" />
         </mxCell>
         <mxCell id="h80tLXjlkXriCEG6QZvb-44" value="Connection B (MQTT)" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
@@ -153,7 +153,7 @@
         <mxCell id="h80tLXjlkXriCEG6QZvb-50" value="- MQTT is translated to AMQP via RabbitMQ&#39;s topic exchange" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="h80tLXjlkXriCEG6QZvb-48" vertex="1">
           <mxGeometry y="70" width="140" height="50" as="geometry" />
         </mxCell>
-        <mxCell id="h80tLXjlkXriCEG6QZvb-51" value="- Expects message payload to be in the MessagePack format" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="h80tLXjlkXriCEG6QZvb-48" vertex="1">
+        <mxCell id="h80tLXjlkXriCEG6QZvb-51" value="- Expects message payload to be in the CBOR format" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="h80tLXjlkXriCEG6QZvb-48" vertex="1">
           <mxGeometry y="120" width="140" height="50" as="geometry" />
         </mxCell>
         <mxCell id="h80tLXjlkXriCEG6QZvb-53" value="Connection D (SSL)" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">

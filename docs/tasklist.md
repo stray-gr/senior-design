@@ -7,7 +7,7 @@
 	3. The MQTTX CLI Tool
 - Set up a RabbitMQ Docker Container 
 - Create a Rust dev container for ESP32 firmware development
-- Devise message formats for the following types of information using MessagePack:
+- Devise message formats for the following types of information using CBOR:
 	1. Timer pulse messages - left blank
 	2. LWT messages - includes device ID
 	3. Data messages - includes device ID, timestamp, measured temperature, and measured humidity 

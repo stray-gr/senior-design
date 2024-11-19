@@ -3,7 +3,7 @@
 | PoC-1A-1 | Install software needed for Firmware Proof-of-Concept | 10/14 | 10/16 | 3 hrs. |
 | PoC-1A-2 | Set up a RabbitMQ Container | 10/16 | 10/18 | 1 hr. |
 | PoC-1A-3 | Create a Rust dev container for ESP32 firmware development | 10/16 | 10/18 | 1 hr. |
-| PoC-1A-4 | Devise message formats using MessagePack | 10/16 | 10/18 | 1 hr. |
+| PoC-1A-4 | Devise message formats using CBOR | 10/16 | 10/18 | 1 hr. |
 | PoC-1A-5 | Develop Rust firmware for the ESP32 | 10/21 | 10/25 | 8 hrs. |
 | PoC-1A-6 | Test Rust firmware on the ESP32 emulator | 10/23 | 10/25 | 2 hrs. |
 | PoC-1A-M | Complete milestone documentation for the Firmware Proof-of-Concept | 10/28 | 11/1 | 8 hrs. |

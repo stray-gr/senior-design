@@ -1,3 +1,5 @@
+### WARNING: THIS DOCUMENTATION IS OUTDATED AND IS ONLY USEFUL FOR THE FAILED RUST FIRMWARE ATTEMPTS
+
 # Table of Contents
 1. [Installation](#installation)
     - [Prerequisites](#prerequisites)

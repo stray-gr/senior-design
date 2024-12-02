@@ -49,7 +49,7 @@ static void event_handler(
     }
 }
 
-void wifi_init_sta(void)
+static void wifi_init_sta(void)
 {
     s_wifi_event_group = xEventGroupCreate();
 

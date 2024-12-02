@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "string.h": "c",
+        "mqtt5_client.h": "c",
+        "mqtt_client.h": "c",
+        "stdio.h": "c",
+        "stdint.h": "c",
+        "stddef.h": "c",
+        "config.h": "c"
+    }
+}

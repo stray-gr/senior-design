@@ -9,7 +9,7 @@
     - [Task List](./docs/tasklist.md)
     - [Time Line](./docs/timeline.md)
 5. [ABET Concerns Essay](./docs/essays/constraints-essay-gr.pdf)
-6. [PPT Slideshow](./docs/presentations/Midterm_Presentation.pdf)
+6. [PPT Slideshow](./docs/presentations/fall-design-slides.pdf)
 7. Self-Assessment Essays
     - [Team Contract](./docs/essays/team-contract-gr.pdf)
     - [Capstone Assessment](./docs/essays/capstone-assessment-gr.pdf)
@@ -21,7 +21,10 @@
 - Since this is a solo project, the *Effort Matrix* assignment was skipped. 
 
 # Budget
-- TBD
+- The current project budget is approximately $90, making the max budget $100
+    1. ESP32 Dev Board x6 - $40
+    2. HiLetgo DHT22 x4 - $30
+    3. Electronics Component kit - $20
 
 # Appendix
 ## FAQ

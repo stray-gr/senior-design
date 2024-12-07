@@ -2,8 +2,8 @@
 ## 1. Input Subsystem Milestone
 - To reach this milestone, the tasks listed for the [Firmware](./tasklist.md#1a-firmware) Proof-of-Concept must be completed. The following documentation must also be completed:
 	- An explanation of the RabbitMQ container's Dockerfile, along with an explanation of any additional steps needed to set up the container
-	- A brief explanation of how to run and configure the Rust dev container
-	- A diagram of the message formats used by the ESP32s and local server
+	- A brief explanation of how to build and configure the PlatformIO project
+	- Protobuf definitions of the message formats used by the ESP32s and local server
 	- An overview of how to configure and test the firmware, especially in regard to setting sensitive environment variables in the firmware
 - Additionally, the tasks listed for the [Local Server](./tasklist.md#1b-local-server) Proof-of-Concept must be completed. The following documentation must also be completed:
 	- An explanation of the Postgres container's Dockerfile
@@ -11,7 +11,7 @@
 	- A high-level overview of how the containerized local server works, along with additional explanation of its Dockerfile and how the cron job was set up
 	- Instructions on how to test and locally deploy the server
 - Deliverables will include:
-	1. Rust firmware that can run on an ESP32 Qemu emulator, report randomized data for its sensor readings, and communicate via ethernet
+	1. ESP-IDF firmware that can run on an ESP32 via the Wokwi CLI, report placeholder data for its sensor readings, and communicate via ethernet
 	2. A containerized local server that can aggregate data into a global *Sensor Data* table and can email maintenance of any device failures
 	3. A simplified Postgres Database with a global *Sensor Data* and *Mailing list* table
 	

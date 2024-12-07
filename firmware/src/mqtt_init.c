@@ -4,6 +4,7 @@
 #include "esp_event.h"
 #include "esp_log.h"
 #include "mqtt_client.h"
+#include "mqtt_msg.pb-c.h"
 
 extern const uint8_t ca_crt_start[] asm("_binary_ca_crt_start");
 extern const uint8_t ca_crt_end[] asm("_binary_ca_crt_end");
@@ -56,10 +57,30 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
     case MQTT_EVENT_DATA:
         ESP_LOGI(TAG, "MQTT_EVENT_DATA");
         if (strncmp(event->topic, MQTT_PULSE_TOPIC, event->topic_len) == 0) {
+            // INIT message
+            Data msg = DATA__INIT;
+            void *buf;
+            unsigned len;
+
+            // Set message felds
+            msg.device = MQTT_USER;
+            msg.temp   = 10;
+            msg.rh     = 99.9;
+            msg.epoch  = 1733521830;
+
+            // Serialize message
+            len = data__get_packed_size(&msg);
+            buf = malloc(len);
+            data__pack(&msg, buf);
+
+            // Send message
             ESP_LOGI(TAG, "RECV PULSE, sending data...");
             esp_mqtt5_client_set_publish_property(client, &pub_props);
-            msg_id = esp_mqtt_client_publish(client, MQTT_DATA_TOPIC, "hello there", 0, 0, 0);
+            msg_id = esp_mqtt_client_publish(client, MQTT_DATA_TOPIC, buf, len, 0, 0);
             ESP_LOGD(TAG, "SENT DATA, msg_id = %d", msg_id);
+
+            // Free message buffer
+            free(buf);
         }
         break;
     case MQTT_EVENT_ERROR:
@@ -86,13 +107,19 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
 
 void mqtt_start(void)
 {
+    // Create LWT message
+    LWT msg = LWT__INIT;
+    msg.device = MQTT_USER;
+    unsigned len = lwt__get_packed_size(&msg);
+    void *buf = malloc(len);
+    lwt__pack(&msg, buf);
+
     esp_mqtt_client_config_t mqtt_cfg = {
         .broker = {
             .address.uri = MSG_BROKER_URI,
             .verification.certificate = (const char *)ca_crt_start
         },
         .credentials = {
-            // .client_id = MQTT_USER,
             // .username = MQTT_USER,
             // .authentication.password = MQTT_PASS,
         },
@@ -100,10 +127,10 @@ void mqtt_start(void)
             .protocol_ver = MQTT_PROTOCOL_V_5,
             .last_will = {
                 .topic = MQTT_LWT_TOPIC,
-                .msg = MQTT_USER,
-                .msg_len = strlen(MQTT_USER),
-                .qos = 1,
-                .retain = true,
+                .msg = buf,
+                .msg_len = len,
+                .qos = 0,
+                .retain = false,
             },
         },
     };
@@ -124,4 +151,5 @@ void mqtt_start(void)
 
     ESP_LOGI(TAG, "Connecting to %s", MSG_BROKER_URI);
     esp_mqtt_client_start(client);
+    free(buf);
 }

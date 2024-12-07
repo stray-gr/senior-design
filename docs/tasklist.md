@@ -2,22 +2,23 @@
 ## 1. Input Subsystem
 ### 1a. Firmware
 - Install the following:
-	1. Rancher Desktop
-	2. Espressif's ESP32 Qemu emulator
-	3. The MQTTX CLI Tool
+	1. PlatformIO IDE and vscode-proto3 plugins for VS Code (WSL)
+	2. Protobuf compiler and the protobuf-c pluging (WSL)
+	3. Wokwi CLI
+	4. The MQTTX CLI Tool
 - Set up a RabbitMQ Docker Container 
-- Create a Rust dev container for ESP32 firmware development
-- Devise message formats for the following types of information using CBOR:
+- Create a PlatformIO project for ESP32 firmware development with ESP-IDF
+- Devise message formats for the following types of information using Protobuf:
 	1. Timer pulse messages - left blank
 	2. LWT messages - includes device ID
 	3. Data messages - includes device ID, timestamp, measured temperature, and measured humidity 
-- Develop Rust firmware for the ESP32 that:
+- Develop ESP-IDF firmware for the ESP32 that:
 	1. Connects to the RabbitMQ broker using the device's username and password
 	2. Publishes a LWT message with a 1 minute timeout once authenticated to the broker
 	3. Subscribes to the MQTT Pulse Topic
 	4. Publishes a data message to the MQTT Data Topic upon receiving a pulse message
-	5. Reports randomized values for measured temperature and humidity
-- Test the Rust firmware on the ESP32 emulator, using the MQTTX tool to:
+	5. Reports placeholder values for measured temperature and humidity
+- Use the Wokwi CLI to test the firmware, using the MQTTX tool to:
 	1. Issue Pulse messages
 	2. Receive LWT and Data messages
 
@@ -45,8 +46,7 @@
 # Release Build
 ## 1. Input Subsystem
 - Purchase ESP32 microcontrollers, breadboards, and DHT11/DHT22 sensors
-- Install espflash
-- Update the Rust firmware to:
+- Update the ESP-IDF firmware to:
 	1. Establish a WIFI connection on device boot and 
 	2. Use a DHT sensor driver to read temperature and humidity data
 - Connect the ESP32 and DHT sensor together via breadboard

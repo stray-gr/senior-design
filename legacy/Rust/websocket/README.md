@@ -1,0 +1,2 @@
+## Note
+This Rust project is here for documentation purposes only. Implementing a broadcast websocket greatly increased the complexity of the webserver. Therefore, the sse proof-of-concept will likely be used instead.

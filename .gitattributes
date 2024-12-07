@@ -1,0 +1,2 @@
+fails/std/qemu/** filter=lfs diff=lfs merge=lfs -text
+fails/no_std/qemu/** filter=lfs diff=lfs merge=lfs -text

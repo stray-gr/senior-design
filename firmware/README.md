@@ -103,4 +103,4 @@ To run the Wokwi CLI Emulator:
     ```
 
 # TODO
-1. Make sure protobuf implementation works
+1. Make sure docs are complete

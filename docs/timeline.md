@@ -5,10 +5,10 @@
 | PoC-1A-3 | ~~Create a PlatformIO project for ESP32 firmware development with ESP-IDF~~ | 10/28 | 10/29 | 1 hr. |
 | PoC-1A-4 | ~~Devise message formats using Protobuf~~ | 10/28 | 10/29 | 1 hr. |
 | PoC-1A-5 | ~~Develop ESP-IDF firmware for the ESP32~~ | 10/30 | 10/31 | 8 hrs. |
-| PoC-1A-6 | **Test firmware via the Wokwi CLI** | 10/31 | 11/1 | 2 hrs. |
+| PoC-1A-6 | ~~Test firmware via the Wokwi CLI~~ | 10/31 | 11/1 | 2 hrs. |
 | PoC-1A-M | **Complete milestone documentation for the Firmware Proof-of-Concept** | 11/4 | 11/8 | 8 hrs. |
-| PoC-1B-1 | Install software needed for the Local Server Proof-of-Concept | 12/9 | 12/10 | 1 hr. |
-| PoC-1B-2 | Set up a Postgres Container w/ global superuser, *Sensor Data* table, and *Mailing List* table | 12/9 | 12/10 | 4 hrs. |
+| PoC-1B-1 | **Install software needed for the Local Server Proof-of-Concept** | 12/9 | 12/10 | 1 hr. |
+| PoC-1B-2 | **Set up a Postgres Container w/ global superuser, *Sensor Data* table, and *Mailing List* table** | 12/10 | 12/11 | 4 hrs. |
 | PoC-1B-3 | Create an Elixir dev container for developing a containerized Broadway application | 12/11 | 12/13 | 3 hrs. |
 | PoC-1B-4 | Develop a containerized Broadway application | 12/13 | 12/16 | 10 hrs. |
 | PoC-1B-5 | Ensure the application can save data to the database and send email to maintenance staff | 12/16 | 12/17 | 1 hr. |

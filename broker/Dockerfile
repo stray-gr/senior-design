@@ -1,13 +1,13 @@
-FROM rabbitmq:4
+FROM eclipse-mosquitto:2.0.18-openssl
 
-RUN rabbitmq-plugins enable --offline rabbitmq_mqtt
+COPY certs/          /mosquitto/config/
+COPY creds/acl_file  /mosquitto/config/creds/acl_file
+COPY creds/plain.txt /mosquitto/config/creds/users.txt
+COPY entrypoint.sh   /entrypoint.sh
+COPY mosquitto.conf  /mosquitto/config/
 
-COPY certs/ca.crt /certs/ca.crt
-COPY certs/server.crt /certs/server.crt
-COPY certs/server.key /certs/server.key
-COPY rabbitmq.conf /etc/rabbitmq/rabbitmq.conf
+EXPOSE 8885
 
-COPY scripts/ /scripts/
-RUN chmod -R +x /scripts/
-
-CMD [ "/scripts/init.sh" ]
+# https://serverfault.com/q/1095845
+ENTRYPOINT ["sh", "/entrypoint.sh"]
+CMD ["/usr/sbin/mosquitto", "-c", "/mosquitto/config/mosquitto.conf"]

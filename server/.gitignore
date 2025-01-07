@@ -1,0 +1,4 @@
+bin/
+ca.crt
+**/config.h
+.vscode/

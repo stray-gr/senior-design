@@ -10,6 +10,10 @@ Make sure to have the following software installed:
 - [MQTTX CLI Tool](https://mqttx.app/cli)
 - Openssl
 
+Also make sure the following folders are present:
+- broker/certs/
+- broker/creds
+
 # TLS Cert Creation
 First, create the certificate authority's private key and cert. Make sure to set `<duration>` to the number of days the key and cert should be valid for: 
 ```

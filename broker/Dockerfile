@@ -1,13 +1,17 @@
-FROM eclipse-mosquitto:2.0.18-openssl
+FROM debian:bookworm-slim
+RUN apt-get update && apt-get install -y mosquitto
+RUN useradd -ms /bin/bash broker
 
-COPY certs/          /mosquitto/config/
-COPY creds/acl_file  /mosquitto/config/creds/acl_file
-COPY creds/plain.txt /mosquitto/config/creds/users.txt
-COPY entrypoint.sh   /entrypoint.sh
-COPY mosquitto.conf  /mosquitto/config/
+USER broker
+WORKDIR /home/broker
+
+COPY --chown=broker:broker certs/ certs/
+COPY --chown=broker:broker creds/ creds/
+COPY --chown=broker:broker mosquitto.conf mosquitto.conf
 
 EXPOSE 8885
+ENTRYPOINT ["mosquitto", "-c", "mosquitto.conf"]
 
-# https://serverfault.com/q/1095845
-ENTRYPOINT ["sh", "/entrypoint.sh"]
-CMD ["/usr/sbin/mosquitto", "-c", "/mosquitto/config/mosquitto.conf"]
+# https://stackoverflow.com/a/40869934
+# docker build -t broker .
+# docker run --rm -p 1883:1883 -it broker

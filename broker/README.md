@@ -2,13 +2,13 @@
 1. [Prerequisites](#prerequisites)
 2. [TLS Cert Creation](#tls-cert-creation)
 3. [Create Users Script Reference](#create-users-script-reference)
-4. [MQTTX Pub/Sub](#mqttx-pubsub)
+4. [Mosquitto and MQTTX](#mosquitto-and-mqttx)
 
 # Prerequisites
 Make sure to have the following software installed:
-- [Rancher Desktop](https://rancherdesktop.io/)
 - [Mosquitto Message Broker](https://mosquitto.org/download/)
 - [MQTTX CLI Tool](https://mqttx.app/cli)
+- Openssl
 
 # TLS Cert Creation
 First, create the certificate authority's private key and cert. Make sure to set `<duration>` to the number of days the key and cert should be valid for: 
@@ -45,15 +45,18 @@ Here's a brief overview of what the script does:
 2. Give the script execute permissions by running:  `chmod a+x create_users.sh`
 3. To create n device users, along with the clock and server users, run: `./create_users.sh n`. For example: `./create_users.sh 10` will create 10 device users along with the clock and server users.
 
-# MQTTX Pub/Sub
-To start Mosquitto locally, open a terminal from the repo root and run: `mosquitto -c broker/mosquitto.conf`
+# Mosquitto and MQTTX 
+**To start Mosquitto locally**, open a terminal from the repo root and run: 
+```
+mosquitto -c broker/mosquitto.conf
+```
 
-To test read permissions for a given user or topic, use the following command format:
+**To test read permissions for a given user or topic**, use the following MQTTX command format:
 ```bash 
 mqttx sub -h {My-PC-Name} -p 8885 -l mqtts -v 5 --ca broker/certs/ca.crt -u {USER} -P {PASSWORD} -t "{TOPIC}"
 ```
 
-To test write permissions for a given user or topic, use the following command format:
+**To test write permissions for a given user or topic**, use the following MQTTX command format:
 ```bash 
 mqttx pub -h {My-PC-Name} -p 8885 -l mqtts -V 5 --ca broker/certs/ca.crt -u {USER} -P {PASSWORD} -t "{TOPIC}" -m "{MESSAGE}"
 ```

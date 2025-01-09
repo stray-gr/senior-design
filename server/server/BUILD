@@ -8,7 +8,7 @@ cc_library(
 )
 
 cc_binary(
-    name = "server",
+    name = "server.out",
     srcs = ["config.h", "main.cc"],
     deps = [
         "@paho-mqtt-cpp//:paho-mqtt-cpp", # External

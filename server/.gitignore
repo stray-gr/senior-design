@@ -1,5 +1,6 @@
 # Taken from Conan's examplev2 repo: https://github.com/conan-io/examples2
 config.h
+**ca.crt
 
 # Compiled Object files
 *.slo

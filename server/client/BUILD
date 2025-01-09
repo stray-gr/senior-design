@@ -1,5 +1,5 @@
 cc_binary(
-    name = "client",
+    name = "client.out",
     srcs = ["config.h", "main.cc"],
     deps = [
         "@paho-mqtt-cpp//:paho-mqtt-cpp",

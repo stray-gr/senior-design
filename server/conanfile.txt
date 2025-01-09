@@ -1,6 +1,5 @@
 [requires]
 paho-mqtt-cpp/1.4.1
-protobuf/5.27.0
 
 [generators]
 BazelDeps

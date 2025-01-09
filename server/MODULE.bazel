@@ -5,4 +5,4 @@
 # For more details, please check https://github.com/bazelbuild/bazel/issues/18958
 ###############################################################################
 load_conan_dependencies = use_extension("//conan:conan_deps_module_extension.bzl", "conan_extension")
-use_repo(load_conan_dependencies, "paho-mqtt-cpp", "protobuf")
+use_repo(load_conan_dependencies, "paho-mqtt-cpp")

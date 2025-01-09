@@ -1,8 +1,8 @@
 #include "callbacks.h"
-#include "../msg.pb.h"
+#include "msg_def/msg.pb.h"
 
 void data_callback(std::vector<std::string>& pbuf_str_vec, std::mutex& io_mtx, std::string tag) {
-    // https://mariadb.com/docs/server/connect/programming-languages/cpp/ 
+    // Postgres
     io_mtx.lock();
     for (size_t n = 0; n < pbuf_str_vec.size(); n++) {
         Cat kitty;
@@ -13,7 +13,7 @@ void data_callback(std::vector<std::string>& pbuf_str_vec, std::mutex& io_mtx, s
 }
 
 void lwt_callback(std::vector<std::string>& pbuf_str_vec, std::mutex& io_mtx, std::string tag) {
-    // https://curl.se/libcurl/
+    // Discord chat bot
     io_mtx.lock();
     for (size_t n = 0; n < pbuf_str_vec.size(); n++) {
         std::cout << tag << " | " << pbuf_str_vec[n] << std::endl;

@@ -7,5 +7,6 @@
 #define MQTT_USER ""
 #define MQTT_PASS ""
 #define MSG_BROKER_URI "mqtts://test.mosquitto.org:8883"
+#define MSG_BROKER_CRT "ca.crt"
 
 #endif

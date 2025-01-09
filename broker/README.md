@@ -15,7 +15,7 @@ Also make sure the following folders are present:
 - broker/creds
 
 # TLS Cert Creation
-First, create the certificate authority's private key and cert. Make sure to set `<duration>` to the number of days the key and cert should be valid for: 
+First, `cd` into the certs/ folder. Then, create the certificate authority's private key and cert. Make sure to set `<duration>` to the number of days the key and cert should be valid for: 
 ```
 openssl req -new -x509 -days <duration> -extensions v3_ca -keyout ca.key -out ca.crt
 ```

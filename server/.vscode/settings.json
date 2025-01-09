@@ -1,0 +1,4 @@
+{
+    "C_Cpp.default.compilerPath": "/usr/bin/g++", 
+    "includePath": ["${workspaceFolder}/**", "~/.conan2/**"]
+}

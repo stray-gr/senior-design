@@ -1,10 +1,9 @@
 #include <cstdlib>
 #include <iostream>
+#include <mqtt/client.h>
 
-// LD_LIBRARY_PATH=/usr/local/lib server/bin/client
 #include "config.h"
-#include "mqtt/client.h" 
-#include "../msg.pb.h"
+#include "msg_def/msg.pb.h"
 
 const std::string LWT_MSG{"Bye Bye"};
 

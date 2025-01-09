@@ -1,10 +1,8 @@
 #include <chrono>
 #include <iostream>
+#include <mqtt/client.h>
 
-// LD_LIBRARY_PATH=/usr/local/lib server/bin/clock
 #include "config.h"
-#include "mqtt/client.h" 
-#include "../msg.pb.h"
 
 int main() {
     mqtt::client user(MSG_BROKER_URI, MQTT_USER, mqtt::create_options(5));

@@ -1,13 +1,12 @@
 #include <chrono>
 #include <functional>
 #include <iostream>
+#include <mqtt/client.h>
 #include <thread>
 #include <vector>
 
-// LD_LIBRARY_PATH=/usr/local/lib server/bin/server
 #include "config.h"
 #include "callbacks.h"
-#include "mqtt/client.h" 
 
 struct ThreadArgs
 {

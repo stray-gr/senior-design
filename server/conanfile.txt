@@ -1,9 +1,14 @@
 [requires]
 paho-mqtt-cpp/1.4.1
+protobuf/5.27.0
+soci/4.0.3
+
+[tool_requires]
+protobuf/<host_version> 
+
+[options]
+soci/*:with_postgresql=True
 
 [generators]
-BazelDeps
-BazelToolchain
-
-[layout]
-bazel_layout
+CMakeDeps
+CMakeToolchain

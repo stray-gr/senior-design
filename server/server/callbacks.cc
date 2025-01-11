@@ -1,5 +1,5 @@
 #include "callbacks.h"
-#include "msg_def/msg.pb.h"
+#include "msg.pb.h"
 
 void data_callback(std::vector<std::string>& pbuf_str_vec, std::mutex& io_mtx, std::string tag) {
     // Postgres

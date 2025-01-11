@@ -3,11 +3,17 @@
 #include <mqtt/client.h>
 
 #include "config.h"
-#include "msg_def/msg.pb.h"
+#include "msg.pb.h"
 
 const std::string LWT_MSG{"Bye Bye"};
 
 int main() {
+    char *MQTT_PASS = std::getenv("MQTT_CLIENT_PASS");
+    char *MSG_BROKER_URI = std::getenv("MSG_BROKER_URI");
+    if ((MQTT_PASS == nullptr) || (MSG_BROKER_URI == nullptr)) {
+        std::cout << "Environment variables missing... exiting" << std::endl;
+    }
+
     mqtt::client user(MSG_BROKER_URI, MQTT_USER, mqtt::create_options(5));
     auto lwt_msg = mqtt::message(MQTT_LWT_TOPIC, LWT_MSG, 1, true);
     auto ssl_opts = mqtt::ssl_options_builder()

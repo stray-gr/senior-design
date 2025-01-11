@@ -1,8 +1,9 @@
+import os
 from conan import ConanFile
 from conan.tools.build import can_run
 
 
-class pkgTest(ConanFile):
+class pkgTestConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
 
     def requirements(self):

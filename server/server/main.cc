@@ -21,6 +21,14 @@ struct ThreadArgs
 std::mutex mtx;
 
 void thread_main(ThreadArgs args) {
+    char *MQTT_PASS = std::getenv("MQTT_SERVER_PASS");
+    char *MSG_BROKER_URI = std::getenv("MSG_BROKER_URI");
+    if ((MQTT_PASS == nullptr) || (MSG_BROKER_URI == nullptr)) {
+        mtx.lock();
+        std::cout << args.tag << " | Environment variables missing... exiting" << std::endl;
+        mtx.unlock();
+    }
+
     mqtt::client user(MSG_BROKER_URI, args.tag, mqtt::create_options(5));
     auto ssl_opts = mqtt::ssl_options_builder()
         .trust_store(MSG_BROKER_CRT)

@@ -5,6 +5,12 @@
 #include "config.h"
 
 int main() {
+    char *MQTT_PASS = std::getenv("MQTT_CLOCK_PASS");
+    char *MSG_BROKER_URI = std::getenv("MSG_BROKER_URI");
+    if ((MQTT_PASS == nullptr) || (MSG_BROKER_URI == nullptr)) {
+        std::cout << "Environment variables missing... exiting" << std::endl;
+    }
+
     mqtt::client user(MSG_BROKER_URI, MQTT_USER, mqtt::create_options(5));
     auto ssl_opts = mqtt::ssl_options_builder()
         .trust_store(MSG_BROKER_CRT)

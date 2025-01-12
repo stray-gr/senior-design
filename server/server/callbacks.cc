@@ -13,7 +13,7 @@ void data_callback(std::vector<std::string>& pbuf_str_vec, std::mutex& io_mtx, s
         return;
     }
 
-    Cat kitty;
+    Data sensor_data;
     pqxx::connection cx{DB_CONN_STR};
     pqxx::work tx{cx};
     auto stream = pqxx::stream_to::table(
@@ -23,8 +23,13 @@ void data_callback(std::vector<std::string>& pbuf_str_vec, std::mutex& io_mtx, s
     );
 
     for (size_t n = 0; n < pbuf_str_vec.size(); n++) {
-        kitty.ParseFromString(pbuf_str_vec[n]);
-        stream.write_values(kitty.name(), kitty.age());
+        sensor_data.ParseFromString(pbuf_str_vec[n]);
+        stream.write_values(
+            sensor_data.device(),
+            sensor_data.temp(),
+            sensor_data.rh(),
+            sensor_data.epoch()
+        );
     }
     stream.complete();
     tx.commit();
@@ -35,10 +40,15 @@ void data_callback(std::vector<std::string>& pbuf_str_vec, std::mutex& io_mtx, s
 }
 
 void lwt_callback(std::vector<std::string>& pbuf_str_vec, std::mutex& io_mtx, std::string tag) {
-    // Discord chat bot
-    io_mtx.lock();
+    // Groupme chat bot
+    std::string device_str{"The following device(s) have shutdown: "};
     for (size_t n = 0; n < pbuf_str_vec.size(); n++) {
-        std::cout << tag << " | " << pbuf_str_vec[n] << std::endl;
+        LWT msg;
+        msg.ParseFromString(pbuf_str_vec[n]);
+        device_str.append("\n" + msg.device());
     }
+
+    io_mtx.lock();
+    std::cout << tag << " | " << device_str << std::endl;
     io_mtx.unlock();
 }

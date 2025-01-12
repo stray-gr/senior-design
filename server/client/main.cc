@@ -1,11 +1,12 @@
 #include <cstdlib>
 #include <iostream>
 #include <mqtt/client.h>
+#include <sys/time.h>
 
 #include "config.h"
 #include "msg.pb.h"
 
-const std::string LWT_MSG{"Bye Bye"};
+const std::string DEVICE{"client"};
 
 int main() {
     char *MQTT_PASS = std::getenv("MQTT_CLIENT_PASS");
@@ -14,8 +15,11 @@ int main() {
         std::cout << "Environment variables missing... exiting" << std::endl;
     }
 
+    LWT lwt_msg;
+    lwt_msg.set_device(DEVICE);
+
     mqtt::client user(MSG_BROKER_URI, MQTT_USER, mqtt::create_options(5));
-    auto lwt_msg = mqtt::message(MQTT_LWT_TOPIC, LWT_MSG, 1, true);
+    auto lwt_pbuf_msg = mqtt::message(MQTT_LWT_TOPIC, lwt_msg.SerializeAsString(), 1, true);
     auto ssl_opts = mqtt::ssl_options_builder()
         .trust_store(MSG_BROKER_CRT)
         .error_handler([](const std::string& err) { std::cerr << err << std::endl; })
@@ -26,7 +30,7 @@ int main() {
         .clean_start()
         .mqtt_version(5)
         .ssl(std::move(ssl_opts))
-        .will(std::move(lwt_msg))
+        .will(std::move(lwt_pbuf_msg))
         .user_name(MQTT_USER)
         .password(MQTT_PASS)
         .finalize();
@@ -49,11 +53,16 @@ int main() {
             // Block until new message can be consumed
             auto pulse = user.consume_message();
             if (pulse) {
-                Cat kit;
-                kit.set_name("KITTY");
-                kit.set_age((rand() % 10) + 1);
+                struct timeval t;
+                gettimeofday(&t, NULL);
 
-                auto msg = mqtt::make_message(MQTT_DATA_TOPIC, kit.SerializeAsString(), 1, false);
+                Data sensor_data;
+                sensor_data.set_device(DEVICE);
+                sensor_data.set_temp(rand() % 100);
+                sensor_data.set_rh(55.5);
+                sensor_data.set_epoch(t.tv_sec);
+
+                auto msg = mqtt::make_message(MQTT_DATA_TOPIC, sensor_data.SerializeAsString(), 1, false);
                 user.publish(msg);
             }
         }

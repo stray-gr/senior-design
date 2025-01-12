@@ -44,33 +44,37 @@ struct TableStruct_msg_2eproto {
   static const uint32_t offsets[];
 };
 extern const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_msg_2eproto;
-class Cat;
-struct CatDefaultTypeInternal;
-extern CatDefaultTypeInternal _Cat_default_instance_;
+class Data;
+struct DataDefaultTypeInternal;
+extern DataDefaultTypeInternal _Data_default_instance_;
+class LWT;
+struct LWTDefaultTypeInternal;
+extern LWTDefaultTypeInternal _LWT_default_instance_;
 PROTOBUF_NAMESPACE_OPEN
-template<> ::Cat* Arena::CreateMaybeMessage<::Cat>(Arena*);
+template<> ::Data* Arena::CreateMaybeMessage<::Data>(Arena*);
+template<> ::LWT* Arena::CreateMaybeMessage<::LWT>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
 
 // ===================================================================
 
-class Cat final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:Cat) */ {
+class LWT final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:LWT) */ {
  public:
-  inline Cat() : Cat(nullptr) {}
-  ~Cat() override;
-  explicit PROTOBUF_CONSTEXPR Cat(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+  inline LWT() : LWT(nullptr) {}
+  ~LWT() override;
+  explicit PROTOBUF_CONSTEXPR LWT(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
-  Cat(const Cat& from);
-  Cat(Cat&& from) noexcept
-    : Cat() {
+  LWT(const LWT& from);
+  LWT(LWT&& from) noexcept
+    : LWT() {
     *this = ::std::move(from);
   }
 
-  inline Cat& operator=(const Cat& from) {
+  inline LWT& operator=(const LWT& from) {
     CopyFrom(from);
     return *this;
   }
-  inline Cat& operator=(Cat&& from) noexcept {
+  inline LWT& operator=(LWT&& from) noexcept {
     if (this == &from) return *this;
     if (GetOwningArena() == from.GetOwningArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -93,20 +97,20 @@ class Cat final :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const Cat& default_instance() {
+  static const LWT& default_instance() {
     return *internal_default_instance();
   }
-  static inline const Cat* internal_default_instance() {
-    return reinterpret_cast<const Cat*>(
-               &_Cat_default_instance_);
+  static inline const LWT* internal_default_instance() {
+    return reinterpret_cast<const LWT*>(
+               &_LWT_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     0;
 
-  friend void swap(Cat& a, Cat& b) {
+  friend void swap(LWT& a, LWT& b) {
     a.Swap(&b);
   }
-  inline void Swap(Cat* other) {
+  inline void Swap(LWT* other) {
     if (other == this) return;
   #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetOwningArena() != nullptr &&
@@ -119,7 +123,7 @@ class Cat final :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(Cat* other) {
+  void UnsafeArenaSwap(LWT* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
     InternalSwap(other);
@@ -127,14 +131,14 @@ class Cat final :
 
   // implements Message ----------------------------------------------
 
-  Cat* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<Cat>(arena);
+  LWT* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<LWT>(arena);
   }
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const Cat& from);
+  void CopyFrom(const LWT& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const Cat& from) {
-    Cat::MergeImpl(*this, from);
+  void MergeFrom( const LWT& from) {
+    LWT::MergeImpl(*this, from);
   }
   private:
   static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
@@ -152,15 +156,15 @@ class Cat final :
   void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(Cat* other);
+  void InternalSwap(LWT* other);
 
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "Cat";
+    return "LWT";
   }
   protected:
-  explicit Cat(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+  explicit LWT(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                        bool is_message_owned = false);
   public:
 
@@ -174,33 +178,23 @@ class Cat final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kNameFieldNumber = 1,
-    kAgeFieldNumber = 2,
+    kDeviceFieldNumber = 1,
   };
-  // string name = 1;
-  void clear_name();
-  const std::string& name() const;
+  // string device = 1;
+  void clear_device();
+  const std::string& device() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_name(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_name();
-  PROTOBUF_NODISCARD std::string* release_name();
-  void set_allocated_name(std::string* name);
+  void set_device(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_device();
+  PROTOBUF_NODISCARD std::string* release_device();
+  void set_allocated_device(std::string* device);
   private:
-  const std::string& _internal_name() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_name(const std::string& value);
-  std::string* _internal_mutable_name();
+  const std::string& _internal_device() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_device(const std::string& value);
+  std::string* _internal_mutable_device();
   public:
 
-  // int32 age = 2;
-  void clear_age();
-  int32_t age() const;
-  void set_age(int32_t value);
-  private:
-  int32_t _internal_age() const;
-  void _internal_set_age(int32_t value);
-  public:
-
-  // @@protoc_insertion_point(class_scope:Cat)
+  // @@protoc_insertion_point(class_scope:LWT)
  private:
   class _Internal;
 
@@ -208,8 +202,193 @@ class Cat final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
-    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr name_;
-    int32_t age_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr device_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_msg_2eproto;
+};
+// -------------------------------------------------------------------
+
+class Data final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:Data) */ {
+ public:
+  inline Data() : Data(nullptr) {}
+  ~Data() override;
+  explicit PROTOBUF_CONSTEXPR Data(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  Data(const Data& from);
+  Data(Data&& from) noexcept
+    : Data() {
+    *this = ::std::move(from);
+  }
+
+  inline Data& operator=(const Data& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline Data& operator=(Data&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const Data& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const Data* internal_default_instance() {
+    return reinterpret_cast<const Data*>(
+               &_Data_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    1;
+
+  friend void swap(Data& a, Data& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(Data* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(Data* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  Data* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<Data>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const Data& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const Data& from) {
+    Data::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(Data* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "Data";
+  }
+  protected:
+  explicit Data(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kDeviceFieldNumber = 1,
+    kTempFieldNumber = 2,
+    kRhFieldNumber = 3,
+    kEpochFieldNumber = 4,
+  };
+  // string device = 1;
+  void clear_device();
+  const std::string& device() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_device(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_device();
+  PROTOBUF_NODISCARD std::string* release_device();
+  void set_allocated_device(std::string* device);
+  private:
+  const std::string& _internal_device() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_device(const std::string& value);
+  std::string* _internal_mutable_device();
+  public:
+
+  // int32 temp = 2;
+  void clear_temp();
+  int32_t temp() const;
+  void set_temp(int32_t value);
+  private:
+  int32_t _internal_temp() const;
+  void _internal_set_temp(int32_t value);
+  public:
+
+  // float rh = 3;
+  void clear_rh();
+  float rh() const;
+  void set_rh(float value);
+  private:
+  float _internal_rh() const;
+  void _internal_set_rh(float value);
+  public:
+
+  // int64 epoch = 4;
+  void clear_epoch();
+  int64_t epoch() const;
+  void set_epoch(int64_t value);
+  private:
+  int64_t _internal_epoch() const;
+  void _internal_set_epoch(int64_t value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:Data)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr device_;
+    int32_t temp_;
+    float rh_;
+    int64_t epoch_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -224,81 +403,177 @@ class Cat final :
   #pragma GCC diagnostic push
   #pragma GCC diagnostic ignored "-Wstrict-aliasing"
 #endif  // __GNUC__
-// Cat
+// LWT
 
-// string name = 1;
-inline void Cat::clear_name() {
-  _impl_.name_.ClearToEmpty();
+// string device = 1;
+inline void LWT::clear_device() {
+  _impl_.device_.ClearToEmpty();
 }
-inline const std::string& Cat::name() const {
-  // @@protoc_insertion_point(field_get:Cat.name)
-  return _internal_name();
+inline const std::string& LWT::device() const {
+  // @@protoc_insertion_point(field_get:LWT.device)
+  return _internal_device();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void Cat::set_name(ArgT0&& arg0, ArgT... args) {
+void LWT::set_device(ArgT0&& arg0, ArgT... args) {
  
- _impl_.name_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:Cat.name)
+ _impl_.device_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:LWT.device)
 }
-inline std::string* Cat::mutable_name() {
-  std::string* _s = _internal_mutable_name();
-  // @@protoc_insertion_point(field_mutable:Cat.name)
+inline std::string* LWT::mutable_device() {
+  std::string* _s = _internal_mutable_device();
+  // @@protoc_insertion_point(field_mutable:LWT.device)
   return _s;
 }
-inline const std::string& Cat::_internal_name() const {
-  return _impl_.name_.Get();
+inline const std::string& LWT::_internal_device() const {
+  return _impl_.device_.Get();
 }
-inline void Cat::_internal_set_name(const std::string& value) {
+inline void LWT::_internal_set_device(const std::string& value) {
   
-  _impl_.name_.Set(value, GetArenaForAllocation());
+  _impl_.device_.Set(value, GetArenaForAllocation());
 }
-inline std::string* Cat::_internal_mutable_name() {
+inline std::string* LWT::_internal_mutable_device() {
   
-  return _impl_.name_.Mutable(GetArenaForAllocation());
+  return _impl_.device_.Mutable(GetArenaForAllocation());
 }
-inline std::string* Cat::release_name() {
-  // @@protoc_insertion_point(field_release:Cat.name)
-  return _impl_.name_.Release();
+inline std::string* LWT::release_device() {
+  // @@protoc_insertion_point(field_release:LWT.device)
+  return _impl_.device_.Release();
 }
-inline void Cat::set_allocated_name(std::string* name) {
-  if (name != nullptr) {
+inline void LWT::set_allocated_device(std::string* device) {
+  if (device != nullptr) {
     
   } else {
     
   }
-  _impl_.name_.SetAllocated(name, GetArenaForAllocation());
+  _impl_.device_.SetAllocated(device, GetArenaForAllocation());
 #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (_impl_.name_.IsDefault()) {
-    _impl_.name_.Set("", GetArenaForAllocation());
+  if (_impl_.device_.IsDefault()) {
+    _impl_.device_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:Cat.name)
+  // @@protoc_insertion_point(field_set_allocated:LWT.device)
 }
 
-// int32 age = 2;
-inline void Cat::clear_age() {
-  _impl_.age_ = 0;
+// -------------------------------------------------------------------
+
+// Data
+
+// string device = 1;
+inline void Data::clear_device() {
+  _impl_.device_.ClearToEmpty();
 }
-inline int32_t Cat::_internal_age() const {
-  return _impl_.age_;
+inline const std::string& Data::device() const {
+  // @@protoc_insertion_point(field_get:Data.device)
+  return _internal_device();
 }
-inline int32_t Cat::age() const {
-  // @@protoc_insertion_point(field_get:Cat.age)
-  return _internal_age();
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void Data::set_device(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.device_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:Data.device)
 }
-inline void Cat::_internal_set_age(int32_t value) {
+inline std::string* Data::mutable_device() {
+  std::string* _s = _internal_mutable_device();
+  // @@protoc_insertion_point(field_mutable:Data.device)
+  return _s;
+}
+inline const std::string& Data::_internal_device() const {
+  return _impl_.device_.Get();
+}
+inline void Data::_internal_set_device(const std::string& value) {
   
-  _impl_.age_ = value;
+  _impl_.device_.Set(value, GetArenaForAllocation());
 }
-inline void Cat::set_age(int32_t value) {
-  _internal_set_age(value);
-  // @@protoc_insertion_point(field_set:Cat.age)
+inline std::string* Data::_internal_mutable_device() {
+  
+  return _impl_.device_.Mutable(GetArenaForAllocation());
+}
+inline std::string* Data::release_device() {
+  // @@protoc_insertion_point(field_release:Data.device)
+  return _impl_.device_.Release();
+}
+inline void Data::set_allocated_device(std::string* device) {
+  if (device != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.device_.SetAllocated(device, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.device_.IsDefault()) {
+    _impl_.device_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:Data.device)
+}
+
+// int32 temp = 2;
+inline void Data::clear_temp() {
+  _impl_.temp_ = 0;
+}
+inline int32_t Data::_internal_temp() const {
+  return _impl_.temp_;
+}
+inline int32_t Data::temp() const {
+  // @@protoc_insertion_point(field_get:Data.temp)
+  return _internal_temp();
+}
+inline void Data::_internal_set_temp(int32_t value) {
+  
+  _impl_.temp_ = value;
+}
+inline void Data::set_temp(int32_t value) {
+  _internal_set_temp(value);
+  // @@protoc_insertion_point(field_set:Data.temp)
+}
+
+// float rh = 3;
+inline void Data::clear_rh() {
+  _impl_.rh_ = 0;
+}
+inline float Data::_internal_rh() const {
+  return _impl_.rh_;
+}
+inline float Data::rh() const {
+  // @@protoc_insertion_point(field_get:Data.rh)
+  return _internal_rh();
+}
+inline void Data::_internal_set_rh(float value) {
+  
+  _impl_.rh_ = value;
+}
+inline void Data::set_rh(float value) {
+  _internal_set_rh(value);
+  // @@protoc_insertion_point(field_set:Data.rh)
+}
+
+// int64 epoch = 4;
+inline void Data::clear_epoch() {
+  _impl_.epoch_ = int64_t{0};
+}
+inline int64_t Data::_internal_epoch() const {
+  return _impl_.epoch_;
+}
+inline int64_t Data::epoch() const {
+  // @@protoc_insertion_point(field_get:Data.epoch)
+  return _internal_epoch();
+}
+inline void Data::_internal_set_epoch(int64_t value) {
+  
+  _impl_.epoch_ = value;
+}
+inline void Data::set_epoch(int64_t value) {
+  _internal_set_epoch(value);
+  // @@protoc_insertion_point(field_set:Data.epoch)
 }
 
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 
 // @@protoc_insertion_point(namespace_scope)
 

@@ -2,10 +2,7 @@
 cpr/1.11.1
 libpqxx/7.10.0
 paho-mqtt-cpp/1.4.1
-protobuf/5.27.0
-
-[tool_requires]
-protobuf/<host_version> 
+protobuf/3.21.12  # Same version as local protoc
 
 [options]
 libpq/*:with_openssl=True

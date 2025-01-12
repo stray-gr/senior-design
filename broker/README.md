@@ -15,20 +15,18 @@ Also make sure the following folders are present:
 - broker/creds
 
 # TLS Cert Creation
-First, `cd` into the certs/ folder. Then, create the certificate authority's private key and cert. Make sure to set `<duration>` to the number of days the key and cert should be valid for: 
-```
-openssl req -new -x509 -days <duration> -extensions v3_ca -keyout ca.key -out ca.crt
-```
-
-Next, create the broker's private key and certificate signing request (CSR):
-1. Create server private key: `openssl genrsa -out broker.key 2048`
-2. Create the CSR: `openssl req -out broker.csr -key broker.key -new`. 
+1. `cd` into the certs/ folder 
+2. Create the certificate authority's private key and cert. Make sure to set `<duration>` to the number of days the key and cert should be valid for: 
+    ```
+    openssl req -new -x509 -days <duration> -extensions v3_ca -keyout ca.key -out ca.crt
+    ```
+3. Create broker's private key: `openssl genrsa -out broker.key 2048`
+4. Create broker's certificate signing request (CSR): `openssl req -out broker.csr -key broker.key -new`. 
     - Make sure to set **Common Name** to the message broker's hostname (e.g. "My-PC-Name")
-
-Finally, sign the CSR using the certificate authority we initially created. Make sure to set `<duration>` to the number of days the broker's private key and cert should be valid for: 
-```
-openssl x509 -req -in broker.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out broker.crt -days <duration>
-```
+5. Sign the CSR using the certificate authority we initially created. Make sure to set `<duration>` to the number of days the broker's private key and cert should be valid for: 
+    ```
+    openssl x509 -req -in broker.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out broker.crt -days <duration>
+    ```
 
 # Create Users Script Reference
 ## Overview

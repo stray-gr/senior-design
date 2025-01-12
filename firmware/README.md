@@ -11,7 +11,7 @@
 # Installation
 ## Prerequisites
 Before starting with either form of installation, make the following requirements are available:
-- WSL2 or a Unix-like OS
+- Unix-like OS (preferably Ubuntu 24.04)
     > Make sure to install the WSL plugin for VS code if you're on Windows
 - VS Code w/ the PlatformIO IDE and vscode-proto3 plugins installed
 - Protobuf compiler (protoc) and protobuf-c

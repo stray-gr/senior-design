@@ -6,13 +6,10 @@
 5. Update CMakeLists.txt
 7. cmake --build . --config Release
 8. In a new terminal: ./run.sh ./build/{executable name}
+9. Use GroupMe's form to create a chat bot. Instructions can be found [here](https://dev.groupme.com/tutorials/bots)
 
 # TODO
-1. Update protobuf
-2. Create data schema, along with a facility table and user
-3. Add GroupMe integration using their [API](https://dev.groupme.com/tutorials/bots)
-    - This replaces email and mailing list with a Discord server managed by a wider variety of community members
-    - https://docs.libcpr.org/
+1. Update all docs
 
 
 # The N-Facility Problem

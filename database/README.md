@@ -44,43 +44,36 @@ Make sure to have the following software installed:
 - https://www.slingacademy.com/article/grant-privileges-user-postgresql/
 - https://stackoverflow.com/a/30509741
 
-### Add Schema and Tables
+### Add Facility Schema and Tables
 - sudo -u postgres createdb sddb
 - sudo -u postgres psql sddb
-- create schema test;
-- create table test.good (ID SERIAL primary key, ...Columns);
-- create table test.bad (ID SERIAL primary key, ...);
+- create schema data;
+- create table data.facility_n (ID SERIAL primary key, device TEXT NOT NULL, temp INT, rh REAL, epoch BIGINT NOT NULL);
+- create index idx_epoch on data.facility_n (epoch);
 - select * from pg_tables where schemaname='test';
 - \q
 
 ### Create Facility User
 - Create user password using: `openssl rand -base64 40 | tr -d "=+/" | cut -c1-32`
 - sudo -u postgres psql sddb
-- create role username with login password 'password'
-- grant connect on database sddb to username;
-- grant usage on schema test to username;
-- grant insert on test.good to username;
-- Find sequence_id using: `select pg_get_serial_sequence('test.good', 'id');`
-- grant usage on sequence sequence_id to username;
-- set role username;
-- INSERT INTO test.good (...Columns) VALUES (...); -> allowed
-- INSERT INTO test.bad (...Columns) VALUES (...); -> denied
-- SELECT * FROM test.good; -> denied
-- SELECT * FROM test.bad; -> denied
+- create role facility_n with login password 'password'
+- grant connect on database sddb to facility_n;
+- grant usage on schema data to facility_n;
+- grant insert on data.facility_n to facility_n;
+- Find sequence_id using: `select pg_get_serial_sequence('data.facility_n', 'id');`
+- grant usage on sequence sequence_id to facility_n;
 - \q
+- Test user connection using: `sudo -u postgres psql -h localhost -d sddb -U facility_n -W`
 
 ### Create API User
 - Create user password using: `openssl rand -base64 40 | tr -d "=+/" | cut -c1-32`
 - sudo -u postgres psql sddb
 - create role api with login password 'password';
 - grant connect on database sddb to api;
-- grant usage on schema test to api;
-- grant select on all tables in schema test to api;
-- set role api;
-- SELECT * FROM test.good; -> allowed
-- SELECT * FROM test.bad; -> allowed
-- INSERT INTO test.good (...Columns) VALUES (...); -> denied
-- INSERT INTO test.bad (...Columns) VALUES (...); -> denied
+- grant usage on schema data to api;
+- grant select on all tables in schema data to api;
+- \q
+- Test user connection using: `sudo -u postgres psql -h localhost -d sddb -U api -W`
 
 ### Other Useful Commands
 - `SELECT current_user;` returns current user

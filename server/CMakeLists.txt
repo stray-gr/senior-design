@@ -39,7 +39,7 @@ target_include_directories(
 add_executable(server server/main.cc server/callbacks.cc)
 target_link_libraries(
     server 
-    # cpr::cpr
+    cpr::cpr
     libpqxx::pqxx
     MSG_DEF
     PahoMqttCpp::paho-mqttpp3-static

@@ -1,3 +1,4 @@
+#include <cpr/cpr.h>
 #include <cstdlib>
 #include <pqxx/pqxx>
 #include "callbacks.h"
@@ -40,15 +41,27 @@ void data_callback(std::vector<std::string>& pbuf_str_vec, std::mutex& io_mtx, s
 }
 
 void lwt_callback(std::vector<std::string>& pbuf_str_vec, std::mutex& io_mtx, std::string tag) {
-    // Groupme chat bot
+    char *BOT_ID = std::getenv("BOT_ID");
+    if (BOT_ID == nullptr) {
+        io_mtx.lock();
+        std::cout << tag << " | Environment variable missing... exiting" << std::endl;
+        io_mtx.unlock();
+        return;
+    }
+
     std::string device_str{"The following device(s) have shutdown: "};
     for (size_t n = 0; n < pbuf_str_vec.size(); n++) {
         LWT msg;
         msg.ParseFromString(pbuf_str_vec[n]);
-        device_str.append("\n" + msg.device());
+        device_str.append("\n> " + msg.device());
     }
 
+    cpr::Response resp = cpr::Post(
+        cpr::Url{"https://api.groupme.com/v3/bots/post"},
+        cpr::Parameters{{"text", device_str}, {"bot_id", BOT_ID}}
+    );
+
     io_mtx.lock();
-    std::cout << tag << " | " << device_str << std::endl;
+    std::cout << tag << " | Sent outage report (" << pbuf_str_vec.size() << ")" << std::endl;
     io_mtx.unlock();
 }

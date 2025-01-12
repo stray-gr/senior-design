@@ -1,13 +1,14 @@
 [requires]
+cpr/1.11.1
+libpqxx/7.10.0
 paho-mqtt-cpp/1.4.1
 protobuf/5.27.0
-soci/4.0.3
 
 [tool_requires]
 protobuf/<host_version> 
 
 [options]
-soci/*:with_postgresql=True
+libpq/*:with_openssl=True
 
 [generators]
 CMakeDeps

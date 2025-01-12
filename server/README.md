@@ -2,22 +2,17 @@
 1. conan new cmake_exe
 2. Replace conanfile.py with conanfile.txt and add deps
 3. conan install . --output-folder=build --build=missing
-4. Update CMakeLists.txt
-5. cd build 
-6. cmake .. -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Release
-8. cmake --build . --config Release
-8. cd ../
-9. ./run.sh ./build/server
+4. cd build && cmake .. -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Release
+5. Update CMakeLists.txt
+7. cmake --build . --config Release
+8. In a new terminal: ./run.sh ./build/server
 
 # TODO
-1. Add [postgres](https://conan.io/center/recipes/libpqxx?version=7.10.0) integration. Make sure to stream inserts
-    - Schema for testing (uses cat protobuf toy example)
-    - Schema for sensor data
-    - Schema for API users
-    - How to specify schema via exec: https://stackoverflow.com/a/34098414
-2. Add [D++](https://conan.io/center/recipes/dpp?version=10.0.35) integration
+1. Update protobuf
+2. Create data schema, along with a facility table and user
+3. Add GroupMe integration using their [API](https://dev.groupme.com/tutorials/bots)
     - This replaces email and mailing list with a Discord server managed by a wider variety of community members
-3. Bazel build :all
+    - https://docs.libcpr.org/
 
 # PSQL
 ### Useful links
@@ -27,29 +22,32 @@
 - https://www.slingacademy.com/article/grant-privileges-user-postgresql/
 - https://stackoverflow.com/a/30509741
 
-### Set up
+### Add Schema and Tables
 - sudo apt install postgresql
-- sudo -u postgres bash
-- createdb sddb
-- psql sddb
-- CREATE SCHEMA IF NOT EXISTS test;
-- CREATE TABLE test.cats (ID SERIAL primary key, Name CHARACTER (8), Age INT);
-- CREATE TABLE test.dogs (ID SERIAL primary key, Name CHARACTER (8), Age INT);
-- SELECT tablename FROM pg_tables WHERE schemaname='test';
-- password = openssl rand -base64 40 | tr -d "=+/" | cut -c1-32
-- CREATE ROLE gato WITH LOGIN PASSWORD 'password';
-- GRANT CONNECT ON DATABASE sddb TO gato;
-- GRANT USAGE ON SCHEMA test TO gato;
-- GRANT INSERT ON test.cats TO gato;
-- seq = SELECT pg_get_serial_sequence('test.cats', 'id');
-- GRANT USAGE ON SEQUENCE seq TO gato;
-- SET ROLE gato;
+- sudo -u postgres createdb sddb
+- sudo -u postgres psql sddb
+- create schema test;
+- create table test.cats (ID SERIAL primary key, name TEXT, age INT);
+- create table test.dogs (ID SERIAL primary key, name TEXT, age INT);
+- select * from pg_tables where schemaname='test';
+
+### Create Facility User
+- password -> openssl rand -base64 40 | tr -d "=+/" | cut -c1-32
+- create role gato with login password 'password'
+- grant connect on database sddb to gato;
+- grant usage on schema test to gato;
+- grant insert on test.cats to gato;
+- seq = select pg_get_serial_sequence('test.cats', 'id');
+- grant usage on sequence seq to gato;
+- set role gato;
 - INSERT INTO test.cats (name, age) VALUES ('Zeke', 2); -> allowed
 - INSERT INTO test.dogs (name, age) VALUES ('Zeke', 2); -> denied
 - SELECT * FROM test.cats; -> denied
 - SELECT * FROM test.dogs; -> denied
-- SET ROLE postgres;
-- password = openssl rand -base64 40 | tr -d "=+/" | cut -c1-32
+- sudo -u postgres psql -h localhost -d sddb -U gato
+
+### Create Facility User
+- password -> openssl rand -base64 40 | tr -d "=+/" | cut -c1-32
 - CREATE ROLE api WITH LOGIN PASSWORD 'password';
 - GRANT CONNECT ON DATABASE sddb TO api;
 - GRANT USAGE ON SCHEMA test TO api;
@@ -61,6 +59,7 @@
 - INSERT INTO test.dogs (name, age) VALUES ('Deigo', 7); -> denied
 - \q
 
+### Other Useful Commands
 - SELECT current_user;
 - DROP SCHEMA test CASCADE;
 - DROP ROLE user_name;

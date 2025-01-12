@@ -1,5 +1,5 @@
-#ifndef PROJECT_CALLBACKS
-#define PROJECT_CALLBACKS
+#ifndef SERVER_CALLBACKS
+#define SERVER_CALLBACKS
 
 #include <iostream>
 #include <mutex>

@@ -6,7 +6,7 @@
 #include <vector>
 
 #include "config.h"
-#include "callbacks.h"
+#include "server_cb.h"
 
 struct ThreadArgs
 {
@@ -40,7 +40,7 @@ void thread_main(ThreadArgs args) {
         .clean_start()
         .mqtt_version(5)
         .ssl(std::move(ssl_opts))
-        .user_name(MQTT_USER)
+        .user_name(MQTT_SERVER_USER)
         .password(MQTT_PASS)
         .finalize();
 

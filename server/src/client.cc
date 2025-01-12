@@ -18,7 +18,7 @@ int main() {
     LWT lwt_msg;
     lwt_msg.set_device(DEVICE);
 
-    mqtt::client user(MSG_BROKER_URI, MQTT_USER, mqtt::create_options(5));
+    mqtt::client user(MSG_BROKER_URI, MQTT_CLIENT_USER, mqtt::create_options(5));
     auto lwt_pbuf_msg = mqtt::message(MQTT_LWT_TOPIC, lwt_msg.SerializeAsString(), 1, true);
     auto ssl_opts = mqtt::ssl_options_builder()
         .trust_store(MSG_BROKER_CRT)
@@ -31,7 +31,7 @@ int main() {
         .mqtt_version(5)
         .ssl(std::move(ssl_opts))
         .will(std::move(lwt_pbuf_msg))
-        .user_name(MQTT_USER)
+        .user_name(MQTT_CLIENT_USER)
         .password(MQTT_PASS)
         .finalize();
 

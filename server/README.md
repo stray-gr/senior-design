@@ -6,10 +6,11 @@
 5. Update CMakeLists.txt
 7. cmake --build . --config Release
 8. In a new terminal: ./run.sh ./build/{executable name}
-9. Use GroupMe's form to create a chat bot. Instructions can be found [here](https://dev.groupme.com/tutorials/bots)
+9. Use GroupMe's form to create a chatbot. Instructions can be found [here](https://dev.groupme.com/tutorials/bots)
 
 # TODO
-1. Update all docs
+1. ~~Create src and include folders for clock, client, and server~~
+2. Update all docs
 
 
 # The N-Facility Problem

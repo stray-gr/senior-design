@@ -9,30 +9,31 @@
 5. [TODO](#todo)
 
 # Installation
-## Prerequisites
-Before starting with either form of installation, make the following requirements are available:
+### Prerequisites
+Make sure the following sofware is installed:
 - Unix-like OS (preferably Ubuntu 24.04)
     > Make sure to install the WSL plugin for VS code if you're on Windows
-- VS Code w/ the PlatformIO IDE and vscode-proto3 plugins installed
+- VS Code w/ the following plugins:
+    - PlatformIO IDE
+    - vscode-proto3
 - Protobuf compiler (protoc) and protobuf-c
     > This can be done via your OS package manager, such as `apt` or `brew`
-- Wokwi CLI
-- MQTTX CLI tool
+- MQTTX CLI and Wokwi CLI
 
 Here are some useful links for installing the prerequisites:
 - [Platform IDE Plugin Installation](https://docs.platformio.org/en/latest/integration/ide/vscode.html#installation)
+- [MQTTX CLI Tool Installation](https://mqttx.app/cli)
 - [Wokwi CLI Installation](https://docs.wokwi.com/wokwi-ci/cli-installation)
 - [Wokwi CLI Set Up](https://docs.wokwi.com/wokwi-ci/cli-usage) (Make sure to include the API token in your shell's environment)
-- [MQTTX CLI Tool Installation](https://mqttx.app/cli)
 
-## From Current Repo
+### From Current Repo
 To set up the current ESP-IDF project using PlatformIO:
 1. Open the *firmware* folder in VS Code. The PlatformIO plugin should then automatically recognize the project
 2. Download the Mosquitto Public Test Broker's CA cert from [this link](https://test.mosquitto.org/ssl/mosquitto.org.crt)
 3. Move the downloaded cert into the `src` folder and rename it to *ca.crt*
 4. Rename [example_config.h](./src/example_config.h) to *config.h*. This header file contains project configuration details and secrets
 
-## From Scratch
+### From Scratch
 To create your own ESP-IDF project using PlatfromIO, follow these steps:
 1. [Create an ESP-IDF project](https://docs.platformio.org/en/latest/tutorials/espressif32/espidf_debugging_unit_testing_analysis.html#setting-up-the-project) using the Platform IO plugin
 2. In your newly created project's [sdkconfig](./sdkconfig.esp32dev), add `CONFIG_MQTT_PROTOCOL_5=y` under the `ESP-MQTT Configurations` section. This will allow you to use MQTT v5
@@ -65,22 +66,19 @@ To run the Wokwi CLI Emulator:
 7. Hit `CTRL + C` in the emulator terminal to shut it down. Then wait about 1 minute for the following message to appear in the LWT terminal: *d265f27851d6b048e64576475674922f*. This demonstrates a successful LWT delay
     > It should technically take 3 seconds for the message to display. However, the public message broker being used can take a while to deliver LWT messages
 
-# Notes
-- The LWT message is *username* hashed by MD5, which is the username of the emulated device. Additionally, each topic name was also hashed by MD5 to prevent any name collisions with anyone else's topics on the public test broker being used.
-
 # Protobuf Formats
 ### Time Pulse Messages
-- **Publisher:** Local Server Chron Job
+- **Publisher:** Local Server "pulse" Topic
 - **Subscribers:** Each ESP32
-- **QoS:** 0
+- **QoS:** 1
 - **Special Properties:** none
 - **Payload:** empty
 
 ### LWT Messages
 - **Publishers:** Each ESP32
-- **Subscriber:** Local Server LWT Queue
+- **Subscriber:** Local Server "data/lwt" Topic
 - **QoS:** 1
-- **Special properties:** 1 minute delay
+- **Special properties:** 1 minute delay, retained
 - **Payload:**
     ```proto
     message LWT {
@@ -90,7 +88,7 @@ To run the Wokwi CLI Emulator:
 
 ### Data Messages
 - **Publishers:** Each ESP32
-- **Subscriber:** Local Server Data Queue
+- **Subscriber:** Local Server "data/sensor" Queue
 - **QoS:** 1
 - **Special properties:** none
 - **Payload:**

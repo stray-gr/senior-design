@@ -11,52 +11,49 @@ Make sure to have the following software installed:
 
 # TLS Cert Creation
 1. Once you postgresql installed, run `sudo -u postgres bash`
-2. In the postgres user bash shell, `cd` to ~/ and create the certs/ folder. Note that ~/ should translate to /var/lib/postgresql/
-3. Create the certificate authority's private key and cert. Make sure to set `<duration>` to the number of days the key and cert should be valid for: 
+2. Run `psql -c 'show data_directory;'` to find where the data directory for postgres is located
+3. `cd` into the data directory and create the certs/ folder
+4. `cd` into the certs/ folder and create the certificate authority's private key and cert. Make sure to set `<duration>` to the number of days the key and cert should be valid for: 
     ```
     openssl req -new -x509 -days <duration> -extensions v3_ca -keyout ca.key -out ca.crt
     ```
-4. Create the postgresql server's private key: `openssl genrsa -out server.key 2048`
-5. Create the server's certificate signing request (CSR): `openssl req -out server.csr -key server.key -new` 
+5. Create the postgresql server's private key: `openssl genrsa -out server.key 2048`
+6. Create the server's certificate signing request (CSR): `openssl req -out server.csr -key server.key -new` 
     - Make sure to set **Common Name** to the message server's hostname (e.g. "My-PC-Name")
-6. Sign the CSR using the certificate authority we initially created. Make sure to set `<duration>` to the number of days the broker's private key and cert should be valid for: 
+7. Sign the CSR using the certificate authority we initially created. Make sure to set `<duration>` to the number of days the broker's private key and cert should be valid for: 
     ```
     openssl x509 -req -in server.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out server.crt -days <duration>
     ```
-7. Update the following SSL variables in your /etc/postgresql/16/main/postgresql.conf:
+8. Run `sql -c 'show config_file;'` to find where the config file for postgres is located
+9. Update the following SSL variables in the config file for postgres. Make sure to set `<datadir>` with the postgres data directory's location:
     ```
     ssl = on
-    ssl_ca_file = '/var/lib/postgresql/certs/ca.crt'
-    ssl_cert_file = '/var/lib/postgresql/certs/server.crt'
-    ssl_key_file = '/var/lib/postgresql/certs/server.key'
+    ssl_ca_file = '<datadir>/certs/ca.crt'
+    ssl_cert_file = '<datadir>/certs/server.crt'
+    ssl_key_file = '<datadir>/certs/server.key'
     ```
-8. Add the following entry to your /etc/postgresql/16/main/pg_hba.conf to enforce SSL connections:
+10. Run `sql -c 'show hba_file;'` to find where the HBA (host-based authentication) file for postgres is located
+11. Add the following entry to the HBA file for postgres to enforce SSL connections:
     ```
     hostssl all all 0.0.0.0/0 md5
     ```
-9. Try restarting the server by exiting the postgres shell and running: `sudo service postgresql restart` 
+12. Exit the postgres user shell and restart the postgres server
+    - If you're on an Ubuntu-based system, restart the server by running: `sudo service postgresql restart` 
 
 # Database Set Up
-### Useful links
-- https://www.postgresql.org/docs/16/index.html
-- https://www.geeksforgeeks.org/postgresql-create-schema/
-- https://stackoverflow.com/a/41737829 OR https://stackoverflow.com/a/26726006
-- https://www.slingacademy.com/article/grant-privileges-user-postgresql/
-- https://stackoverflow.com/a/30509741
-
 ### Add Facility Schema and Tables
 - sudo -u postgres createdb sddb
 - sudo -u postgres psql sddb
 - create schema data;
 - create table data.facility_n (ID SERIAL primary key, device TEXT NOT NULL, temp INT, rh REAL, epoch BIGINT NOT NULL);
 - create index idx_epoch on data.facility_n (epoch);
-- select * from pg_tables where schemaname='test';
+- select * from pg_tables where schemaname='data';
 - \q
 
 ### Create Facility User
 - Create user password using: `openssl rand -base64 40 | tr -d "=+/" | cut -c1-32`
 - sudo -u postgres psql sddb
-- create role facility_n with login password 'password'
+- create role facility_n with login password 'password';
 - grant connect on database sddb to facility_n;
 - grant usage on schema data to facility_n;
 - grant insert on data.facility_n to facility_n;
@@ -81,3 +78,10 @@ Make sure to have the following software installed:
 - `DROP ROLE user_name;` removes a user
 - `ALTER ROLE user_name WITH PASSWORD 'new_password';` changes a user's password
 - `\conninfo` lists connection info
+
+### Useful links
+- https://www.postgresql.org/docs/16/index.html
+- https://www.geeksforgeeks.org/postgresql-create-schema/
+- https://stackoverflow.com/a/41737829 OR https://stackoverflow.com/a/26726006
+- https://www.slingacademy.com/article/grant-privileges-user-postgresql/
+- https://stackoverflow.com/a/30509741

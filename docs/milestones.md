@@ -1,41 +1,38 @@
 # Completion of Proof-of-Concepts
-## 1. Input Subsystem Milestone
+## 1. Input Subsystem 
 - To reach this milestone, the tasks listed for the [Firmware](./tasklist.md#1a-firmware) Proof-of-Concept must be completed. The following documentation must also be completed:
-	- An explanation of the RabbitMQ container's Dockerfile, along with an explanation of any additional steps needed to set up the container
-	- A brief explanation of how to build and configure the PlatformIO project
+	- An explanation of how to set up the Mosquitto MQTT Broker and its users
+	- An guide on how to build and configure the PlatformIO project
 	- Protobuf definitions of the message formats used by the ESP32s and local server
 	- An overview of how to configure and test the firmware, especially in regard to setting sensitive environment variables in the firmware
 - Additionally, the tasks listed for the [Local Server](./tasklist.md#1b-local-server) Proof-of-Concept must be completed. The following documentation must also be completed:
-	- An explanation of the Postgres container's Dockerfile
-	- A brief explanation of how to run and configure the Elixir dev container
-	- A high-level overview of how the containerized local server works, along with additional explanation of its Dockerfile and how the cron job was set up
-	- Instructions on how to test and locally deploy the server
+	- An explanation of how to configure deploy a local a PostgreSQL server
+	- Documentation listing out the various database schemas and tables, along with what permissions each user has
+	- A guide on how to set up the Conan + CMake project, build the server's executables, and test them
 - Deliverables will include:
-	1. ESP-IDF firmware that can run on an ESP32 via the Wokwi CLI, report placeholder data for its sensor readings, and communicate via ethernet
-	2. A containerized local server that can aggregate data into a global *Sensor Data* table and can email maintenance of any device failures
-	3. A simplified Postgres Database with a global *Sensor Data* and *Mailing list* table
-	
-## 2. Storage Subsystem Milestone
-- To reach this milestone, the tasks listed for the [Storage Subsystem](./tasklist.md#2-storage-subsystem) Proof-of-Concept must be completed. The following documentation must also be completed:
-	- A guide listing out the various database schemas and tables, along with what permissions each user has
-	- Instructions on how to configure and deploy the global Postgres Database, along with containerized local servers for each facility
-- Deliverables will include:
-	1. A Postgres Database with facility-specific schemas, an *API Users* table, and database users with specific permissions
-	2. An updated local server container image that utilizes a facility-specific user to access their facility's schema
+	1. A PostgreSQL Database with facility-specific schemas and database users with access control restrictions
+	2. ESP-IDF firmware that can run on an ESP32 via the Wokwi CLI, report placeholder data for its sensor readings
+	3. A local server that can aggregate data into a facility-specific sensor data table and can notify maintenance staff of any device failures
+
+## 2. Output Subsystem
+- To reach this milestone, the tasks listed for the [Output Subsystem](./tasklist.md#2-output-subsystem) Proof-of-Concept must be completed. Documentation detailing whether gRPC was a success and how it was set up must also be completed.
 
 # Completion of Release Build
 ## 1. Input Subsystem
 - To reach this milestone, the tasks listed for the [Input Subsystem](./tasklist.md#1-input-subsystem-1) Release Build must be completed. Note that purchasing the hardware will be the most crucial task during this phase. The following documentation must also be completed:
 	- A diagram of how the hardware was set up
 	- Instructions on how to flash the firmware to the devices and deploy them
-	- A brief guide on how the firewalls for each deployed server were set up, along with where to find more information
+	- A  guide on how to deploy the local server to a machine on the LAN
 - Deliverables will include:
 	1. Fully functional IoT devices capable of reading and relaying sensor data
-	2. Local servers deployed on two devices 
+	2. A deployed local server
 
 ## 2. Storage Subsystem
-- To reach this milestone, the tasks listed for the [Storage Subsystem](./tasklist.md#2-storage-subsystem-1) Release Build must be completed.
-- Deliverables will include sensor data aggregated over the course of a few days.
+- To reach this milestone, the tasks listed for the [Storage Subsystem](./tasklist.md#2-storage-subsystem) Release Build must be completed.
+- Deliverables will include:
+	1. A deployed PostgreSQL server
+	2. Documentation detailing why the given deployment method was selected
+	3. Tables populated with sensor data aggregated over the course of a few days
 
 ## 3. Output Subsystem
 - To reach this milestone, the tasks listed for the [Output Subsystem](./tasklist.md#3-output-subsystem) Release Build must be completed. The following documentation must also be completed:

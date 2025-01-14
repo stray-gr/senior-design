@@ -22,10 +22,13 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./database/mount:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql/data
     networks:
       - database
 
 networks:
   facility:
   database:
+
+volumes:
+  pgdata:

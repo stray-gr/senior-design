@@ -30,7 +30,7 @@ int main() {
         .clean_start()
         .mqtt_version(5)
         .ssl(std::move(ssl_opts))
-        .will(std::move(lwt_pbuf_msg))
+        // .will(std::move(lwt_pbuf_msg))
         .user_name(MQTT_CLIENT_USER)
         .password(MQTT_PASS)
         .finalize();

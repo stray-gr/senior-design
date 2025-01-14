@@ -3,9 +3,29 @@ services:
     build: broker/
     ports:
       - "8885:8885"
+    networks:
+      - facility
+
   server:
     build: server/
     env_file:
-      - server/.env
+      - ./server/.env
     depends_on:
       - broker
+    networks:
+      - facility
+
+  sddb:
+    build: database/
+    env_file:
+      - ./database/.env
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./database/mount:/var/lib/postgresql/data
+    networks:
+      - database
+
+networks:
+  facility:
+  database:

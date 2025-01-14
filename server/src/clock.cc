@@ -24,7 +24,13 @@ int main() {
         mqtt::connect_response resp = user.connect(conn_opts);
         std::cout << "Connected to " << MSG_BROKER_URI << std::endl;
 
-        while(true) {
+        // while(true) {
+        //     auto msg = mqtt::make_message(MQTT_PULSE_TOPIC, "", 1, false);
+        //     user.publish(msg);
+        //     std::this_thread::sleep_for(std::chrono::milliseconds(500));
+        // }
+
+        for (int n = 0; n < 4; n++) {
             auto msg = mqtt::make_message(MQTT_PULSE_TOPIC, "", 1, false);
             user.publish(msg);
             std::this_thread::sleep_for(std::chrono::milliseconds(500));

@@ -24,15 +24,16 @@ Make sure to have the following software installed:
     ```
     openssl x509 -req -in server.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out server.crt -days <duration>
     ```
-8. Run `sql -c 'show config_file;'` to find where the config file for postgres is located
+8. Run `psql -c 'show config_file;'` to find where the config file for postgres is located
 9. Update the following SSL variables in the config file for postgres. Make sure to set `<datadir>` with the postgres data directory's location:
     ```
     ssl = on
     ssl_ca_file = '<datadir>/certs/ca.crt'
     ssl_cert_file = '<datadir>/certs/server.crt'
     ssl_key_file = '<datadir>/certs/server.key'
+    listen_addresses = '*'
     ```
-10. Run `sql -c 'show hba_file;'` to find where the HBA (host-based authentication) file for postgres is located
+10. Run `psql -c 'show hba_file;'` to find where the HBA (host-based authentication) file for postgres is located
 11. Add the following entry to the HBA file for postgres to enforce SSL connections:
     ```
     hostssl all all 0.0.0.0/0 md5

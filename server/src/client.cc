@@ -10,7 +10,7 @@ const std::string DEVICE{"client"};
 
 int main() {
     char *MQTT_PASS = std::getenv("MQTT_CLIENT_PASS");
-    char *MSG_BROKER_URI = std::getenv("MSG_BROKER_URI");
+    char *MSG_BROKER_URI = std::getenv("NATIVE_BROKER_URI");
     if ((MQTT_PASS == nullptr) || (MSG_BROKER_URI == nullptr)) {
         std::cout << "Environment variables missing... exiting" << std::endl;
     }
@@ -21,7 +21,7 @@ int main() {
     mqtt::client user(MSG_BROKER_URI, MQTT_CLIENT_USER, mqtt::create_options(5));
     auto lwt_pbuf_msg = mqtt::message(MQTT_LWT_TOPIC, lwt_msg.SerializeAsString(), 1, true);
     auto ssl_opts = mqtt::ssl_options_builder()
-        .trust_store(MSG_BROKER_CRT)
+        .trust_store(BROKER_CRT)
         .error_handler([](const std::string& err) { std::cerr << err << std::endl; })
         .finalize();
 

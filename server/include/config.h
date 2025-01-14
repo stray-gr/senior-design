@@ -9,6 +9,6 @@
 #define MQTT_CLOCK_USER "clock"
 #define MQTT_SERVER_USER "server"
 
-#define MSG_BROKER_CRT "broker-ca.crt"
+#define BROKER_CRT "broker-ca.crt"
 
 #endif

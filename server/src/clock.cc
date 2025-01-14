@@ -6,22 +6,16 @@
 
 int main() {
     char *MQTT_PASS = std::getenv("MQTT_CLOCK_PASS");
-    char *MSG_BROKER_URI = std::getenv("MSG_BROKER_URI");
+    char *MSG_BROKER_URI = std::getenv("VIRTUAL_BROKER_URI");
     if ((MQTT_PASS == nullptr) || (MSG_BROKER_URI == nullptr)) {
         std::cout << "Environment variables missing... exiting" << std::endl;
     }
 
     mqtt::client user(MSG_BROKER_URI, MQTT_CLOCK_USER, mqtt::create_options(5));
-    auto ssl_opts = mqtt::ssl_options_builder()
-        .trust_store(MSG_BROKER_CRT)
-        .error_handler([](const std::string& err) { std::cerr << err << std::endl; })
-        .finalize();
-
     auto conn_opts = mqtt::connect_options_builder()
         .automatic_reconnect(std::chrono::seconds(1), std::chrono::seconds(15)) // 2**0 + ... + 2**3 = 15
         .clean_start()
         .mqtt_version(5)
-        .ssl(std::move(ssl_opts))
         .user_name(MQTT_CLOCK_USER)
         .password(MQTT_PASS)
         .finalize();

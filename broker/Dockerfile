@@ -9,9 +9,8 @@ COPY --chown=broker:broker certs/ certs/
 COPY --chown=broker:broker creds/ creds/
 COPY --chown=broker:broker mosquitto.conf mosquitto.conf
 
+EXPOSE 1884
 EXPOSE 8885
 ENTRYPOINT ["mosquitto", "-c", "mosquitto.conf"]
 
 # https://stackoverflow.com/a/40869934
-# docker build -t broker .
-# docker run --rm -p 1883:1883 -it broker

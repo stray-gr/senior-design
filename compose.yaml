@@ -1,0 +1,11 @@
+services:
+  broker:
+    build: broker/
+    ports:
+      - "8885:8885"
+  server:
+    build: server/
+    env_file:
+      - server/.env
+    depends_on:
+      - broker

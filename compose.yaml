@@ -7,22 +7,37 @@ services:
       - facility
 
   server:
-    build: server/
+    build: 
+      context: ${PWD}/server
+      dockerfile: Dockerfile
+      target: server
     env_file:
-      - ./server/.env
+      - ${PWD}/server/.env
     depends_on:
       - broker
+    networks:
+      - facility
+
+  clock:
+    build: 
+      context: ${PWD}/server
+      dockerfile: Dockerfile
+      target: clock
+    env_file:
+      - ${PWD}/server/.env
+    depends_on:
+      - server
     networks:
       - facility
 
   sddb:
     build: database/
     env_file:
-      - ./database/.env
+      - ${PWD}/database/.env
     ports:
       - "5432:5432"
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - db:/var/lib/postgresql/data
     networks:
       - database
 
@@ -31,4 +46,4 @@ networks:
   database:
 
 volumes:
-  pgdata:
+  db:

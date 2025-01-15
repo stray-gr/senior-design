@@ -62,6 +62,11 @@ void lwt_callback(std::vector<std::string>& pbuf_str_vec, std::mutex& io_mtx, st
     );
 
     io_mtx.lock();
-    std::cout << tag << " | Sent outage report (" << pbuf_str_vec.size() << ")" << std::endl;
+    if (!resp.error.message.empty()) {
+        std::cout << tag << " | ERROR: " << resp.error.message << std::endl;
+    }
+    else {
+        std::cout << tag << " | Outage Size " << pbuf_str_vec.size() << " - HTTP Status Code " << resp.status_code << std::endl;
+    }
     io_mtx.unlock();
 }

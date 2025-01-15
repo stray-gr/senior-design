@@ -9,47 +9,42 @@ find_package(PahoMqttCpp REQUIRED)
 find_package(protobuf CONFIG REQUIRED)
 
 # Add library for protobuf message definitions 
-add_subdirectory(msg_def)
+protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS msg.proto)
 
 # Create client
-add_executable(client src/client.cc)
-target_link_libraries(
-    client 
-    MSG_DEF 
-    PahoMqttCpp::paho-mqttpp3-static
+add_executable(client src/client.cc ${PROTO_SRCS})
+target_include_directories(client PUBLIC include)
+target_include_directories(client PUBLIC 
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
 )
-target_include_directories( 
-    client PUBLIC 
-    "${PROJECT_BINARY_DIR}" 
-    "${PROJECT_SOURCE_DIR}/include"
-    "${PROJECT_SOURCE_DIR}/msg_def"
+target_link_libraries(client PUBLIC
+    PahoMqttCpp::paho-mqttpp3-static
+    protobuf::libprotobuf
 )
 
 # Create clock
 add_executable(clock src/clock.cc)
-target_link_libraries(
-    clock 
-    PahoMqttCpp::paho-mqttpp3-static
+target_include_directories(clock PUBLIC include)
+target_include_directories(clock PUBLIC 
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
 )
-target_include_directories( 
-    clock PUBLIC 
-    "${PROJECT_BINARY_DIR}" 
-    "${PROJECT_SOURCE_DIR}/include"
+target_link_libraries(clock PUBLIC
+    PahoMqttCpp::paho-mqttpp3-static
 )
 
 # Create server
-add_executable(server src/server.cc src/server_cb.cc)
-target_link_libraries(
-    server 
+add_executable(server src/server.cc src/server_cb.cc ${PROTO_SRCS})
+target_include_directories(server PUBLIC include)
+target_include_directories(server PUBLIC 
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
+)
+target_link_libraries(server PUBLIC
     cpr::cpr
     libpqxx::pqxx
-    MSG_DEF
     PahoMqttCpp::paho-mqttpp3-static
+    protobuf::libprotobuf
     pthread
-)
-target_include_directories( 
-    server PUBLIC 
-    "${PROJECT_BINARY_DIR}" 
-    "${PROJECT_SOURCE_DIR}/include"
-    "${PROJECT_SOURCE_DIR}/msg_def"
 )

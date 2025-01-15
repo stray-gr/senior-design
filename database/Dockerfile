@@ -6,12 +6,6 @@ COPY postgres.conf /etc/postgres.conf
 RUN chmod 600 /var/lib/postgresql/certs/server.key
 RUN chown postgres:postgres /var/lib/postgresql/certs/server.key
 
-RUN chmod 700 /var/lib/postgresql/data
-RUN chown postgres:postgres /var/lib/postgresql/data
-
 USER postgres
 EXPOSE 5432
 ENTRYPOINT ["postgres", "-c", "config_file=/etc/postgres.conf"]
-
-# https://stackoverflow.com/a/41912295
-

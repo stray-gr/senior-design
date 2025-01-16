@@ -97,10 +97,11 @@ To create your own CMake project from scratch, follow these steps:
 
 # TODO
 1. ~~Create src and include folders for clock, client, and server~~
-2. Add broker and server docker-compose services to one subnet
-3. Create a PostgreSQL service that runs on another subnet
-4. Test system using mqttx for clock pulses
-5. Update server container to run clock and server
-6. Finish updating docs
+2. ~~Add broker and server docker-compose services to one subnet~~
+3. ~~Create a PostgreSQL service that runs on another subnet~~
+4. ~~Test system~~
+5. Finish updating docs
     - Explanation of Dockerfiles and compose.yml
-    - Update diagrams
+    - Quick guide detailing how to open the sddb container to read data tables
+        - `docker exec -it {container ID} psql -d sddb -U api -W`
+    - ~~Update diagrams~~

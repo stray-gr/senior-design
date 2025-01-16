@@ -13,6 +13,9 @@
 Make sure the following sofware is installed:
 - Unix-like OS (preferably Ubuntu 24.04)
     > Make sure to install the WSL plugin for VS code if you're on Windows
+- GCC and G++ (or equivalent compilers)
+- Make 
+- CMake
 - VS Code w/ the following plugins:
     - C/C++ Extension Pack
     - vscode-proto3
@@ -105,15 +108,3 @@ To create your own CMake project from scratch, follow these steps:
 - Uses Dockerfile and dotenv template to create and deploy facility's local server
 - Uses platform.io and plain.txt to create and flash ESP binaries
 - Deploys ESP devices
-
-# TODO
-1. ~~Create src and include folders for clock, client, and server~~
-2. ~~Add broker and server docker-compose services to one subnet~~
-3. ~~Create a PostgreSQL service that runs on another subnet~~
-4. ~~Test system~~
-5. Finish updating docs
-    - Explanation of database Dockerfile
-    - Explanation of compose.yaml
-    - Quick guide detailing how to open the sddb container to read data tables
-        - `docker exec -it {container ID} psql -d sddb -U api -W`
-    - ~~Update diagrams~~

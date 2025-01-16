@@ -2,18 +2,18 @@
 1. [Prerequisites](#prerequisites)
 2. [TLS Cert Creation](#tls-cert-creation)
 3. [Database Set Up](#database-set-up)
+4. [Dockerfile](#dockerfile)
 
 # Prerequisites
 Make sure to have the following software installed:
-- Unix-like OS (preferrably Ubuntu 24.04)
-- postgresql server (preferrably version 16+)
 - Openssl
+- Rancher Desktop
+    - If you are on Windows, make sure to install as admin
 
 # TLS Cert Creation
-1. Once you postgresql installed, run `sudo -u postgres bash`
-2. Run `psql -c 'show data_directory;'` to find where the data directory for postgres is located
-3. `cd` into the data directory and create the certs/ folder
-4. `cd` into the certs/ folder and create the certificate authority's private key and cert. Make sure to set `<duration>` to the number of days the key and cert should be valid for: 
+1. `cd` into the database/ folder and create the certs/ folder
+2. `cd` into the newly created certs/ folder 
+3. Create the certificate authority's private key and cert. Make sure to set `<duration>` to the number of days the key and cert should be valid for: 
     ```
     openssl req -new -x509 -days <duration> -extensions v3_ca -keyout ca.key -out ca.crt
     ```
@@ -24,56 +24,67 @@ Make sure to have the following software installed:
     ```
     openssl x509 -req -in server.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out server.crt -days <duration>
     ```
-8. Run `psql -c 'show config_file;'` to find where the config file for postgres is located
-9. Update the following SSL variables in the config file for postgres. Make sure to set `<datadir>` with the postgres data directory's location:
-    ```
-    ssl = on
-    ssl_ca_file = '<datadir>/certs/ca.crt'
-    ssl_cert_file = '<datadir>/certs/server.crt'
-    ssl_key_file = '<datadir>/certs/server.key'
-    listen_addresses = '*'
-    ```
-10. Run `psql -c 'show hba_file;'` to find where the HBA (host-based authentication) file for postgres is located
-11. Add the following entry to the HBA file for postgres to enforce SSL connections:
-    ```
-    hostssl all all 0.0.0.0/0 md5
-    ```
-12. Exit the postgres user shell and restart the postgres server
-    - If you're on an Ubuntu-based system, restart the server by running: `sudo service postgresql restart` 
 
 # Database Set Up
+### Start Database Container using Docker Compose
+1. `cd` into the database/ folder and the example.env file into a .env file
+2. Set the password of the 'postgres' user. This password will be used when connecting remotely to the container as the database's admin
+3. Start Rancher desktop
+    - If you are on Windows:
+        1. Go to `Preferences > WSL > Proxy` and enable the *WSL Proxy*
+        2. Below the *WSL Proxy* option is a *No proxy hostname list*. Remove `0.0.0.0/8` from this list
+2. In the project repo's root directory, run `docker-compose build` to build the container
+3. Run `docker-compose up` to start the container
+4. In another terminal, run `docker ps` to find the CONTAINER ID. This will be used to access the container later
+
 ### Add Facility Schema and Tables
-- sudo -u postgres createdb sddb
-- sudo -u postgres psql sddb
-- create schema data;
-- create table data.facility_n (ID SERIAL primary key, device TEXT NOT NULL, temp INT, rh REAL, epoch BIGINT NOT NULL);
-- create index idx_epoch on data.facility_n (epoch);
-- select * from pg_tables where schemaname='data';
-- \q
+1. Run `docker exec -it {CONTAINER ID} bash` to open a bash shell within the container as the 'postgres' user
+2. In the container's bash shell, run `createdb sddb` to create the database (sddb is the database name)
+3. To connect to the newly created database, run `psql sddb` 
+4. Issue the following commands in the psql shell to create the 'data' schema and a table for facility n:
+    ```sql
+    create schema data; 
+    create table data.facility_n (ID SERIAL primary key, device TEXT NOT NULL, temp INT, rh REAL, epoch BIGINT NOT NULL); 
+    create index idx_epoch on data.facility_n (epoch); 
+    select * from pg_tables where schemaname='data';
+    ```
+5. If the table was successfully created, meaning the final `select` above displayed the new tables properties, then type `\q` to exit the psql shell 
 
 ### Create Facility User
-- Create user password using: `openssl rand -base64 40 | tr -d "=+/" | cut -c1-32`
-- sudo -u postgres psql sddb
-- create role facility_n with login password 'password';
-- grant connect on database sddb to facility_n;
-- grant usage on schema data to facility_n;
-- grant insert on data.facility_n to facility_n;
-- Find sequence_id using: `select pg_get_serial_sequence('data.facility_n', 'id');`
-- grant usage on sequence sequence_id to facility_n;
-- \q
-- Test user connection using: `sudo -u postgres psql -h localhost -d sddb -U facility_n -W`
+1. Generate the new user's password by running `openssl rand -base64 40 | tr -d "=+/" | cut -c1-32`
+2. Run `docker exec -it {CONTAINER ID} psql sddb` to open a psql shell within the container
+3. Issue the following commands in the psql shell to create a database user for facility n with INSERT only permissions. Make sure to replace {password} with the password generated by openssl:
+    ```sql
+    create role facility_n with login password '{password}';
+    grant connect on database sddb to facility_n;
+    grant usage on schema data to facility_n;
+    grant insert on data.facility_n to facility_n;
+    ```
+4. Since the table for facility n has the ID column set to the SERIAL type, issue the following psql command to find its serial sequence ID:
+    ```sql
+    select pg_get_serial_sequence('data.facility_n', 'id');
+    ```
+5. Grant the database user permission to use the table's serial sequence by replacing {seq_id} with the ID from above and running the following psql command:
+    ```sql
+    grant usage on sequence {seq_id} to facility_n;
+    ```
+6. Exit the psql shell using `\q`
+7. To test the user's connection, run `docker exec -it {CONTAINER ID} psql -d sddb -U facility_n -W`
 
 ### Create API User
-- Create user password using: `openssl rand -base64 40 | tr -d "=+/" | cut -c1-32`
-- sudo -u postgres psql sddb
-- create role api with login password 'password';
-- grant connect on database sddb to api;
-- grant usage on schema data to api;
-- grant select on all tables in schema data to api;
-- \q
-- Test user connection using: `sudo -u postgres psql -h localhost -d sddb -U api -W`
+1. Generate the new user's password by running `openssl rand -base64 40 | tr -d "=+/" | cut -c1-32`
+2. Run `docker exec -it {CONTAINER ID} psql sddb` to open a psql shell within the container
+3. Issue the following commands in the psql shell to create an api user for n with SELECT only permissions. Make sure to replace {password} with the password generated by openssl:
+    ```sql
+    create role api with login password '{password}';
+    grant connect on database sddb to api;
+    grant usage on schema data to api;
+    grant select on all tables in schema data to api;
+    ```
+5. Exit the psql shell using `\q`
+6. To test the user's connection, run `docker exec -it {CONTAINER ID} psql -d sddb -U api -W`
 
-### Other Useful Commands
+### Other Useful PSQL Commands
 - `SELECT current_user;` returns current user
 - `DROP SCHEMA test CASCADE;` removes a schema and its tables
 - `DROP ROLE user_name;` removes a user
@@ -86,3 +97,13 @@ Make sure to have the following software installed:
 - https://stackoverflow.com/a/41737829 OR https://stackoverflow.com/a/26726006
 - https://www.slingacademy.com/article/grant-privileges-user-postgresql/
 - https://stackoverflow.com/a/30509741
+
+# Dockerfile
+### Purpose
+- The database's Dockerfile is to be used for potential deployment to hardware or the cloud in an operating system agnostic way
+- Docker also utilizes Docker Volumes to persist data. This approach is also more file system agnostic. To work with these volumes, see the output from `docker volumes --help`
+
+### Step-by-Step Explanation
+- For a step-by-step explanation of each command in the Dockerfile, refer to the file's comments
+- Any ports mapped from the container to the host machine can be found in the compose.yaml file at the repo's root 
+- WARNING: There is no `ENTRYPOINT` or `CMD` in this Dockerfile. Adding one of these commands will lead to permission issues between docker volumes and the docker container

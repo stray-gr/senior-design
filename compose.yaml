@@ -37,6 +37,7 @@ services:
 
   sddb:
     build: database/
+    command: postgres -c config_file=/etc/postgres.conf
     env_file:
       - ${PWD}/database/.env
     ports:
@@ -50,5 +51,5 @@ networks:
   facility:
   database:
 
-volumes:
+volumes: 
   db:

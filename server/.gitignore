@@ -1,0 +1,48 @@
+# Taken from Conan's examplev2 repo: https://github.com/conan-io/examples2
+**ca.crt
+.env
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# Cache
+__pycache__/*
+build/*
+*.pyc
+tmp/
+
+# Virtualenv
+venv/
+.venv/
+
+# Bazel files
+bazel-*
+conan
+MODULE.bazel.lock

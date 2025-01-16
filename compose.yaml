@@ -1,0 +1,55 @@
+# Integration test between broker, local server, and database
+# Use `docker exec -it {container ID} psql -d sddb` to log into the database as admin
+# Use `docker exec -it {container ID} psql -d sddb -U api -W` to log and view database tables
+# Container ID for sddb can be found by running `docker ps`
+
+services:
+  broker:
+    build: broker/
+    ports:
+      - "8885:8885"
+    networks:
+      - facility
+
+  server:
+    build: 
+      context: ${PWD}/server
+      dockerfile: Dockerfile
+      target: server
+    env_file:
+      - ${PWD}/server/.env
+    depends_on:
+      - broker
+    networks:
+      - facility
+
+  clock:
+    build: 
+      context: ${PWD}/server
+      dockerfile: Dockerfile
+      target: clock
+    env_file:
+      - ${PWD}/server/.env
+    depends_on:
+      - server
+    networks:
+      - facility
+
+  sddb:
+    build: database/
+    command: postgres -c config_file=/etc/postgres.conf
+    env_file:
+      - ${PWD}/database/.env
+    ports:
+      - "5432:5432"
+    volumes:
+      - db:/var/lib/postgresql/data
+    networks:
+      - database
+
+networks:
+  facility:
+  database:
+
+volumes: 
+  db:

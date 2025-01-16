@@ -4,7 +4,7 @@
 #include "esp_event.h"
 #include "esp_log.h"
 #include "mqtt_client.h"
-#include "mqtt_msg.pb-c.h"
+#include "msg.pb-c.h"
 
 extern const uint8_t ca_crt_start[] asm("_binary_ca_crt_start");
 extern const uint8_t ca_crt_end[] asm("_binary_ca_crt_end");

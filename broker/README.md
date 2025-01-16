@@ -3,6 +3,7 @@
 2. [TLS Cert Creation](#tls-cert-creation)
 3. [User Creation](#user-creation)
 4. [Message Broker Usage and Testing](#message-broker-usage-and-testing)
+5. [Dockerfile](#dockerfile)
 
 # Prerequisites
 Make sure to have the following software installed:
@@ -61,3 +62,11 @@ Here's a brief overview of what the `create_users.sh` script does:
     ```bash 
     mqttx pub -h {My-PC-Name} -p 8885 -l mqtts -V 5 --ca broker/certs/ca.crt -u {USER} -P {PASSWORD} -t "{TOPIC}" -m "{MESSAGE}"
     ```
+
+# Dockerfile
+### Purpose
+- The broker's Dockerfile is to be used for message broker deployment to facilities in an operating system agnostic way. However, a natively installed instance of the broker using Moquitto should work fine on any unix-like operating system 
+
+### Step-by-Step Explanation
+- For a step-by-step explanation of each command in the Dockerfile, refer to the file's comments
+- Any ports mapped from the container to the host machine can be found in the compose.yaml file at the repo's root 

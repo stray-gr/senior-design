@@ -4,8 +4,9 @@
     - [From Current Repo](#from-current-repo)
     - [From Scratch](#from-scratch)
 3. [Protobuf Formats](#protobuf-formats)
-4. [Separation of Roles](#separation-of-roles)
-5. [TODO](#todo)
+4. [Dockerfile](#dockerfile)
+5. [Separation of Roles](#separation-of-roles)
+6. [TODO](#todo)
 
 # Set Up
 ### Prerequisites
@@ -76,6 +77,16 @@ To create your own CMake project from scratch, follow these steps:
     }
     ```
 
+# Dockerfile
+### Purpose
+- The local server's Dockerfile is to be used for:
+    1. Deployment to facilities in an operating system agnostic way
+    2. Building project executables without needing the toolchain installed locally
+
+### Step-by-Step Explanation
+- For a step-by-step explanation of each command in the Dockerfile, refer to the file's comments
+- Any ports mapped from the container to the host machine can be found in the compose.yaml file at the repo's root 
+
 # Separation of Roles
 ### Central Admin
 - Create certs, users, and facility tables for the central DB 
@@ -101,7 +112,8 @@ To create your own CMake project from scratch, follow these steps:
 3. ~~Create a PostgreSQL service that runs on another subnet~~
 4. ~~Test system~~
 5. Finish updating docs
-    - Explanation of Dockerfiles and compose.yml
+    - Explanation of database Dockerfile
+    - Explanation of compose.yaml
     - Quick guide detailing how to open the sddb container to read data tables
         - `docker exec -it {container ID} psql -d sddb -U api -W`
     - ~~Update diagrams~~

@@ -1,3 +1,8 @@
+# Integration test between broker, local server, and database
+# Use `docker exec -it {container ID} psql -d sddb` to log into the database as admin
+# Use `docker exec -it {container ID} psql -d sddb -U api -W` to log and view database tables
+# Container ID for sddb can be found by running `docker ps`
+
 services:
   broker:
     build: broker/

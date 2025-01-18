@@ -1,0 +1,9 @@
+**certs/
+
+**/config.h
+**/config.py
+
+client/**/__pycache__/
+client/.venv
+client/poetry.lock
+server/build

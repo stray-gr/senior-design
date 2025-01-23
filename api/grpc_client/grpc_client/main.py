@@ -1,6 +1,6 @@
-import client.api_pb2 as api_pb
-import client.api_pb2_grpc as api_pb_grpc
-import client.config as config
+import api_pb2 as api_pb
+import api_pb2_grpc as api_pb_grpc
+import config as config
 import google.protobuf.empty_pb2 as empty
 import grpc
 

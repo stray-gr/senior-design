@@ -1,5 +1,5 @@
 [project]
-name = "client"
+name = "grpc-client"
 version = "0.1.0"
 description = ""
 authors = [
@@ -8,8 +8,8 @@ authors = [
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "grpcio (>=1.69.0,<2.0.0)",
-    "grpcio-tools (>=1.69.0,<2.0.0)"
+    "grpcio-tools (>=1.69.0,<2.0.0)",
+    "grpcio (>=1.69.0,<2.0.0)"
 ]
 
 

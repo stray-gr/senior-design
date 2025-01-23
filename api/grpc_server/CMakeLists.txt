@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.15)
-project(server CXX)
+project(mypkg CXX)
 
 # Ensure dependencies are installed
 find_package(gRPC REQUIRED)

@@ -6,10 +6,18 @@
 
 void data_callback(std::vector<std::string>& pbuf_str_vec, std::mutex& io_mtx, std::string tag) {
     char *DB_CONN_STR = std::getenv("DB_CONN_STR");
-    char *DB_TABLE = std::getenv("DB_TABLE");
-    if ((DB_CONN_STR == nullptr) || (DB_TABLE == nullptr)) {
+    char *FACILITY_ID_STR = std::getenv("FACILITY_ID");
+    if ((DB_CONN_STR == nullptr) || (FACILITY_ID_STR == nullptr)) {
         io_mtx.lock();
         std::cout << tag << " | Environment variables missing... exiting" << std::endl;
+        io_mtx.unlock();
+        return;
+    }
+
+    int FACILITY_ID = std::atoi(FACILITY_ID_STR);
+    if (FACILITY_ID == 0) {
+        io_mtx.lock();
+        std::cout << tag << " | Could not convert Facility ID to int... exiting" << std::endl;
         io_mtx.unlock();
         return;
     }
@@ -19,13 +27,14 @@ void data_callback(std::vector<std::string>& pbuf_str_vec, std::mutex& io_mtx, s
     pqxx::work tx{cx};
     auto stream = pqxx::stream_to::table(
         tx, 
-        std::initializer_list<std::string_view>{"data", DB_TABLE}, 
-        std::initializer_list<std::string_view>{"device", "temp", "rh", "epoch"}
+        std::initializer_list<std::string_view>{"data", "sensor"}, 
+        std::initializer_list<std::string_view>{"facility_id", "device", "temp", "rh", "epoch"}
     );
 
     for (size_t n = 0; n < pbuf_str_vec.size(); n++) {
         sensor_data.ParseFromString(pbuf_str_vec[n]);
         stream.write_values(
+            FACILITY_ID,
             sensor_data.device(),
             sensor_data.temp(),
             sensor_data.rh(),

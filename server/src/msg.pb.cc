@@ -23,6 +23,31 @@ PROTOBUF_PRAGMA_INIT_SEG
 namespace _pb = ::google::protobuf;
 namespace _pbi = ::google::protobuf::internal;
 namespace _fl = ::google::protobuf::internal::field_layout;
+namespace msg {
+
+inline constexpr Sensor::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : device_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        temp_{0},
+        rh_{0},
+        epoch_{::int64_t{0}},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR Sensor::Sensor(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct SensorDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR SensorDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~SensorDefaultTypeInternal() {}
+  union {
+    Sensor _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SensorDefaultTypeInternal _Sensor_default_instance_;
 
 inline constexpr LWT::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
@@ -44,30 +69,7 @@ struct LWTDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 LWTDefaultTypeInternal _LWT_default_instance_;
-
-inline constexpr Data::Impl_::Impl_(
-    ::_pbi::ConstantInitialized) noexcept
-      : device_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
-        temp_{0},
-        rh_{0},
-        epoch_{::int64_t{0}},
-        _cached_size_{0} {}
-
-template <typename>
-PROTOBUF_CONSTEXPR Data::Data(::_pbi::ConstantInitialized)
-    : _impl_(::_pbi::ConstantInitialized()) {}
-struct DataDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR DataDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~DataDefaultTypeInternal() {}
-  union {
-    Data _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 DataDefaultTypeInternal _Data_default_instance_;
+}  // namespace msg
 static constexpr const ::_pb::EnumDescriptor**
     file_level_enum_descriptors_msg_2eproto = nullptr;
 static constexpr const ::_pb::ServiceDescriptor**
@@ -76,48 +78,48 @@ const ::uint32_t
     TableStruct_msg_2eproto::offsets[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
         protodesc_cold) = {
         ~0u,  // no _has_bits_
-        PROTOBUF_FIELD_OFFSET(::LWT, _internal_metadata_),
+        PROTOBUF_FIELD_OFFSET(::msg::LWT, _internal_metadata_),
         ~0u,  // no _extensions_
         ~0u,  // no _oneof_case_
         ~0u,  // no _weak_field_map_
         ~0u,  // no _inlined_string_donated_
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(::LWT, _impl_.device_),
+        PROTOBUF_FIELD_OFFSET(::msg::LWT, _impl_.device_),
         ~0u,  // no _has_bits_
-        PROTOBUF_FIELD_OFFSET(::Data, _internal_metadata_),
+        PROTOBUF_FIELD_OFFSET(::msg::Sensor, _internal_metadata_),
         ~0u,  // no _extensions_
         ~0u,  // no _oneof_case_
         ~0u,  // no _weak_field_map_
         ~0u,  // no _inlined_string_donated_
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(::Data, _impl_.device_),
-        PROTOBUF_FIELD_OFFSET(::Data, _impl_.temp_),
-        PROTOBUF_FIELD_OFFSET(::Data, _impl_.rh_),
-        PROTOBUF_FIELD_OFFSET(::Data, _impl_.epoch_),
+        PROTOBUF_FIELD_OFFSET(::msg::Sensor, _impl_.device_),
+        PROTOBUF_FIELD_OFFSET(::msg::Sensor, _impl_.temp_),
+        PROTOBUF_FIELD_OFFSET(::msg::Sensor, _impl_.rh_),
+        PROTOBUF_FIELD_OFFSET(::msg::Sensor, _impl_.epoch_),
 };
 
 static const ::_pbi::MigrationSchema
     schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-        {0, -1, -1, sizeof(::LWT)},
-        {9, -1, -1, sizeof(::Data)},
+        {0, -1, -1, sizeof(::msg::LWT)},
+        {9, -1, -1, sizeof(::msg::Sensor)},
 };
 static const ::_pb::Message* const file_default_instances[] = {
-    &::_LWT_default_instance_._instance,
-    &::_Data_default_instance_._instance,
+    &::msg::_LWT_default_instance_._instance,
+    &::msg::_Sensor_default_instance_._instance,
 };
 const char descriptor_table_protodef_msg_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
-    "\n\tmsg.proto\"\025\n\003LWT\022\016\n\006device\030\001 \001(\t\"\?\n\004Da"
-    "ta\022\016\n\006device\030\001 \001(\t\022\014\n\004temp\030\002 \001(\005\022\n\n\002rh\030\003"
-    " \001(\002\022\r\n\005epoch\030\004 \001(\003b\006proto3"
+    "\n\tmsg.proto\022\003msg\"\025\n\003LWT\022\016\n\006device\030\001 \001(\t\""
+    "A\n\006Sensor\022\016\n\006device\030\001 \001(\t\022\014\n\004temp\030\002 \001(\005\022"
+    "\n\n\002rh\030\003 \001(\002\022\r\n\005epoch\030\004 \001(\003b\006proto3"
 };
 static ::absl::once_flag descriptor_table_msg_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_msg_2eproto = {
     false,
     false,
-    107,
+    114,
     descriptor_table_protodef_msg_2eproto,
     "msg.proto",
     &descriptor_table_msg_2eproto_once,
@@ -130,6 +132,7 @@ PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_msg_2eproto = 
     file_level_enum_descriptors_msg_2eproto,
     file_level_service_descriptors_msg_2eproto,
 };
+namespace msg {
 // ===================================================================
 
 class LWT::_Internal {
@@ -139,11 +142,11 @@ class LWT::_Internal {
 LWT::LWT(::google::protobuf::Arena* arena)
     : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
-  // @@protoc_insertion_point(arena_constructor:LWT)
+  // @@protoc_insertion_point(arena_constructor:msg.LWT)
 }
 inline PROTOBUF_NDEBUG_INLINE LWT::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
-    const Impl_& from, const ::LWT& from_msg)
+    const Impl_& from, const ::msg::LWT& from_msg)
       : device_(arena, from.device_),
         _cached_size_{0} {}
 
@@ -157,7 +160,7 @@ LWT::LWT(
       from._internal_metadata_);
   new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
 
-  // @@protoc_insertion_point(copy_constructor:LWT)
+  // @@protoc_insertion_point(copy_constructor:msg.LWT)
 }
 inline PROTOBUF_NDEBUG_INLINE LWT::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
@@ -169,7 +172,7 @@ inline void LWT::SharedCtor(::_pb::Arena* arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
 }
 LWT::~LWT() {
-  // @@protoc_insertion_point(destructor:LWT)
+  // @@protoc_insertion_point(destructor:msg.LWT)
   _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
@@ -200,7 +203,7 @@ LWT::GetClassData() const {
   return _data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 1, 0, 18, 2> LWT::_table_ = {
+const ::_pbi::TcParseTable<0, 1, 0, 22, 2> LWT::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
@@ -215,7 +218,7 @@ const ::_pbi::TcParseTable<0, 1, 0, 18, 2> LWT::_table_ = {
     nullptr,  // post_loop_handler
     ::_pbi::TcParser::GenericFallback,  // fallback
     #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-    ::_pbi::TcParser::GetTable<::LWT>(),  // to_prefetch
+    ::_pbi::TcParser::GetTable<::msg::LWT>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     // string device = 1;
@@ -230,14 +233,14 @@ const ::_pbi::TcParseTable<0, 1, 0, 18, 2> LWT::_table_ = {
   }},
   // no aux_entries
   {{
-    "\3\6\0\0\0\0\0\0"
-    "LWT"
+    "\7\6\0\0\0\0\0\0"
+    "msg.LWT"
     "device"
   }},
 };
 
 PROTOBUF_NOINLINE void LWT::Clear() {
-// @@protoc_insertion_point(message_clear_start:LWT)
+// @@protoc_insertion_point(message_clear_start:msg.LWT)
   ::google::protobuf::internal::TSanWrite(&_impl_);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
@@ -250,7 +253,7 @@ PROTOBUF_NOINLINE void LWT::Clear() {
 ::uint8_t* LWT::_InternalSerialize(
     ::uint8_t* target,
     ::google::protobuf::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:LWT)
+  // @@protoc_insertion_point(serialize_to_array_start:msg.LWT)
   ::uint32_t cached_has_bits = 0;
   (void)cached_has_bits;
 
@@ -258,7 +261,7 @@ PROTOBUF_NOINLINE void LWT::Clear() {
   if (!this->_internal_device().empty()) {
     const std::string& _s = this->_internal_device();
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "LWT.device");
+        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "msg.LWT.device");
     target = stream->WriteStringMaybeAliased(1, _s, target);
   }
 
@@ -267,12 +270,12 @@ PROTOBUF_NOINLINE void LWT::Clear() {
         ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
             _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:LWT)
+  // @@protoc_insertion_point(serialize_to_array_end:msg.LWT)
   return target;
 }
 
 ::size_t LWT::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:LWT)
+// @@protoc_insertion_point(message_byte_size_start:msg.LWT)
   ::size_t total_size = 0;
 
   ::uint32_t cached_has_bits = 0;
@@ -292,7 +295,7 @@ PROTOBUF_NOINLINE void LWT::Clear() {
 void LWT::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
   auto* const _this = static_cast<LWT*>(&to_msg);
   auto& from = static_cast<const LWT&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:LWT)
+  // @@protoc_insertion_point(class_specific_merge_from_start:msg.LWT)
   ABSL_DCHECK_NE(&from, _this);
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
@@ -304,7 +307,7 @@ void LWT::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::pro
 }
 
 void LWT::CopyFrom(const LWT& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:LWT)
+// @@protoc_insertion_point(class_specific_copy_from_start:msg.LWT)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
@@ -324,26 +327,26 @@ void LWT::InternalSwap(LWT* PROTOBUF_RESTRICT other) {
 }
 // ===================================================================
 
-class Data::_Internal {
+class Sensor::_Internal {
  public:
 };
 
-Data::Data(::google::protobuf::Arena* arena)
+Sensor::Sensor(::google::protobuf::Arena* arena)
     : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
-  // @@protoc_insertion_point(arena_constructor:Data)
+  // @@protoc_insertion_point(arena_constructor:msg.Sensor)
 }
-inline PROTOBUF_NDEBUG_INLINE Data::Impl_::Impl_(
+inline PROTOBUF_NDEBUG_INLINE Sensor::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
-    const Impl_& from, const ::Data& from_msg)
+    const Impl_& from, const ::msg::Sensor& from_msg)
       : device_(arena, from.device_),
         _cached_size_{0} {}
 
-Data::Data(
+Sensor::Sensor(
     ::google::protobuf::Arena* arena,
-    const Data& from)
+    const Sensor& from)
     : ::google::protobuf::Message(arena) {
-  Data* const _this = this;
+  Sensor* const _this = this;
   (void)_this;
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
@@ -356,15 +359,15 @@ Data::Data(
                offsetof(Impl_, temp_) +
                sizeof(Impl_::epoch_));
 
-  // @@protoc_insertion_point(copy_constructor:Data)
+  // @@protoc_insertion_point(copy_constructor:msg.Sensor)
 }
-inline PROTOBUF_NDEBUG_INLINE Data::Impl_::Impl_(
+inline PROTOBUF_NDEBUG_INLINE Sensor::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
     ::google::protobuf::Arena* arena)
       : device_(arena),
         _cached_size_{0} {}
 
-inline void Data::SharedCtor(::_pb::Arena* arena) {
+inline void Sensor::SharedCtor(::_pb::Arena* arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
   ::memset(reinterpret_cast<char *>(&_impl_) +
                offsetof(Impl_, temp_),
@@ -373,30 +376,30 @@ inline void Data::SharedCtor(::_pb::Arena* arena) {
                offsetof(Impl_, temp_) +
                sizeof(Impl_::epoch_));
 }
-Data::~Data() {
-  // @@protoc_insertion_point(destructor:Data)
+Sensor::~Sensor() {
+  // @@protoc_insertion_point(destructor:msg.Sensor)
   _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-inline void Data::SharedDtor() {
+inline void Sensor::SharedDtor() {
   ABSL_DCHECK(GetArena() == nullptr);
   _impl_.device_.Destroy();
   _impl_.~Impl_();
 }
 
 const ::google::protobuf::MessageLite::ClassData*
-Data::GetClassData() const {
+Sensor::GetClassData() const {
   PROTOBUF_CONSTINIT static const ::google::protobuf::MessageLite::
       ClassDataFull _data_ = {
           {
               &_table_.header,
               nullptr,  // OnDemandRegisterArenaDtor
               nullptr,  // IsInitialized
-              PROTOBUF_FIELD_OFFSET(Data, _impl_._cached_size_),
+              PROTOBUF_FIELD_OFFSET(Sensor, _impl_._cached_size_),
               false,
           },
-          &Data::MergeImpl,
-          &Data::kDescriptorMethods,
+          &Sensor::MergeImpl,
+          &Sensor::kDescriptorMethods,
           &descriptor_table_msg_2eproto,
           nullptr,  // tracker
       };
@@ -405,7 +408,7 @@ Data::GetClassData() const {
   return _data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<2, 4, 0, 19, 2> Data::_table_ = {
+const ::_pbi::TcParseTable<2, 4, 0, 25, 2> Sensor::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
@@ -416,51 +419,51 @@ const ::_pbi::TcParseTable<2, 4, 0, 19, 2> Data::_table_ = {
     4,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
-    &_Data_default_instance_._instance,
+    &_Sensor_default_instance_._instance,
     nullptr,  // post_loop_handler
     ::_pbi::TcParser::GenericFallback,  // fallback
     #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-    ::_pbi::TcParser::GetTable<::Data>(),  // to_prefetch
+    ::_pbi::TcParser::GetTable<::msg::Sensor>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     // int64 epoch = 4;
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(Data, _impl_.epoch_), 63>(),
-     {32, 63, 0, PROTOBUF_FIELD_OFFSET(Data, _impl_.epoch_)}},
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(Sensor, _impl_.epoch_), 63>(),
+     {32, 63, 0, PROTOBUF_FIELD_OFFSET(Sensor, _impl_.epoch_)}},
     // string device = 1;
     {::_pbi::TcParser::FastUS1,
-     {10, 63, 0, PROTOBUF_FIELD_OFFSET(Data, _impl_.device_)}},
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(Sensor, _impl_.device_)}},
     // int32 temp = 2;
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Data, _impl_.temp_), 63>(),
-     {16, 63, 0, PROTOBUF_FIELD_OFFSET(Data, _impl_.temp_)}},
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Sensor, _impl_.temp_), 63>(),
+     {16, 63, 0, PROTOBUF_FIELD_OFFSET(Sensor, _impl_.temp_)}},
     // float rh = 3;
     {::_pbi::TcParser::FastF32S1,
-     {29, 63, 0, PROTOBUF_FIELD_OFFSET(Data, _impl_.rh_)}},
+     {29, 63, 0, PROTOBUF_FIELD_OFFSET(Sensor, _impl_.rh_)}},
   }}, {{
     65535, 65535
   }}, {{
     // string device = 1;
-    {PROTOBUF_FIELD_OFFSET(Data, _impl_.device_), 0, 0,
+    {PROTOBUF_FIELD_OFFSET(Sensor, _impl_.device_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
     // int32 temp = 2;
-    {PROTOBUF_FIELD_OFFSET(Data, _impl_.temp_), 0, 0,
+    {PROTOBUF_FIELD_OFFSET(Sensor, _impl_.temp_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
     // float rh = 3;
-    {PROTOBUF_FIELD_OFFSET(Data, _impl_.rh_), 0, 0,
+    {PROTOBUF_FIELD_OFFSET(Sensor, _impl_.rh_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
     // int64 epoch = 4;
-    {PROTOBUF_FIELD_OFFSET(Data, _impl_.epoch_), 0, 0,
+    {PROTOBUF_FIELD_OFFSET(Sensor, _impl_.epoch_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kInt64)},
   }},
   // no aux_entries
   {{
-    "\4\6\0\0\0\0\0\0"
-    "Data"
+    "\12\6\0\0\0\0\0\0"
+    "msg.Sensor"
     "device"
   }},
 };
 
-PROTOBUF_NOINLINE void Data::Clear() {
-// @@protoc_insertion_point(message_clear_start:Data)
+PROTOBUF_NOINLINE void Sensor::Clear() {
+// @@protoc_insertion_point(message_clear_start:msg.Sensor)
   ::google::protobuf::internal::TSanWrite(&_impl_);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
@@ -473,10 +476,10 @@ PROTOBUF_NOINLINE void Data::Clear() {
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-::uint8_t* Data::_InternalSerialize(
+::uint8_t* Sensor::_InternalSerialize(
     ::uint8_t* target,
     ::google::protobuf::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:Data)
+  // @@protoc_insertion_point(serialize_to_array_start:msg.Sensor)
   ::uint32_t cached_has_bits = 0;
   (void)cached_has_bits;
 
@@ -484,7 +487,7 @@ PROTOBUF_NOINLINE void Data::Clear() {
   if (!this->_internal_device().empty()) {
     const std::string& _s = this->_internal_device();
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "Data.device");
+        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "msg.Sensor.device");
     target = stream->WriteStringMaybeAliased(1, _s, target);
   }
 
@@ -519,12 +522,12 @@ PROTOBUF_NOINLINE void Data::Clear() {
         ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
             _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:Data)
+  // @@protoc_insertion_point(serialize_to_array_end:msg.Sensor)
   return target;
 }
 
-::size_t Data::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:Data)
+::size_t Sensor::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:msg.Sensor)
   ::size_t total_size = 0;
 
   ::uint32_t cached_has_bits = 0;
@@ -564,10 +567,10 @@ PROTOBUF_NOINLINE void Data::Clear() {
 }
 
 
-void Data::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
-  auto* const _this = static_cast<Data*>(&to_msg);
-  auto& from = static_cast<const Data&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:Data)
+void Sensor::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<Sensor*>(&to_msg);
+  auto& from = static_cast<const Sensor&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:msg.Sensor)
   ABSL_DCHECK_NE(&from, _this);
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
@@ -592,32 +595,33 @@ void Data::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::pr
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void Data::CopyFrom(const Data& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:Data)
+void Sensor::CopyFrom(const Sensor& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:msg.Sensor)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
 
-void Data::InternalSwap(Data* PROTOBUF_RESTRICT other) {
+void Sensor::InternalSwap(Sensor* PROTOBUF_RESTRICT other) {
   using std::swap;
   auto* arena = GetArena();
   ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.device_, &other->_impl_.device_, arena);
   ::google::protobuf::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(Data, _impl_.epoch_)
-      + sizeof(Data::_impl_.epoch_)
-      - PROTOBUF_FIELD_OFFSET(Data, _impl_.temp_)>(
+      PROTOBUF_FIELD_OFFSET(Sensor, _impl_.epoch_)
+      + sizeof(Sensor::_impl_.epoch_)
+      - PROTOBUF_FIELD_OFFSET(Sensor, _impl_.temp_)>(
           reinterpret_cast<char*>(&_impl_.temp_),
           reinterpret_cast<char*>(&other->_impl_.temp_));
 }
 
-::google::protobuf::Metadata Data::GetMetadata() const {
+::google::protobuf::Metadata Sensor::GetMetadata() const {
   return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // @@protoc_insertion_point(namespace_scope)
+}  // namespace msg
 namespace google {
 namespace protobuf {
 }  // namespace protobuf

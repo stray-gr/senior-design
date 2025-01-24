@@ -21,7 +21,12 @@ target_include_directories(clock PRIVATE include)
 target_link_libraries(clock PahoMqttCpp::paho-mqttpp3-static)
 
 # Create server
-add_executable(server src/msg.pb.cc src/server.cc src/server_cb.cc)
+add_executable(server 
+    src/msg.pb.cc 
+    src/server.cc 
+    src/server_callbacks.cc 
+    src/server_utils.cc
+)
 target_include_directories(server PRIVATE include)
 target_link_libraries(server 
     cpr::cpr

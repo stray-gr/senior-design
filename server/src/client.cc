@@ -15,7 +15,7 @@ int main() {
         std::cout << "Environment variables missing... exiting" << std::endl;
     }
 
-    LWT lwt_msg;
+    msg::LWT lwt_msg;
     lwt_msg.set_device(DEVICE);
 
     mqtt::client user(MSG_BROKER_URI, MQTT_CLIENT_USER, mqtt::create_options(5));
@@ -56,7 +56,7 @@ int main() {
                 struct timeval t;
                 gettimeofday(&t, NULL);
 
-                Data sensor_data;
+                msg::Sensor sensor_data;
                 sensor_data.set_device(DEVICE);
                 sensor_data.set_temp(rand() % 100);
                 sensor_data.set_rh(55.5);
@@ -64,6 +64,7 @@ int main() {
 
                 auto msg = mqtt::make_message(MQTT_DATA_TOPIC, sensor_data.SerializeAsString(), 1, false);
                 user.publish(msg);
+                std::cout << "Published message" << std::endl;
             }
         }
     }

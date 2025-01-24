@@ -58,9 +58,8 @@ namespace server {
     class ThreadPool {
         private:
             int thread_count_;
-            std::queue<Batch> task_queue_;
             std::mutex task_queue_mtx_;
-            void thread_main();
+            std::queue<Batch> task_queue_;
 
         public:
             ThreadPool(size_t thread_count);
@@ -70,9 +69,6 @@ namespace server {
 
     // server_callbacks.cc
     namespace callbacks {
-        // DB connection pool shared mutex (static)
-        // DB connection pool size (static)
-        // DB connection pool max size (config.h)
         void sensor_callback(std::mutex *io_mtx, std::vector<std::string> pb_vec, std::string tag);
         void lwt_callback(std::mutex *io_mtx, std::vector<std::string> pb_vec, std::string tag);
     }

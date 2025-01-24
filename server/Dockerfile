@@ -30,9 +30,7 @@ FROM deps AS build
 # Copy the project's source code into the container's /server folder
 WORKDIR /server
 COPY include/ include/
-COPY msg_def/ msg_def/
 COPY src/ src/
-COPY msg.proto msg.proto
 
 # Set up the CMake toolchain, then build the project's executables
 WORKDIR /server/build/ 

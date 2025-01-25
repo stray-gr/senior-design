@@ -1,5 +1,6 @@
 [requires]
 grpc/1.67.1
+libpqxx/7.10.0
 
 [tool_requires]
 grpc/1.67.1

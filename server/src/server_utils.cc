@@ -28,11 +28,15 @@ server::Batch::Batch(
     size_t max_batch_size, 
     double batch_timeout
 ) {
+    // Update read-only members
     this->cb_  = cb;
     this->tag_ = batch_tag;
     this->min_size_ = min_batch_size;
     this->max_size_ = max_batch_size;
     this->timeout_  = batch_timeout;
+
+    // Resize message vector to minimize reallocations
+    this->msg_vec.reserve(max_batch_size + 1);
 }
 
 server::EventLoop::EventLoop(std::map<std::string, Batch> batches) {

@@ -9,4 +9,4 @@ poetry.lock
 
 # Server
 build/
-config.h
+.env

@@ -51,9 +51,9 @@ struct TableStruct_api_2eproto {
 extern const ::google::protobuf::internal::DescriptorTable
     descriptor_table_api_2eproto;
 namespace api {
-class Point;
-struct PointDefaultTypeInternal;
-extern PointDefaultTypeInternal _Point_default_instance_;
+class SensorRows;
+struct SensorRowsDefaultTypeInternal;
+extern SensorRowsDefaultTypeInternal _SensorRows_default_instance_;
 }  // namespace api
 namespace google {
 namespace protobuf {
@@ -67,23 +67,23 @@ namespace api {
 
 // -------------------------------------------------------------------
 
-class Point final : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:api.Point) */ {
+class SensorRows final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:api.SensorRows) */ {
  public:
-  inline Point() : Point(nullptr) {}
-  ~Point() override;
+  inline SensorRows() : SensorRows(nullptr) {}
+  ~SensorRows() override;
   template <typename = void>
-  explicit PROTOBUF_CONSTEXPR Point(
+  explicit PROTOBUF_CONSTEXPR SensorRows(
       ::google::protobuf::internal::ConstantInitialized);
 
-  inline Point(const Point& from) : Point(nullptr, from) {}
-  inline Point(Point&& from) noexcept
-      : Point(nullptr, std::move(from)) {}
-  inline Point& operator=(const Point& from) {
+  inline SensorRows(const SensorRows& from) : SensorRows(nullptr, from) {}
+  inline SensorRows(SensorRows&& from) noexcept
+      : SensorRows(nullptr, std::move(from)) {}
+  inline SensorRows& operator=(const SensorRows& from) {
     CopyFrom(from);
     return *this;
   }
-  inline Point& operator=(Point&& from) noexcept {
+  inline SensorRows& operator=(SensorRows&& from) noexcept {
     if (this == &from) return *this;
     if (GetArena() == from.GetArena()
 #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -115,16 +115,16 @@ class Point final : public ::google::protobuf::Message
   static const ::google::protobuf::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const Point& default_instance() {
+  static const SensorRows& default_instance() {
     return *internal_default_instance();
   }
-  static inline const Point* internal_default_instance() {
-    return reinterpret_cast<const Point*>(
-        &_Point_default_instance_);
+  static inline const SensorRows* internal_default_instance() {
+    return reinterpret_cast<const SensorRows*>(
+        &_SensorRows_default_instance_);
   }
   static constexpr int kIndexInFileMessages = 0;
-  friend void swap(Point& a, Point& b) { a.Swap(&b); }
-  inline void Swap(Point* other) {
+  friend void swap(SensorRows& a, SensorRows& b) { a.Swap(&b); }
+  inline void Swap(SensorRows* other) {
     if (other == this) return;
 #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetArena() != nullptr && GetArena() == other->GetArena()) {
@@ -136,7 +136,7 @@ class Point final : public ::google::protobuf::Message
       ::google::protobuf::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(Point* other) {
+  void UnsafeArenaSwap(SensorRows* other) {
     if (other == this) return;
     ABSL_DCHECK(GetArena() == other->GetArena());
     InternalSwap(other);
@@ -144,13 +144,13 @@ class Point final : public ::google::protobuf::Message
 
   // implements Message ----------------------------------------------
 
-  Point* New(::google::protobuf::Arena* arena = nullptr) const final {
-    return ::google::protobuf::Message::DefaultConstruct<Point>(arena);
+  SensorRows* New(::google::protobuf::Arena* arena = nullptr) const final {
+    return ::google::protobuf::Message::DefaultConstruct<SensorRows>(arena);
   }
   using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const Point& from);
+  void CopyFrom(const SensorRows& from);
   using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom(const Point& from) { Point::MergeImpl(*this, from); }
+  void MergeFrom(const SensorRows& from) { SensorRows::MergeImpl(*this, from); }
 
   private:
   static void MergeImpl(
@@ -171,16 +171,16 @@ class Point final : public ::google::protobuf::Message
   private:
   void SharedCtor(::google::protobuf::Arena* arena);
   void SharedDtor();
-  void InternalSwap(Point* other);
+  void InternalSwap(SensorRows* other);
  private:
   friend class ::google::protobuf::internal::AnyMetadata;
-  static ::absl::string_view FullMessageName() { return "api.Point"; }
+  static ::absl::string_view FullMessageName() { return "api.SensorRows"; }
 
  protected:
-  explicit Point(::google::protobuf::Arena* arena);
-  Point(::google::protobuf::Arena* arena, const Point& from);
-  Point(::google::protobuf::Arena* arena, Point&& from) noexcept
-      : Point(arena) {
+  explicit SensorRows(::google::protobuf::Arena* arena);
+  SensorRows(::google::protobuf::Arena* arena, const SensorRows& from);
+  SensorRows(::google::protobuf::Arena* arena, SensorRows&& from) noexcept
+      : SensorRows(arena) {
     *this = ::std::move(from);
   }
   const ::google::protobuf::Message::ClassData* GetClassData() const final;
@@ -191,40 +191,90 @@ class Point final : public ::google::protobuf::Message
 
   // accessors -------------------------------------------------------
   enum : int {
-    kXFieldNumber = 1,
-    kYFieldNumber = 2,
+    kDeviceFieldNumber = 3,
+    kEntryIdFieldNumber = 1,
+    kFacilityIdFieldNumber = 2,
+    kTempFieldNumber = 4,
+    kRhFieldNumber = 5,
+    kEpochFieldNumber = 6,
   };
-  // float x = 1;
-  void clear_x() ;
-  float x() const;
-  void set_x(float value);
+  // string device = 3;
+  void clear_device() ;
+  const std::string& device() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_device(Arg_&& arg, Args_... args);
+  std::string* mutable_device();
+  PROTOBUF_NODISCARD std::string* release_device();
+  void set_allocated_device(std::string* value);
 
   private:
-  float _internal_x() const;
-  void _internal_set_x(float value);
+  const std::string& _internal_device() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_device(
+      const std::string& value);
+  std::string* _internal_mutable_device();
 
   public:
-  // float y = 2;
-  void clear_y() ;
-  float y() const;
-  void set_y(float value);
+  // int32 entry_id = 1;
+  void clear_entry_id() ;
+  ::int32_t entry_id() const;
+  void set_entry_id(::int32_t value);
 
   private:
-  float _internal_y() const;
-  void _internal_set_y(float value);
+  ::int32_t _internal_entry_id() const;
+  void _internal_set_entry_id(::int32_t value);
 
   public:
-  // @@protoc_insertion_point(class_scope:api.Point)
+  // int32 facility_id = 2;
+  void clear_facility_id() ;
+  ::int32_t facility_id() const;
+  void set_facility_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_facility_id() const;
+  void _internal_set_facility_id(::int32_t value);
+
+  public:
+  // int32 temp = 4;
+  void clear_temp() ;
+  ::int32_t temp() const;
+  void set_temp(::int32_t value);
+
+  private:
+  ::int32_t _internal_temp() const;
+  void _internal_set_temp(::int32_t value);
+
+  public:
+  // float rh = 5;
+  void clear_rh() ;
+  float rh() const;
+  void set_rh(float value);
+
+  private:
+  float _internal_rh() const;
+  void _internal_set_rh(float value);
+
+  public:
+  // int64 epoch = 6;
+  void clear_epoch() ;
+  ::int64_t epoch() const;
+  void set_epoch(::int64_t value);
+
+  private:
+  ::int64_t _internal_epoch() const;
+  void _internal_set_epoch(::int64_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:api.SensorRows)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      1, 2, 0,
-      0, 2>
+      3, 6, 0,
+      29, 2>
       _table_;
 
   static constexpr const void* _raw_default_instance_ =
-      &_Point_default_instance_;
+      &_SensorRows_default_instance_;
 
   friend class ::google::protobuf::MessageLite;
   friend class ::google::protobuf::Arena;
@@ -239,9 +289,13 @@ class Point final : public ::google::protobuf::Message
                           ::google::protobuf::Arena* arena);
     inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                           ::google::protobuf::Arena* arena, const Impl_& from,
-                          const Point& from_msg);
-    float x_;
-    float y_;
+                          const SensorRows& from_msg);
+    ::google::protobuf::internal::ArenaStringPtr device_;
+    ::int32_t entry_id_;
+    ::int32_t facility_id_;
+    ::int32_t temp_;
+    float rh_;
+    ::int64_t epoch_;
     mutable ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -263,50 +317,166 @@ class Point final : public ::google::protobuf::Message
 #endif  // __GNUC__
 // -------------------------------------------------------------------
 
-// Point
+// SensorRows
 
-// float x = 1;
-inline void Point::clear_x() {
+// int32 entry_id = 1;
+inline void SensorRows::clear_entry_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.x_ = 0;
+  _impl_.entry_id_ = 0;
 }
-inline float Point::x() const {
-  // @@protoc_insertion_point(field_get:api.Point.x)
-  return _internal_x();
+inline ::int32_t SensorRows::entry_id() const {
+  // @@protoc_insertion_point(field_get:api.SensorRows.entry_id)
+  return _internal_entry_id();
 }
-inline void Point::set_x(float value) {
-  _internal_set_x(value);
-  // @@protoc_insertion_point(field_set:api.Point.x)
+inline void SensorRows::set_entry_id(::int32_t value) {
+  _internal_set_entry_id(value);
+  // @@protoc_insertion_point(field_set:api.SensorRows.entry_id)
 }
-inline float Point::_internal_x() const {
+inline ::int32_t SensorRows::_internal_entry_id() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.x_;
+  return _impl_.entry_id_;
 }
-inline void Point::_internal_set_x(float value) {
+inline void SensorRows::_internal_set_entry_id(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.x_ = value;
+  _impl_.entry_id_ = value;
 }
 
-// float y = 2;
-inline void Point::clear_y() {
+// int32 facility_id = 2;
+inline void SensorRows::clear_facility_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.y_ = 0;
+  _impl_.facility_id_ = 0;
 }
-inline float Point::y() const {
-  // @@protoc_insertion_point(field_get:api.Point.y)
-  return _internal_y();
+inline ::int32_t SensorRows::facility_id() const {
+  // @@protoc_insertion_point(field_get:api.SensorRows.facility_id)
+  return _internal_facility_id();
 }
-inline void Point::set_y(float value) {
-  _internal_set_y(value);
-  // @@protoc_insertion_point(field_set:api.Point.y)
+inline void SensorRows::set_facility_id(::int32_t value) {
+  _internal_set_facility_id(value);
+  // @@protoc_insertion_point(field_set:api.SensorRows.facility_id)
 }
-inline float Point::_internal_y() const {
+inline ::int32_t SensorRows::_internal_facility_id() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.y_;
+  return _impl_.facility_id_;
 }
-inline void Point::_internal_set_y(float value) {
+inline void SensorRows::_internal_set_facility_id(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.y_ = value;
+  _impl_.facility_id_ = value;
+}
+
+// string device = 3;
+inline void SensorRows::clear_device() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.device_.ClearToEmpty();
+}
+inline const std::string& SensorRows::device() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:api.SensorRows.device)
+  return _internal_device();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void SensorRows::set_device(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.device_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:api.SensorRows.device)
+}
+inline std::string* SensorRows::mutable_device() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_device();
+  // @@protoc_insertion_point(field_mutable:api.SensorRows.device)
+  return _s;
+}
+inline const std::string& SensorRows::_internal_device() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.device_.Get();
+}
+inline void SensorRows::_internal_set_device(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.device_.Set(value, GetArena());
+}
+inline std::string* SensorRows::_internal_mutable_device() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.device_.Mutable( GetArena());
+}
+inline std::string* SensorRows::release_device() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:api.SensorRows.device)
+  return _impl_.device_.Release();
+}
+inline void SensorRows::set_allocated_device(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.device_.SetAllocated(value, GetArena());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        if (_impl_.device_.IsDefault()) {
+          _impl_.device_.Set("", GetArena());
+        }
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:api.SensorRows.device)
+}
+
+// int32 temp = 4;
+inline void SensorRows::clear_temp() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.temp_ = 0;
+}
+inline ::int32_t SensorRows::temp() const {
+  // @@protoc_insertion_point(field_get:api.SensorRows.temp)
+  return _internal_temp();
+}
+inline void SensorRows::set_temp(::int32_t value) {
+  _internal_set_temp(value);
+  // @@protoc_insertion_point(field_set:api.SensorRows.temp)
+}
+inline ::int32_t SensorRows::_internal_temp() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.temp_;
+}
+inline void SensorRows::_internal_set_temp(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.temp_ = value;
+}
+
+// float rh = 5;
+inline void SensorRows::clear_rh() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.rh_ = 0;
+}
+inline float SensorRows::rh() const {
+  // @@protoc_insertion_point(field_get:api.SensorRows.rh)
+  return _internal_rh();
+}
+inline void SensorRows::set_rh(float value) {
+  _internal_set_rh(value);
+  // @@protoc_insertion_point(field_set:api.SensorRows.rh)
+}
+inline float SensorRows::_internal_rh() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.rh_;
+}
+inline void SensorRows::_internal_set_rh(float value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.rh_ = value;
+}
+
+// int64 epoch = 6;
+inline void SensorRows::clear_epoch() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.epoch_ = ::int64_t{0};
+}
+inline ::int64_t SensorRows::epoch() const {
+  // @@protoc_insertion_point(field_get:api.SensorRows.epoch)
+  return _internal_epoch();
+}
+inline void SensorRows::set_epoch(::int64_t value) {
+  _internal_set_epoch(value);
+  // @@protoc_insertion_point(field_set:api.SensorRows.epoch)
+}
+inline ::int64_t SensorRows::_internal_epoch() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.epoch_;
+}
+inline void SensorRows::_internal_set_epoch(::int64_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.epoch_ = value;
 }
 
 #ifdef __GNUC__

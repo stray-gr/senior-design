@@ -5,6 +5,7 @@
     source build/conanbuild.sh
     protoc -I../ --grpc_out=. --plugin=protoc-gen-grpc=`which grpc_cpp_plugin` ../api.proto
     protoc -I../ --cpp_out=. ../api.proto
+    cd build/
     cmake .. -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Release
     cmake --build . --config Release
     ```

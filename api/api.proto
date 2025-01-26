@@ -1,13 +1,16 @@
 syntax = "proto3";
-
 import "google/protobuf/empty.proto";
 package api;
 
-message Point {
-    float x = 1;
-    float y = 2;
+message SensorRows {
+    int32   entry_id = 1;
+    int32   facility_id = 2;
+    string  device = 3;
+    int32   temp = 4;
+    float   rh = 5;
+    int64   epoch = 6;
 }
 
 service Query {
-    rpc GetResults (google.protobuf.Empty) returns (stream Point) {}
+    rpc GetSensorRows (google.protobuf.Empty) returns (stream SensorRows) {}
 }

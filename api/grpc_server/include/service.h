@@ -12,7 +12,7 @@ namespace service {
 
         public:
             explicit QueryImpl(char *db_conn_str);
-            grpc::ServerWriteReactor<api::Point> *GetResults(
+            grpc::ServerWriteReactor<api::SensorRows> *GetSensorRows(
                 grpc::CallbackServerContext *ctx,
                 const google::protobuf::Empty *req
             ) override;

@@ -22,7 +22,7 @@
 namespace api {
 
 static const char* Query_method_names[] = {
-  "/api.Query/GetResults",
+  "/api.Query/GetSensorRows",
 };
 
 std::unique_ptr< Query::Stub> Query::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
@@ -32,42 +32,42 @@ std::unique_ptr< Query::Stub> Query::NewStub(const std::shared_ptr< ::grpc::Chan
 }
 
 Query::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options)
-  : channel_(channel), rpcmethod_GetResults_(Query_method_names[0], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  : channel_(channel), rpcmethod_GetSensorRows_(Query_method_names[0], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
   {}
 
-::grpc::ClientReader< ::api::Point>* Query::Stub::GetResultsRaw(::grpc::ClientContext* context, const ::google::protobuf::Empty& request) {
-  return ::grpc::internal::ClientReaderFactory< ::api::Point>::Create(channel_.get(), rpcmethod_GetResults_, context, request);
+::grpc::ClientReader< ::api::SensorRows>* Query::Stub::GetSensorRowsRaw(::grpc::ClientContext* context, const ::google::protobuf::Empty& request) {
+  return ::grpc::internal::ClientReaderFactory< ::api::SensorRows>::Create(channel_.get(), rpcmethod_GetSensorRows_, context, request);
 }
 
-void Query::Stub::async::GetResults(::grpc::ClientContext* context, const ::google::protobuf::Empty* request, ::grpc::ClientReadReactor< ::api::Point>* reactor) {
-  ::grpc::internal::ClientCallbackReaderFactory< ::api::Point>::Create(stub_->channel_.get(), stub_->rpcmethod_GetResults_, context, request, reactor);
+void Query::Stub::async::GetSensorRows(::grpc::ClientContext* context, const ::google::protobuf::Empty* request, ::grpc::ClientReadReactor< ::api::SensorRows>* reactor) {
+  ::grpc::internal::ClientCallbackReaderFactory< ::api::SensorRows>::Create(stub_->channel_.get(), stub_->rpcmethod_GetSensorRows_, context, request, reactor);
 }
 
-::grpc::ClientAsyncReader< ::api::Point>* Query::Stub::AsyncGetResultsRaw(::grpc::ClientContext* context, const ::google::protobuf::Empty& request, ::grpc::CompletionQueue* cq, void* tag) {
-  return ::grpc::internal::ClientAsyncReaderFactory< ::api::Point>::Create(channel_.get(), cq, rpcmethod_GetResults_, context, request, true, tag);
+::grpc::ClientAsyncReader< ::api::SensorRows>* Query::Stub::AsyncGetSensorRowsRaw(::grpc::ClientContext* context, const ::google::protobuf::Empty& request, ::grpc::CompletionQueue* cq, void* tag) {
+  return ::grpc::internal::ClientAsyncReaderFactory< ::api::SensorRows>::Create(channel_.get(), cq, rpcmethod_GetSensorRows_, context, request, true, tag);
 }
 
-::grpc::ClientAsyncReader< ::api::Point>* Query::Stub::PrepareAsyncGetResultsRaw(::grpc::ClientContext* context, const ::google::protobuf::Empty& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncReaderFactory< ::api::Point>::Create(channel_.get(), cq, rpcmethod_GetResults_, context, request, false, nullptr);
+::grpc::ClientAsyncReader< ::api::SensorRows>* Query::Stub::PrepareAsyncGetSensorRowsRaw(::grpc::ClientContext* context, const ::google::protobuf::Empty& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncReaderFactory< ::api::SensorRows>::Create(channel_.get(), cq, rpcmethod_GetSensorRows_, context, request, false, nullptr);
 }
 
 Query::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       Query_method_names[0],
       ::grpc::internal::RpcMethod::SERVER_STREAMING,
-      new ::grpc::internal::ServerStreamingHandler< Query::Service, ::google::protobuf::Empty, ::api::Point>(
+      new ::grpc::internal::ServerStreamingHandler< Query::Service, ::google::protobuf::Empty, ::api::SensorRows>(
           [](Query::Service* service,
              ::grpc::ServerContext* ctx,
              const ::google::protobuf::Empty* req,
-             ::grpc::ServerWriter<::api::Point>* writer) {
-               return service->GetResults(ctx, req, writer);
+             ::grpc::ServerWriter<::api::SensorRows>* writer) {
+               return service->GetSensorRows(ctx, req, writer);
              }, this)));
 }
 
 Query::Service::~Service() {
 }
 
-::grpc::Status Query::Service::GetResults(::grpc::ServerContext* context, const ::google::protobuf::Empty* request, ::grpc::ServerWriter< ::api::Point>* writer) {
+::grpc::Status Query::Service::GetSensorRows(::grpc::ServerContext* context, const ::google::protobuf::Empty* request, ::grpc::ServerWriter< ::api::SensorRows>* writer) {
   (void) context;
   (void) request;
   (void) writer;

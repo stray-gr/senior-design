@@ -25,25 +25,31 @@ namespace _pbi = ::google::protobuf::internal;
 namespace _fl = ::google::protobuf::internal::field_layout;
 namespace api {
 
-inline constexpr Point::Impl_::Impl_(
+inline constexpr SensorRows::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
-      : x_{0},
-        y_{0},
+      : device_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        entry_id_{0},
+        facility_id_{0},
+        temp_{0},
+        rh_{0},
+        epoch_{::int64_t{0}},
         _cached_size_{0} {}
 
 template <typename>
-PROTOBUF_CONSTEXPR Point::Point(::_pbi::ConstantInitialized)
+PROTOBUF_CONSTEXPR SensorRows::SensorRows(::_pbi::ConstantInitialized)
     : _impl_(::_pbi::ConstantInitialized()) {}
-struct PointDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR PointDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~PointDefaultTypeInternal() {}
+struct SensorRowsDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR SensorRowsDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~SensorRowsDefaultTypeInternal() {}
   union {
-    Point _instance;
+    SensorRows _instance;
   };
 };
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PointDefaultTypeInternal _Point_default_instance_;
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SensorRowsDefaultTypeInternal _SensorRows_default_instance_;
 }  // namespace api
 static constexpr const ::_pb::EnumDescriptor**
     file_level_enum_descriptors_api_2eproto = nullptr;
@@ -53,30 +59,36 @@ const ::uint32_t
     TableStruct_api_2eproto::offsets[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
         protodesc_cold) = {
         ~0u,  // no _has_bits_
-        PROTOBUF_FIELD_OFFSET(::api::Point, _internal_metadata_),
+        PROTOBUF_FIELD_OFFSET(::api::SensorRows, _internal_metadata_),
         ~0u,  // no _extensions_
         ~0u,  // no _oneof_case_
         ~0u,  // no _weak_field_map_
         ~0u,  // no _inlined_string_donated_
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(::api::Point, _impl_.x_),
-        PROTOBUF_FIELD_OFFSET(::api::Point, _impl_.y_),
+        PROTOBUF_FIELD_OFFSET(::api::SensorRows, _impl_.entry_id_),
+        PROTOBUF_FIELD_OFFSET(::api::SensorRows, _impl_.facility_id_),
+        PROTOBUF_FIELD_OFFSET(::api::SensorRows, _impl_.device_),
+        PROTOBUF_FIELD_OFFSET(::api::SensorRows, _impl_.temp_),
+        PROTOBUF_FIELD_OFFSET(::api::SensorRows, _impl_.rh_),
+        PROTOBUF_FIELD_OFFSET(::api::SensorRows, _impl_.epoch_),
 };
 
 static const ::_pbi::MigrationSchema
     schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-        {0, -1, -1, sizeof(::api::Point)},
+        {0, -1, -1, sizeof(::api::SensorRows)},
 };
 static const ::_pb::Message* const file_default_instances[] = {
-    &::api::_Point_default_instance_._instance,
+    &::api::_SensorRows_default_instance_._instance,
 };
 const char descriptor_table_protodef_api_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
     "\n\tapi.proto\022\003api\032\033google/protobuf/empty."
-    "proto\"\035\n\005Point\022\t\n\001x\030\001 \001(\002\022\t\n\001y\030\002 \001(\0022=\n\005"
-    "Query\0224\n\nGetResults\022\026.google.protobuf.Em"
-    "pty\032\n.api.Point\"\0000\001b\006proto3"
+    "proto\"l\n\nSensorRows\022\020\n\010entry_id\030\001 \001(\005\022\023\n"
+    "\013facility_id\030\002 \001(\005\022\016\n\006device\030\003 \001(\t\022\014\n\004te"
+    "mp\030\004 \001(\005\022\n\n\002rh\030\005 \001(\002\022\r\n\005epoch\030\006 \001(\0032E\n\005Q"
+    "uery\022<\n\rGetSensorRows\022\026.google.protobuf."
+    "Empty\032\017.api.SensorRows\"\0000\001b\006proto3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_api_2eproto_deps[1] =
     {
@@ -86,7 +98,7 @@ static ::absl::once_flag descriptor_table_api_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_api_2eproto = {
     false,
     false,
-    147,
+    234,
     descriptor_table_protodef_api_2eproto,
     "api.proto",
     &descriptor_table_api_2eproto_once,
@@ -102,57 +114,79 @@ PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_api_2eproto = 
 namespace api {
 // ===================================================================
 
-class Point::_Internal {
+class SensorRows::_Internal {
  public:
 };
 
-Point::Point(::google::protobuf::Arena* arena)
+SensorRows::SensorRows(::google::protobuf::Arena* arena)
     : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
-  // @@protoc_insertion_point(arena_constructor:api.Point)
+  // @@protoc_insertion_point(arena_constructor:api.SensorRows)
 }
-Point::Point(
-    ::google::protobuf::Arena* arena, const Point& from)
-    : Point(arena) {
-  MergeFrom(from);
+inline PROTOBUF_NDEBUG_INLINE SensorRows::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::api::SensorRows& from_msg)
+      : device_(arena, from.device_),
+        _cached_size_{0} {}
+
+SensorRows::SensorRows(
+    ::google::protobuf::Arena* arena,
+    const SensorRows& from)
+    : ::google::protobuf::Message(arena) {
+  SensorRows* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::memcpy(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, entry_id_),
+           reinterpret_cast<const char *>(&from._impl_) +
+               offsetof(Impl_, entry_id_),
+           offsetof(Impl_, epoch_) -
+               offsetof(Impl_, entry_id_) +
+               sizeof(Impl_::epoch_));
+
+  // @@protoc_insertion_point(copy_constructor:api.SensorRows)
 }
-inline PROTOBUF_NDEBUG_INLINE Point::Impl_::Impl_(
+inline PROTOBUF_NDEBUG_INLINE SensorRows::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
     ::google::protobuf::Arena* arena)
-      : _cached_size_{0} {}
+      : device_(arena),
+        _cached_size_{0} {}
 
-inline void Point::SharedCtor(::_pb::Arena* arena) {
+inline void SensorRows::SharedCtor(::_pb::Arena* arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
   ::memset(reinterpret_cast<char *>(&_impl_) +
-               offsetof(Impl_, x_),
+               offsetof(Impl_, entry_id_),
            0,
-           offsetof(Impl_, y_) -
-               offsetof(Impl_, x_) +
-               sizeof(Impl_::y_));
+           offsetof(Impl_, epoch_) -
+               offsetof(Impl_, entry_id_) +
+               sizeof(Impl_::epoch_));
 }
-Point::~Point() {
-  // @@protoc_insertion_point(destructor:api.Point)
+SensorRows::~SensorRows() {
+  // @@protoc_insertion_point(destructor:api.SensorRows)
   _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-inline void Point::SharedDtor() {
+inline void SensorRows::SharedDtor() {
   ABSL_DCHECK(GetArena() == nullptr);
+  _impl_.device_.Destroy();
   _impl_.~Impl_();
 }
 
 const ::google::protobuf::MessageLite::ClassData*
-Point::GetClassData() const {
+SensorRows::GetClassData() const {
   PROTOBUF_CONSTINIT static const ::google::protobuf::MessageLite::
       ClassDataFull _data_ = {
           {
               &_table_.header,
               nullptr,  // OnDemandRegisterArenaDtor
               nullptr,  // IsInitialized
-              PROTOBUF_FIELD_OFFSET(Point, _impl_._cached_size_),
+              PROTOBUF_FIELD_OFFSET(SensorRows, _impl_._cached_size_),
               false,
           },
-          &Point::MergeImpl,
-          &Point::kDescriptorMethods,
+          &SensorRows::MergeImpl,
+          &SensorRows::kDescriptorMethods,
           &descriptor_table_api_2eproto,
           nullptr,  // tracker
       };
@@ -161,87 +195,141 @@ Point::GetClassData() const {
   return _data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<1, 2, 0, 0, 2> Point::_table_ = {
+const ::_pbi::TcParseTable<3, 6, 0, 29, 2> SensorRows::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    2, 8,  // max_field_number, fast_idx_mask
+    6, 56,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967292,  // skipmap
+    4294967232,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    2,  // num_field_entries
+    6,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
-    &_Point_default_instance_._instance,
+    &_SensorRows_default_instance_._instance,
     nullptr,  // post_loop_handler
     ::_pbi::TcParser::GenericFallback,  // fallback
     #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-    ::_pbi::TcParser::GetTable<::api::Point>(),  // to_prefetch
+    ::_pbi::TcParser::GetTable<::api::SensorRows>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // float y = 2;
+    {::_pbi::TcParser::MiniParse, {}},
+    // int32 entry_id = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(SensorRows, _impl_.entry_id_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(SensorRows, _impl_.entry_id_)}},
+    // int32 facility_id = 2;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(SensorRows, _impl_.facility_id_), 63>(),
+     {16, 63, 0, PROTOBUF_FIELD_OFFSET(SensorRows, _impl_.facility_id_)}},
+    // string device = 3;
+    {::_pbi::TcParser::FastUS1,
+     {26, 63, 0, PROTOBUF_FIELD_OFFSET(SensorRows, _impl_.device_)}},
+    // int32 temp = 4;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(SensorRows, _impl_.temp_), 63>(),
+     {32, 63, 0, PROTOBUF_FIELD_OFFSET(SensorRows, _impl_.temp_)}},
+    // float rh = 5;
     {::_pbi::TcParser::FastF32S1,
-     {21, 63, 0, PROTOBUF_FIELD_OFFSET(Point, _impl_.y_)}},
-    // float x = 1;
-    {::_pbi::TcParser::FastF32S1,
-     {13, 63, 0, PROTOBUF_FIELD_OFFSET(Point, _impl_.x_)}},
+     {45, 63, 0, PROTOBUF_FIELD_OFFSET(SensorRows, _impl_.rh_)}},
+    // int64 epoch = 6;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(SensorRows, _impl_.epoch_), 63>(),
+     {48, 63, 0, PROTOBUF_FIELD_OFFSET(SensorRows, _impl_.epoch_)}},
+    {::_pbi::TcParser::MiniParse, {}},
   }}, {{
     65535, 65535
   }}, {{
-    // float x = 1;
-    {PROTOBUF_FIELD_OFFSET(Point, _impl_.x_), 0, 0,
+    // int32 entry_id = 1;
+    {PROTOBUF_FIELD_OFFSET(SensorRows, _impl_.entry_id_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
+    // int32 facility_id = 2;
+    {PROTOBUF_FIELD_OFFSET(SensorRows, _impl_.facility_id_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
+    // string device = 3;
+    {PROTOBUF_FIELD_OFFSET(SensorRows, _impl_.device_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // int32 temp = 4;
+    {PROTOBUF_FIELD_OFFSET(SensorRows, _impl_.temp_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
+    // float rh = 5;
+    {PROTOBUF_FIELD_OFFSET(SensorRows, _impl_.rh_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
-    // float y = 2;
-    {PROTOBUF_FIELD_OFFSET(Point, _impl_.y_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // int64 epoch = 6;
+    {PROTOBUF_FIELD_OFFSET(SensorRows, _impl_.epoch_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kInt64)},
   }},
   // no aux_entries
   {{
+    "\16\0\0\6\0\0\0\0"
+    "api.SensorRows"
+    "device"
   }},
 };
 
-PROTOBUF_NOINLINE void Point::Clear() {
-// @@protoc_insertion_point(message_clear_start:api.Point)
+PROTOBUF_NOINLINE void SensorRows::Clear() {
+// @@protoc_insertion_point(message_clear_start:api.SensorRows)
   ::google::protobuf::internal::TSanWrite(&_impl_);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  ::memset(&_impl_.x_, 0, static_cast<::size_t>(
-      reinterpret_cast<char*>(&_impl_.y_) -
-      reinterpret_cast<char*>(&_impl_.x_)) + sizeof(_impl_.y_));
+  _impl_.device_.ClearToEmpty();
+  ::memset(&_impl_.entry_id_, 0, static_cast<::size_t>(
+      reinterpret_cast<char*>(&_impl_.epoch_) -
+      reinterpret_cast<char*>(&_impl_.entry_id_)) + sizeof(_impl_.epoch_));
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-::uint8_t* Point::_InternalSerialize(
+::uint8_t* SensorRows::_InternalSerialize(
     ::uint8_t* target,
     ::google::protobuf::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:api.Point)
+  // @@protoc_insertion_point(serialize_to_array_start:api.SensorRows)
   ::uint32_t cached_has_bits = 0;
   (void)cached_has_bits;
 
-  // float x = 1;
-  static_assert(sizeof(::uint32_t) == sizeof(float),
-                "Code assumes ::uint32_t and float are the same size.");
-  float tmp_x = this->_internal_x();
-  ::uint32_t raw_x;
-  memcpy(&raw_x, &tmp_x, sizeof(tmp_x));
-  if (raw_x != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteFloatToArray(
-        1, this->_internal_x(), target);
+  // int32 entry_id = 1;
+  if (this->_internal_entry_id() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::
+        WriteInt32ToArrayWithField<1>(
+            stream, this->_internal_entry_id(), target);
   }
 
-  // float y = 2;
+  // int32 facility_id = 2;
+  if (this->_internal_facility_id() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::
+        WriteInt32ToArrayWithField<2>(
+            stream, this->_internal_facility_id(), target);
+  }
+
+  // string device = 3;
+  if (!this->_internal_device().empty()) {
+    const std::string& _s = this->_internal_device();
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "api.SensorRows.device");
+    target = stream->WriteStringMaybeAliased(3, _s, target);
+  }
+
+  // int32 temp = 4;
+  if (this->_internal_temp() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::
+        WriteInt32ToArrayWithField<4>(
+            stream, this->_internal_temp(), target);
+  }
+
+  // float rh = 5;
   static_assert(sizeof(::uint32_t) == sizeof(float),
                 "Code assumes ::uint32_t and float are the same size.");
-  float tmp_y = this->_internal_y();
-  ::uint32_t raw_y;
-  memcpy(&raw_y, &tmp_y, sizeof(tmp_y));
-  if (raw_y != 0) {
+  float tmp_rh = this->_internal_rh();
+  ::uint32_t raw_rh;
+  memcpy(&raw_rh, &tmp_rh, sizeof(tmp_rh));
+  if (raw_rh != 0) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteFloatToArray(
-        2, this->_internal_y(), target);
+        5, this->_internal_rh(), target);
+  }
+
+  // int64 epoch = 6;
+  if (this->_internal_epoch() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::
+        WriteInt64ToArrayWithField<6>(
+            stream, this->_internal_epoch(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -249,12 +337,12 @@ PROTOBUF_NOINLINE void Point::Clear() {
         ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
             _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:api.Point)
+  // @@protoc_insertion_point(serialize_to_array_end:api.SensorRows)
   return target;
 }
 
-::size_t Point::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:api.Point)
+::size_t SensorRows::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:api.SensorRows)
   ::size_t total_size = 0;
 
   ::uint32_t cached_has_bits = 0;
@@ -262,77 +350,107 @@ PROTOBUF_NOINLINE void Point::Clear() {
   (void) cached_has_bits;
 
   ::_pbi::Prefetch5LinesFrom7Lines(reinterpret_cast<const void*>(this));
-  // float x = 1;
+  // string device = 3;
+  if (!this->_internal_device().empty()) {
+    total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                    this->_internal_device());
+  }
+
+  // int32 entry_id = 1;
+  if (this->_internal_entry_id() != 0) {
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+        this->_internal_entry_id());
+  }
+
+  // int32 facility_id = 2;
+  if (this->_internal_facility_id() != 0) {
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+        this->_internal_facility_id());
+  }
+
+  // int32 temp = 4;
+  if (this->_internal_temp() != 0) {
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+        this->_internal_temp());
+  }
+
+  // float rh = 5;
   static_assert(sizeof(::uint32_t) == sizeof(float),
                 "Code assumes ::uint32_t and float are the same size.");
-  float tmp_x = this->_internal_x();
-  ::uint32_t raw_x;
-  memcpy(&raw_x, &tmp_x, sizeof(tmp_x));
-  if (raw_x != 0) {
+  float tmp_rh = this->_internal_rh();
+  ::uint32_t raw_rh;
+  memcpy(&raw_rh, &tmp_rh, sizeof(tmp_rh));
+  if (raw_rh != 0) {
     total_size += 5;
   }
 
-  // float y = 2;
-  static_assert(sizeof(::uint32_t) == sizeof(float),
-                "Code assumes ::uint32_t and float are the same size.");
-  float tmp_y = this->_internal_y();
-  ::uint32_t raw_y;
-  memcpy(&raw_y, &tmp_y, sizeof(tmp_y));
-  if (raw_y != 0) {
-    total_size += 5;
+  // int64 epoch = 6;
+  if (this->_internal_epoch() != 0) {
+    total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(
+        this->_internal_epoch());
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 
-void Point::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
-  auto* const _this = static_cast<Point*>(&to_msg);
-  auto& from = static_cast<const Point&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:api.Point)
+void SensorRows::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<SensorRows*>(&to_msg);
+  auto& from = static_cast<const SensorRows&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:api.SensorRows)
   ABSL_DCHECK_NE(&from, _this);
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  static_assert(sizeof(::uint32_t) == sizeof(float),
-                "Code assumes ::uint32_t and float are the same size.");
-  float tmp_x = from._internal_x();
-  ::uint32_t raw_x;
-  memcpy(&raw_x, &tmp_x, sizeof(tmp_x));
-  if (raw_x != 0) {
-    _this->_impl_.x_ = from._impl_.x_;
+  if (!from._internal_device().empty()) {
+    _this->_internal_set_device(from._internal_device());
+  }
+  if (from._internal_entry_id() != 0) {
+    _this->_impl_.entry_id_ = from._impl_.entry_id_;
+  }
+  if (from._internal_facility_id() != 0) {
+    _this->_impl_.facility_id_ = from._impl_.facility_id_;
+  }
+  if (from._internal_temp() != 0) {
+    _this->_impl_.temp_ = from._impl_.temp_;
   }
   static_assert(sizeof(::uint32_t) == sizeof(float),
                 "Code assumes ::uint32_t and float are the same size.");
-  float tmp_y = from._internal_y();
-  ::uint32_t raw_y;
-  memcpy(&raw_y, &tmp_y, sizeof(tmp_y));
-  if (raw_y != 0) {
-    _this->_impl_.y_ = from._impl_.y_;
+  float tmp_rh = from._internal_rh();
+  ::uint32_t raw_rh;
+  memcpy(&raw_rh, &tmp_rh, sizeof(tmp_rh));
+  if (raw_rh != 0) {
+    _this->_impl_.rh_ = from._impl_.rh_;
+  }
+  if (from._internal_epoch() != 0) {
+    _this->_impl_.epoch_ = from._impl_.epoch_;
   }
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void Point::CopyFrom(const Point& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:api.Point)
+void SensorRows::CopyFrom(const SensorRows& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:api.SensorRows)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
 
-void Point::InternalSwap(Point* PROTOBUF_RESTRICT other) {
+void SensorRows::InternalSwap(SensorRows* PROTOBUF_RESTRICT other) {
   using std::swap;
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.device_, &other->_impl_.device_, arena);
   ::google::protobuf::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(Point, _impl_.y_)
-      + sizeof(Point::_impl_.y_)
-      - PROTOBUF_FIELD_OFFSET(Point, _impl_.x_)>(
-          reinterpret_cast<char*>(&_impl_.x_),
-          reinterpret_cast<char*>(&other->_impl_.x_));
+      PROTOBUF_FIELD_OFFSET(SensorRows, _impl_.epoch_)
+      + sizeof(SensorRows::_impl_.epoch_)
+      - PROTOBUF_FIELD_OFFSET(SensorRows, _impl_.entry_id_)>(
+          reinterpret_cast<char*>(&_impl_.entry_id_),
+          reinterpret_cast<char*>(&other->_impl_.entry_id_));
 }
 
-::google::protobuf::Metadata Point::GetMetadata() const {
+::google::protobuf::Metadata SensorRows::GetMetadata() const {
   return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // @@protoc_insertion_point(namespace_scope)

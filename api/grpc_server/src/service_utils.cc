@@ -18,7 +18,7 @@ static std::string load_cert(std::string path) {
     return buf.str();
 }
 
-void service::run(std::string uri = "0.0.0.0:3000") {
+void service::run(std::string uri) {
     char *DB_CONN_STR = std::getenv("DB_CONN_STR");
     char *CA_CRT = std::getenv("CA_CRT");
     char *SERVICE_CRT = std::getenv("SERVICE_CRT");

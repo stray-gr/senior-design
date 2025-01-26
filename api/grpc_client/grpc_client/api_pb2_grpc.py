@@ -35,17 +35,17 @@ class QueryStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.GetResults = channel.unary_stream(
-                '/api.Query/GetResults',
+        self.GetSensorRows = channel.unary_stream(
+                '/api.Query/GetSensorRows',
                 request_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-                response_deserializer=api__pb2.Point.FromString,
+                response_deserializer=api__pb2.SensorRows.FromString,
                 _registered_method=True)
 
 
 class QueryServicer(object):
     """Missing associated documentation comment in .proto file."""
 
-    def GetResults(self, request, context):
+    def GetSensorRows(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -54,10 +54,10 @@ class QueryServicer(object):
 
 def add_QueryServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'GetResults': grpc.unary_stream_rpc_method_handler(
-                    servicer.GetResults,
+            'GetSensorRows': grpc.unary_stream_rpc_method_handler(
+                    servicer.GetSensorRows,
                     request_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-                    response_serializer=api__pb2.Point.SerializeToString,
+                    response_serializer=api__pb2.SensorRows.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -71,7 +71,7 @@ class Query(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
-    def GetResults(request,
+    def GetSensorRows(request,
             target,
             options=(),
             channel_credentials=None,
@@ -84,9 +84,9 @@ class Query(object):
         return grpc.experimental.unary_stream(
             request,
             target,
-            '/api.Query/GetResults',
+            '/api.Query/GetSensorRows',
             google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-            api__pb2.Point.FromString,
+            api__pb2.SensorRows.FromString,
             options,
             channel_credentials,
             insecure,

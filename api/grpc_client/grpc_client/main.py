@@ -10,10 +10,10 @@ def load_cert(cert_path: str) -> bytes:
     with open(cert_path, 'rb') as cert:
         return cert.read()
 
-def print_points(stub: api_pb_grpc.QueryStub) -> None:
-    points: List[api_pb.Point] = stub.GetResults(empty.Empty())
-    for p in points:
-        print(f'({p.x}, {p.y})')
+def print_rows(stub: api_pb_grpc.QueryStub) -> None:
+    rows: List[api_pb.SensorRows] = stub.GetSensorRows(empty.Empty())
+    for r in rows:
+        print(f'{r.entry_id}')
 
 def run_success() -> None: 
     channel_mtls = grpc.ssl_channel_credentials(
@@ -23,7 +23,7 @@ def run_success() -> None:
     )
     with grpc.secure_channel(config.URI, channel_mtls) as channel:
         stub = api_pb_grpc.QueryStub(channel)
-        print_points(stub)
+        print_rows(stub)
 
 def run_fail() -> None: 
     channel_mtls = grpc.ssl_channel_credentials(
@@ -33,7 +33,7 @@ def run_fail() -> None:
     )
     with grpc.secure_channel(config.URI, channel_mtls) as channel:
         stub = api_pb_grpc.QueryStub(channel)
-        print_points(stub)
+        print_rows(stub)
 
 if __name__ == '__main__':
     run_success()

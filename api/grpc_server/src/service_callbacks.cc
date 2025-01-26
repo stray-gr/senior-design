@@ -1,8 +1,9 @@
 #include <google/protobuf/empty.pb.h>
 #include <iostream>
-#include <memory>
+#include <list>
 #include <mutex>
 #include <pqxx/pqxx>
+#include <stdexcept>
 
 #include "config.h"
 #include "service.h"
@@ -31,37 +32,29 @@ static void release_connection_slot() {
     DB_CONN_POOL_MTX.unlock();
 }
 
-explicit service::QueryImpl::QueryImpl(char *db_conn_str) {
+service::QueryImpl::QueryImpl(char *db_conn_str) {
     if (db_conn_str == nullptr) {
-        // TODO: throw
+        throw std::invalid_argument("DB Connection C-String cannot be a nullptr");
     }
 
     this->db_conn_str_ = db_conn_str;
 }
 
-grpc::ServerWriteReactor<api::Point> *service::QueryImpl::GetResults(
+grpc::ServerWriteReactor<api::SensorRows> *service::QueryImpl::GetSensorRows(
     grpc::CallbackServerContext *ctx,
     const google::protobuf::Empty *req
 ) {
-    class ResultStream : public grpc::ServerWriteReactor<api::Point> {
+    class ResultStream : public grpc::ServerWriteReactor<api::SensorRows> {
         private:
-            std::unique_ptr<pqxx::connection> cx_;
-            std::unique_ptr<pqxx::work> tx_;
-            std::unique_ptr<pqxx::stream_from> stream_;
-            bool cancelled_;
-            int i_;
-            api::Point p;
+            std::list<api::SensorRows> rows_;
+            api::SensorRows r_;
 
             void NextWrite() {
-                // TODO: Use transaction iterator (not transaction.end())
-                // TODO: Update grpc protobuf definitions
-                if (i_ < 10) {
-                    p.set_x(i_);
-                    p.set_y(i_ * i_);
+                while (!rows_.empty()) {
+                    r_ = rows_.front();
+                    rows_.pop_front();
 
-                    StartWrite(&p);
-
-                    i_++;
+                    StartWrite(&r_);
                     return;
                 }
 
@@ -69,18 +62,8 @@ grpc::ServerWriteReactor<api::Point> *service::QueryImpl::GetResults(
             }
         
         public:
-            ResultStream(char *db_conn_str) {
-                this->cancelled_ = false;
-                this->i_ = 0;
-
-                // Create stream
-                reserve_connection_slot();
-                this->cx_ = std::make_unique<pqxx::connection>(pqxx::connection{db_conn_str});
-                this->tx_ = std::make_unique<pqxx::work>(pqxx::work{*this->cx_});
-                this->stream_ = std::make_unique<pqxx::stream_from>(
-                    pqxx::stream_from::query(*this->tx_, "SELECT * FROM data.sensor")
-                );
-
+            ResultStream(std::list<api::SensorRows> rows) {
+                this->rows_ = rows;
                 NextWrite();
             }
 
@@ -93,22 +76,48 @@ grpc::ServerWriteReactor<api::Point> *service::QueryImpl::GetResults(
             }
 
             void OnDone() override {
-                // Complete stream, end transaction, and release connection slot
-                stream_->complete();
-                if (cancelled_) {
-                    tx_->abort();
-                }
-                else {
-                    tx_->commit();
-                }
-                release_connection_slot();
                 delete this;
             }
 
-            void OnCancel() override {
-                cancelled_ = true;
-            }
+            void OnCancel() override {}
     };
 
-    return new ResultStream(db_conn_str_);
+    try {
+        IO_MTX.lock();
+        std::cout << "SERVICE | GetSensorRows - received" << std::endl;
+        IO_MTX.unlock();
+
+        reserve_connection_slot();
+        pqxx::connection cx = pqxx::connection(db_conn_str_);
+        pqxx::work tx = pqxx::work(cx);
+
+        api::SensorRows row;
+        std::list<api::SensorRows> row_list;
+        for (
+            auto [entry_id, facility_id, device, temp, rh, epoch] : 
+            tx.stream<int, int, std::string, int, float, time_t>("SELECT * FROM data.sensor")
+        ) {
+            row.set_entry_id(entry_id);
+            row.set_facility_id(facility_id);
+            row.set_device(device);
+            row.set_temp(temp);
+            row.set_rh(rh);
+            row.set_epoch(epoch);
+
+            row_list.push_back(row);
+        }
+
+        cx.close();
+        release_connection_slot();
+        return new ResultStream(std::move(row_list));
+    } 
+    catch (std::exception& err) {
+        IO_MTX.lock();
+        std::cout << "SERVICE | GetSensorRows - " << err.what() << std::endl;
+        IO_MTX.unlock();
+
+        release_connection_slot();
+        throw err;
+    }
+
 }

@@ -1,25 +1,9 @@
-#include <memory>
 #include <mqtt/client.h>
 
 #include "config.h"
 #include "server.h"
 
 static std::mutex IO_MTX;
-static void thread_main(std::mutex *task_queue_mtx, std::queue<server::Batch> *task_queue) {
-    // Grab and run task
-    while (true) {
-        task_queue_mtx->lock();
-        if (!task_queue->empty()) {
-            server::Batch task = task_queue->front();
-            task_queue->pop();
-            task_queue_mtx->unlock();
-            task.run_callback(&IO_MTX);
-        }
-        else {
-            task_queue_mtx->unlock();
-        }
-    }
-}
 
 server::Batch::Batch(
     std::function<void (std::mutex*, std::vector<std::string>, std::string)> cb, 
@@ -146,20 +130,33 @@ void server::EventLoop::start() {
     }
 }
 
+static void thread_main(std::mutex *task_queue_mtx, std::list<server::Batch> *task_queue) {
+    // Grab and run task
+    while (true) {
+        task_queue_mtx->lock();
+        if (!task_queue->empty()) {
+            server::Batch task = task_queue->front();
+            task_queue->pop_front();
+            task_queue_mtx->unlock();
+            task.run_callback(&IO_MTX);
+        }
+        else {
+            task_queue_mtx->unlock();
+        }
+    }
+}
+
 server::ThreadPool::ThreadPool(size_t thread_count = std::thread::hardware_concurrency()) {
     this->thread_count_ = thread_count;
 }
 
 void server::ThreadPool::add_task(Batch task) {
     task_queue_mtx_.lock();
-    task_queue_.push(task);
+    task_queue_.push_back(task);
     task_queue_mtx_.unlock();
 }
 
 void server::ThreadPool::start() {
-    // Create thread array
-    // std::unique_ptr<std::thread[]> threads(new std::thread[thread_count_]);
-
     // Spawn threads
     for (size_t i = 0; i < thread_count_; i++) {
         std::thread(thread_main, &task_queue_mtx_, &task_queue_).detach();

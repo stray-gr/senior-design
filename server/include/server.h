@@ -3,9 +3,9 @@
 
 #include <chrono>
 #include <functional>
+#include <list>
 #include <map>
 #include <mutex>
-#include <queue>
 #include <string>
 #include <thread>
 #include <vector>
@@ -59,7 +59,7 @@ namespace server {
         private:
             int thread_count_;
             std::mutex task_queue_mtx_;
-            std::queue<Batch> task_queue_;
+            std::list<Batch> task_queue_;
 
         public:
             ThreadPool(size_t thread_count);

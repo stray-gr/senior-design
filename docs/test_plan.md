@@ -1,5 +1,7 @@
 # Overview
-**TODO**
+Due to how multiple components within the project need to communicate with one another, the main focus of this project's testing is integration testing. This ensures that each component will interface with other components in a predictable and correct way. The process of integration may also highlight how certain project processes can be automated to make integration testing and end deployment more reproducible. Such a relization can then lead to additional project refinements.
+
+Some components, however, are composed of complex features that need additional unit testing. An example can be seen with the database connection pool semaphore used by the batching app and gRPC API. If this semaphore implementation were to be faulty, then an unsustainable amount of database connection slots could be created and lead to performance issues within the components that utilize it. This is were unit testing will be used to ensure that any complex functionality within each component also behaves as intended.
 
 # Test Case Descriptions
 ### PoC-1a-1
@@ -153,4 +155,20 @@
 - Unit/Integration Test Indication: Unit
 
 # Test Case Matrix
-**TODO**
+| Test Case ID          | Normal/Abnormal/Boundary | Blackbox/Whitebox | Functional/Performance | Unit/Integration |
+| --------------------- | ------------------------ | ----------------- | ---------------------- | ---------------- | 
+| [PoC-1a-1](#poc-1a-1) | Normal                   | Whitebox          | Functional             | Integration      |
+| [PoC-1a-2](#poc-1a-2) | Normal                   | Whitebox          | Functional             | Integration      |
+| [PoC-1a-3](#poc-1a-3) | Normal                   | Blackbox          | Functional             | Unit             |
+| [PoC-1b-1](#poc-1b-1) | Boundary                 | Blackbox          | Functional             | Integration      |
+| [PoC-1b-2](#poc-1b-2) | Boundary                 | Whitebox          | Functional             | Unit             |
+| [PoC-1b-3](#poc-1b-3) | Normal                   | Blackbox          | Functional             | Integration      |
+| [PoC-2-1](#poc-2-1)   | Boundary                 | Blackbox          | Functional             | Integration      |
+| [PoC-2-2](#poc-2-2)   | Boundary                 | Whitebox          | Functional             | Unit             |
+| [PoC-2-3](#poc-2-3)   | Normal                   | Whitebox          | Functional             | Integration      |
+| [Rel-1-1](#rel-1-1)   | Normal                   | Whitebox          | Functional             | Integration      |
+| [Rel-1-2](#rel-1-2)   | Normal                   | Whitebox          | Functional             | Integration      |
+| [Rel-1-3](#rel-1-3)   | Abnormal                 | Whitebox          | Functional             | Integration      |
+| [Rel-1-4](#rel-1-4)   | Normal                   | Whitebox          | Performance            | Integration      |
+| [Rel-1-5](#rel-1-5)   | Abnormal                 | Blackbox          | Functional             | Integration      |
+| [Rel-3-1](#rel-3-1)   | Normal                   | Whitebox          | Functional             | Unit             |

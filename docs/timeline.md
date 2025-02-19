@@ -8,17 +8,17 @@
 | PoC-1A-6 | ~~Test firmware via the Wokwi CLI~~ | 10/31 | 11/1 | 2 hrs. |
 | PoC-1A-M | ~~Complete milestone documentation for the Firmware Proof-of-Concept~~ | 11/4 | 11/8 | 8 hrs. |
 | PoC-1B-1 | ~~Install software needed for the Local Server Proof-of-Concept~~ | 1/5 | 1/6 | 1 hr. |
-| PoC-1B-2 | ~~Set up a local PostgreSQL Server w/ a *Data* schema, *Facility 1* table, and users | 1/7 | 1/7 | 4 hrs. |
+| PoC-1B-2 | ~~Set up a local PostgreSQL Server w/ a *Data* schema, *Facility 1* table, and users~~ | 1/7 | 1/7 | 4 hrs. |
 | PoC-1B-3 | ~~Set up a Conan + CMake project~~ | 1/7 | 1/8 | 3 hrs. |
 | PoC-1B-4 | ~~Develop a containerized data batching application~~ | 1/8 | 1/10 | 10 hrs. |
 | PoC-1B-5 | ~~Ensure the application can insert data into the *Facility 1* table and send GroupMe messages~~ | 1/10 | 1/11 | 1 hr. |
-| PoC-1B-M | **Complete milestone documentation for the Local Server Proof-of-Concept** | 1/12 | 1/13 | 6 hrs. |
-| PoC-2-1  | Set up a Conan + CMake project | 1/13 | 1/14 | 1 hrs. |
-| PoC-2-2  | Create a C++ gRPC Sever that uses mTLS for auth | 1/15 | 1/17 | 16 hrs. |
-| PoC-2-3  | Set up a Poetry project and create a Python gRPC client | 1/17 | 1/19 | 4 hrs. |
-| PoC-2-4  | Add mock database integration | 1/20 | 1/22 | 4 hrs. |
-| PoC-2-M  | Complete milestone documentatiopn for the gRPC proof-of-concept | 1/22 | 1/24  | 6 hrs. |
-| Rel-1-1  | **Purchase ESP32 microcontrollers, breadboards, and DHT11/DHT22 sensors** | 1/13 | 1/17 | 2 hrs. |
+| PoC-1B-M | ~~Complete milestone documentation for the Local Server Proof-of-Concept~~ | 1/12 | 1/13 | 6 hrs. |
+| PoC-2-1  | ~~Set up a Conan + CMake project~~ | 1/13 | 1/14 | 1 hrs. |
+| PoC-2-2  | ~~Create a C++ gRPC Sever that uses mTLS for auth~~ | 1/15 | 1/17 | 16 hrs. |
+| PoC-2-3  | ~~Set up a Poetry project and create a Python gRPC client~~ | 1/17 | 1/19 | 4 hrs. |
+| PoC-2-4  | **Add mock database integration** | 1/20 | 1/22 | 4 hrs. |
+| PoC-2-M  | Complete milestone documentation for the gRPC proof-of-concept | 1/22 | 1/24  | 6 hrs. |
+| Rel-1-1  | **Purchase ESP32 microcontrollers, breadboards, and DHT11/DHT22 sensors** | 1/13 | 1/19 | 2 hrs. |
 | Rel-1-2  | Update the ESP-IDF Firmware | 1/24 | 1/27 | 6 hrs. |
 | Rel-1-3  | Connect the ESP32 and DHT sensor together via breadboard | 1/27 | 1/27 | 1 hr. |
 | Rel-1-4  | Flash firmware to the ESP32s | 1/27 | 1/29 | 1 hr. |

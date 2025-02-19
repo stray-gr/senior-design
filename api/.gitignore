@@ -1,0 +1,12 @@
+# Certs
+**certs/
+
+# Client
+.venv/
+__pycache__/
+config.py
+poetry.lock
+
+# Server
+build/
+.env

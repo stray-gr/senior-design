@@ -1,10 +1,11 @@
 syntax = "proto3";
+package msg;
 
 message LWT {
     string device = 1;
 }
 
-message Data {
+message Sensor {
     string device = 1;
     int32    temp = 2;
     float      rh = 3;

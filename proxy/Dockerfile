@@ -5,14 +5,16 @@ FROM golang:1.24-alpine3.21 AS build
 
 COPY msg/    /msg/
 COPY go.mod  /go.mod
+COPY go.sum  /go.sum
 COPY main.go /main.go
 
+RUN go mod download
 RUN go build /main.go
 
 ###################################
 # Inherit Alpine Linux 3.21 image #
 ###################################
-FROM alpine:3.21
+FROM alpine:3.21 AS main
 
 # Copy the server binary from the previous stage, then run it
 COPY --from=build /main /main

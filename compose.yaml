@@ -12,6 +12,13 @@ services:
     networks:
       - broker
 
+  redis:
+    image: redis:7-alpine3.21
+    ports:
+      - "6379:6379"
+    networks:
+      - redis
+
   sddb:
     build: database/
     command: postgres -c config_file=/etc/postgres.conf
@@ -27,18 +34,6 @@ services:
   ################################
   # Dependently started services #
   ################################
-  proxy:
-    build:
-      context: ${PWD}/proxy
-      dockerfile: Dockerfile
-      target: main
-    env_file:
-      - ${PWD}/.env
-    depends_on:
-      - broker # will be redis
-    networks:
-      - facility
-
   batch-router:
     build: 
       context: ${PWD}/batch-router
@@ -47,7 +42,7 @@ services:
     env_file:
       - ${PWD}/.env
     depends_on:
-      - proxy # will be redis
+      - redis
     networks:
       - facility
 
@@ -59,7 +54,20 @@ services:
     env_file:
       - ${PWD}/.env
     depends_on:
-      - batch-appp
+      - broker
+    networks:
+      - facility
+
+  proxy:
+    build:
+      context: ${PWD}/proxy
+      dockerfile: Dockerfile
+      target: main
+    env_file:
+      - ${PWD}/.env
+    depends_on:
+      - broker
+      - redis
     networks:
       - facility
 
@@ -71,14 +79,17 @@ services:
     env_file:
       - ${PWD}/.env
     depends_on:
+      - batch-router
       - client
+      - proxy
     networks:
       - facility
 
 networks:
   broker:
-  facility:
+  redis:
   database:
+  facility:
 
 volumes: 
   db:

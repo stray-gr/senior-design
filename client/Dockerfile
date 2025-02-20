@@ -5,8 +5,10 @@ FROM golang:1.24-alpine3.21 AS build
 
 COPY msg/    /msg/
 COPY go.mod  /go.mod
+COPY go.sum  /go.sum
 COPY main.go /main.go
 
+RUN go mod download
 RUN go build /main.go
 
 ###################################

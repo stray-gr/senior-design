@@ -7,8 +7,10 @@ COPY callbacks/ /callbacks/
 COPY msg/       /msg/
 COPY server/    /server/
 COPY go.mod     /go.mod
+COPY go.sum     /go.sum
 COPY main.go    /main.go
 
+RUN go mod download
 RUN go build /main.go
 
 ###################################

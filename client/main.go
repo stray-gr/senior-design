@@ -57,8 +57,8 @@ func mqttPoll(ctx context.Context) {
 		SessionExpiryInterval:         60,
 		ConnectUsername:               USER,
 		ConnectPassword:               []byte(PASS),
-		TlsCfg:                        &tls.Config{
-			// TODO
+		TlsCfg: &tls.Config{
+			ServerName: "stray-gr",
 		},
 		WillMessage: &paho.WillMessage{
 			QoS:     1,

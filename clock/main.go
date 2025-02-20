@@ -14,6 +14,7 @@ import (
 
 const (
 	CLOCK_DELAY = time.Duration(1000) * time.Millisecond
+	DEBUG       = true
 	PULSE_TOPIC = "pulse"
 	USER        = "clock"
 )
@@ -71,15 +72,24 @@ func main() {
 		panic(err)
 	}
 
+	itr := 0
 	for {
+		// Publish pulse
 		_, err := conn.Publish(ctx, &paho.Publish{
 			QoS:     1,
 			Topic:   PULSE_TOPIC,
 			Payload: []byte{},
 		})
-
 		if err != nil {
 			fmt.Println("CLOCK  | Unable to publish pulse:", err)
+		}
+
+		// If DEBUG, update itr and maybe exit
+		if DEBUG {
+			itr += 1
+			if itr > 5 {
+				return
+			}
 		}
 
 		time.Sleep(CLOCK_DELAY)

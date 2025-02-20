@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"crypto/tls"
 	"fmt"
 	"net/url"
 	"os"
@@ -52,19 +51,16 @@ func mqttPoll(ctx context.Context) {
 
 	clientConfig := autopaho.ClientConfig{
 		ServerUrls:                    []*url.URL{uri},
-		KeepAlive:                     10,
 		CleanStartOnInitialConnection: false,
-		SessionExpiryInterval:         60,
 		ConnectUsername:               USER,
 		ConnectPassword:               []byte(PASS),
-		TlsCfg: &tls.Config{
-			ServerName: "stray-gr",
-		},
 		WillMessage: &paho.WillMessage{
+			Retain:  true,
 			QoS:     1,
 			Topic:   LWT_TOPIC,
 			Payload: out,
 		},
+		WillProperties: &paho.WillProperties{},
 		OnConnectionUp: func(cm *autopaho.ConnectionManager, connAck *paho.Connack) {
 			// Subscribe to pulse
 			_, err := cm.Subscribe(ctx, &paho.Subscribe{

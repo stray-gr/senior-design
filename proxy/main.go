@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"crypto/tls"
 	"fmt"
 	"net/url"
 	"os"
@@ -25,7 +24,7 @@ const (
 func mqttPoll(ctx context.Context, rdb *redis.Client) {
 	// Retrieve env vars
 	BROKER_URI, uriOk := os.LookupEnv("BROKER_URI")
-	PASS, passOk := os.LookupEnv("MQTT_CLIENT_PASS")
+	PASS, passOk := os.LookupEnv("MQTT_PROXY_PASS")
 	if !uriOk || !passOk {
 		panic("Unable to get environment variables for Mosquitto")
 	}
@@ -41,14 +40,9 @@ func mqttPoll(ctx context.Context, rdb *redis.Client) {
 
 	clientConfig := autopaho.ClientConfig{
 		ServerUrls:                    []*url.URL{uri},
-		KeepAlive:                     10,
 		CleanStartOnInitialConnection: false,
-		SessionExpiryInterval:         60,
 		ConnectUsername:               USER,
 		ConnectPassword:               []byte(PASS),
-		TlsCfg:                        &tls.Config{
-			// TODO
-		},
 		OnConnectionUp: func(cm *autopaho.ConnectionManager, connAck *paho.Connack) {
 			_, err := cm.Subscribe(ctx, &paho.Subscribe{
 				Subscriptions: []paho.SubscribeOptions{

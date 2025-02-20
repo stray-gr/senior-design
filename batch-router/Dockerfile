@@ -11,7 +11,7 @@ COPY go.sum     /go.sum
 COPY main.go    /main.go
 
 RUN go mod download
-RUN go build /main.go
+RUN go build -o /usr/local/bin/batch-router /main.go
 
 ###################################
 # Inherit Alpine Linux 3.21 image #
@@ -22,5 +22,5 @@ FROM alpine:3.21 AS main
 RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
 
 # Copy the server binary from the previous stage, then run it
-COPY --from=build /main /main
-ENTRYPOINT [ "/main" ]
+COPY --from=build /usr/local/bin/batch-router /usr/local/bin/batch-router
+ENTRYPOINT [ "batch-router" ]

@@ -2,8 +2,10 @@ package main
 
 import (
 	"context"
+	"crypto/tls"
 	"fmt"
 	"net/url"
+	"os"
 	"time"
 
 	"github.com/eclipse/paho.golang/autopaho"
@@ -13,12 +15,21 @@ import (
 const (
 	CLOCK_DELAY = time.Duration(1000) * time.Millisecond
 	PULSE_TOPIC = "pulse"
+	USER        = "clock"
 )
 
 func main() {
-	// TODO: Read url from .env
 	ctx := context.Background()
-	uri, err := url.Parse("mqtt://localhost:1883")
+
+	// Retrieve env vars
+	BROKER_URI, uriOk := os.LookupEnv("BROKER_URI")
+	PASS, passOk := os.LookupEnv("MQTT_CLIENT_PASS")
+	if !uriOk || !passOk {
+		panic("Unable to get environment variables for Mosquitto")
+	}
+
+	// Parse broker URI
+	uri, err := url.Parse(BROKER_URI)
 	if err != nil {
 		panic(err)
 	}
@@ -28,12 +39,17 @@ func main() {
 		KeepAlive:                     10,
 		CleanStartOnInitialConnection: false,
 		SessionExpiryInterval:         60,
+		ConnectUsername:               USER,
+		ConnectPassword:               []byte(PASS),
+		TlsCfg:                        &tls.Config{
+			// TODO
+		},
 		OnConnectionUp: func(cm *autopaho.ConnectionManager, connAck *paho.Connack) {
 			fmt.Println("CLOCK  | Connected to broker")
 		},
 		OnConnectError: func(err error) { fmt.Println("CLOCK  | ERROR - OnConnectError:", err) },
 		ClientConfig: paho.ClientConfig{
-			ClientID:      "clock",
+			ClientID:      USER,
 			OnClientError: func(err error) { fmt.Println("CLOCK  | ERROR - OnClientError:", err) },
 			OnServerDisconnect: func(d *paho.Disconnect) {
 				if d.Properties != nil {

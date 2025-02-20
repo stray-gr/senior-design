@@ -7,7 +7,7 @@ import (
 
 // NOTE: Make sure to RPOP when consuming
 func SensorData(ctx context.Context, sinkQ string) {
-	fmt.Println("callback on: ", sinkQ)
+	fmt.Println("SERVER | SensorData callback on:", sinkQ)
 
 	// https://gorm.io/docs/context.html
 	db, ok := ctx.Value("DB").(string)
@@ -21,5 +21,5 @@ func SensorData(ctx context.Context, sinkQ string) {
 
 // NOTE: Make sure to RPOP when consuming
 func LWT(ctx context.Context, sinkQ string) {
-	fmt.Println("callback on: ", sinkQ)
+	fmt.Println("SERVER | LWT callback on:", sinkQ)
 }

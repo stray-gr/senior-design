@@ -3,6 +3,7 @@ package server
 import (
 	"context"
 	"fmt"
+	"os"
 	"runtime"
 	"time"
 
@@ -126,9 +127,13 @@ func Start(ctx context.Context, batches BatchMap) {
 	cpus := runtime.GOMAXPROCS(0)
 
 	// Create Redis conneciton pool
-	// TODO: Read addr, username, and password from .env
+	REDIS_ADDR, ok := os.LookupEnv("REDIS_ADDR")
+	if !ok {
+		panic("Mising environment variables for Redis")
+	}
+
 	rdb := redis.NewClient(&redis.Options{
-		Addr:     "localhost:6379",
+		Addr:     REDIS_ADDR,
 		Username: "",
 		Password: "",
 		DB:       0,

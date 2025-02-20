@@ -2,8 +2,10 @@ package main
 
 import (
 	"context"
+	"crypto/tls"
 	"fmt"
 	"net/url"
+	"os"
 	"time"
 
 	"github.com/eclipse/paho.golang/autopaho"
@@ -18,20 +20,29 @@ const (
 	LWT_DELAY     = 3
 	LWT_TOPIC     = "lwt"
 	PULSE_TOPIC   = "pulse"
+	USER          = "client"
 )
 
 func mqttPoll(ctx context.Context) {
-	// TODO: Read url from .env
-	// Create message channel and parse broker URL
-	msgChan := make(chan *paho.Publish)
-	uri, err := url.Parse("mqtt://localhost:1883")
+	// Retrieve env vars
+	BROKER_URI, uriOk := os.LookupEnv("BROKER_URI")
+	PASS, passOk := os.LookupEnv("MQTT_CLIENT_PASS")
+	if !uriOk || !passOk {
+		panic("Unable to get environment variables for Mosquitto")
+	}
+
+	// Parse broker URI
+	uri, err := url.Parse(BROKER_URI)
 	if err != nil {
 		panic(err)
 	}
 
+	// Create message channel
+	msgChan := make(chan *paho.Publish)
+
 	// Encode LWT message
 	lwt := &msg.LWT{
-		Device: "client",
+		Device: USER,
 		Delay:  LWT_DELAY,
 	}
 	out, err := proto.Marshal(lwt)
@@ -44,6 +55,11 @@ func mqttPoll(ctx context.Context) {
 		KeepAlive:                     10,
 		CleanStartOnInitialConnection: false,
 		SessionExpiryInterval:         60,
+		ConnectUsername:               USER,
+		ConnectPassword:               []byte(PASS),
+		TlsCfg:                        &tls.Config{
+			// TODO
+		},
 		WillMessage: &paho.WillMessage{
 			QoS:     1,
 			Topic:   LWT_TOPIC,
@@ -53,7 +69,7 @@ func mqttPoll(ctx context.Context) {
 			// Subscribe to pulse
 			_, err := cm.Subscribe(ctx, &paho.Subscribe{
 				Subscriptions: []paho.SubscribeOptions{
-					{Topic: "pulse", QoS: 1},
+					{Topic: PULSE_TOPIC, QoS: 1},
 				},
 			})
 			if err != nil {
@@ -63,7 +79,7 @@ func mqttPoll(ctx context.Context) {
 
 			// Encode connect message
 			connMsg := &msg.Connect{
-				Device: "client",
+				Device: USER,
 			}
 			out, err := proto.Marshal(connMsg)
 			if err != nil {
@@ -87,7 +103,7 @@ func mqttPoll(ctx context.Context) {
 		},
 		OnConnectError: func(err error) { fmt.Println("CLIENT | ERROR - OnConnectError:", err) },
 		ClientConfig: paho.ClientConfig{
-			ClientID: "client",
+			ClientID: USER,
 			OnPublishReceived: []func(paho.PublishReceived) (bool, error){
 				// OnPublishRecieved callback(s)
 				func(recv paho.PublishReceived) (bool, error) {
@@ -126,7 +142,7 @@ func mqttPoll(ctx context.Context) {
 
 			// Encode data
 			data := &msg.SensorData{
-				Device: "client",
+				Device: USER,
 				Temp:   50.0,
 				Rh:     75.5,
 				Epoch:  time.Now().Unix(),

@@ -2,8 +2,10 @@ package main
 
 import (
 	"context"
+	"crypto/tls"
 	"fmt"
 	"net/url"
+	"os"
 	"runtime"
 	"time"
 
@@ -17,21 +19,36 @@ import (
 const (
 	CONNECT_TOPIC = "connect"
 	LWT_TOPIC     = "lwt"
+	USER          = "proxy"
 )
 
 func mqttPoll(ctx context.Context, rdb *redis.Client) {
-	// TODO: Read url from .env
-	msgChan := make(chan *paho.Publish)
-	uri, err := url.Parse("mqtt://localhost:1883")
+	// Retrieve env vars
+	BROKER_URI, uriOk := os.LookupEnv("BROKER_URI")
+	PASS, passOk := os.LookupEnv("MQTT_CLIENT_PASS")
+	if !uriOk || !passOk {
+		panic("Unable to get environment variables for Mosquitto")
+	}
+
+	// Parse broker URI
+	uri, err := url.Parse(BROKER_URI)
 	if err != nil {
 		panic(err)
 	}
+
+	// Create message channel
+	msgChan := make(chan *paho.Publish)
 
 	clientConfig := autopaho.ClientConfig{
 		ServerUrls:                    []*url.URL{uri},
 		KeepAlive:                     10,
 		CleanStartOnInitialConnection: false,
 		SessionExpiryInterval:         60,
+		ConnectUsername:               USER,
+		ConnectPassword:               []byte(PASS),
+		TlsCfg:                        &tls.Config{
+			// TODO
+		},
 		OnConnectionUp: func(cm *autopaho.ConnectionManager, connAck *paho.Connack) {
 			_, err := cm.Subscribe(ctx, &paho.Subscribe{
 				Subscriptions: []paho.SubscribeOptions{
@@ -46,7 +63,7 @@ func mqttPoll(ctx context.Context, rdb *redis.Client) {
 		},
 		OnConnectError: func(err error) { fmt.Println("PROXY  | ERROR - OnConnectError:", err) },
 		ClientConfig: paho.ClientConfig{
-			ClientID: "proxy",
+			ClientID: USER,
 			OnPublishReceived: []func(paho.PublishReceived) (bool, error){
 				// OnPublishRecieved callback(s)
 				func(recv paho.PublishReceived) (bool, error) {
@@ -125,13 +142,18 @@ func redisPoll(ctx context.Context, rdb *redis.Client) {
 }
 
 func main() {
+	ctx := context.Background()
 	cpus := runtime.GOMAXPROCS(0)
 
+	// Retrieve env vars
+	REDIS_ADDR, ok := os.LookupEnv("REDIS_ADDR")
+	if !ok {
+		panic("Unable to get environment variables for Redis")
+	}
+
 	// Create Redis connection pool
-	// TODO: Read addr, username, and password from .env
-	ctx := context.Background()
 	rdb := redis.NewClient(&redis.Options{
-		Addr:     "localhost:6379",
+		Addr:     REDIS_ADDR,
 		Username: "",
 		Password: "",
 		DB:       0,

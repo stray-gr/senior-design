@@ -1,6 +1,6 @@
-################################################################
-# Inherit Debian's Bookworm (aka: Debian 12) slim docker image #
-################################################################
+###############################################
+# Inherit Debian's Bookworm slim docker image #
+###############################################
 FROM debian:bookworm-slim
 
 # Install Mosquitto 

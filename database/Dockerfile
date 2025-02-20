@@ -1,6 +1,6 @@
-#########################################################################
-# Inherit the Postgres 17 Debian Bookworm (aka: Debian 12) docker image #
-#########################################################################
+#########################################################
+# Inherit the Postgres 17 Debian Bookworm  docker image #
+#########################################################
 FROM postgres:17-bookworm
 
 # Copy the postgresql server's SSL certs and configuration file into the container 

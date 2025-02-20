@@ -60,7 +60,6 @@ func mqttPoll(ctx context.Context) {
 			Topic:   LWT_TOPIC,
 			Payload: out,
 		},
-		WillProperties: &paho.WillProperties{},
 		OnConnectionUp: func(cm *autopaho.ConnectionManager, connAck *paho.Connack) {
 			// Subscribe to pulse
 			_, err := cm.Subscribe(ctx, &paho.Subscribe{

@@ -35,8 +35,4 @@ mqttx sub -h localhost -p 1883 -t "data/sensor" -Pp ./msg.proto -Pmn msg.SensorD
 
 # TODO
 - [ ] batch-router callbacks
-- [ ] environment variable load and TLS for each component
-- [X] create clock
-- [X] create client
-
-https://gobyexample.com/environment-variables
+- [ ] TLS for Redis

@@ -18,8 +18,8 @@ type Sensor struct {
 }
 
 // Updates model's table name
-// https://stackoverflow.com/a/66218563
-func (u *Sensor) TableName() string {
+// https://gorm.io/docs/conventions.html#TableName
+func (Sensor) TableName() string {
 	return "data.sensor"
 }
 

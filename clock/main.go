@@ -13,7 +13,6 @@ import (
 
 const (
 	CLOCK_DELAY = time.Duration(1000) * time.Millisecond
-	DEBUG       = true
 	PULSE_TOPIC = "pulse"
 	USER        = "clock"
 )
@@ -24,7 +23,8 @@ func main() {
 	// Retrieve env vars
 	BROKER_URI, uriOk := os.LookupEnv("BROKER_URI")
 	PASS, passOk := os.LookupEnv("MQTT_CLOCK_PASS")
-	if !uriOk || !passOk {
+	DEBUG, debugOk := os.LookupEnv("DEBUG")
+	if !uriOk || !passOk || !debugOk {
 		panic("Unable to get environment variables for Mosquitto")
 	}
 
@@ -69,7 +69,7 @@ func main() {
 	itr := 0
 	for {
 		// If DEBUG, update itr and maybe exit
-		if DEBUG {
+		if DEBUG == "1" {
 			if itr < 4 {
 				itr += 1
 			} else {

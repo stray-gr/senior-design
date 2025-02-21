@@ -23,7 +23,8 @@ func main() {
 	F_CONN_STR, okConn := os.LookupEnv("F_CONN_STR")
 	F_ID, okID := os.LookupEnv("F_ID")
 	GROUPME_BOT_ID, okBot := os.LookupEnv("GROUPME_BOT_ID")
-	if !okConn || !okID || !okBot {
+	DEBUG, okDebug := os.LookupEnv("DEBUG")
+	if !okConn || !okID || !okBot || !okDebug {
 		panic("Unable to get environment variables for current facility")
 	}
 
@@ -52,6 +53,7 @@ func main() {
 	ctx = context.WithValue(ctx, "DB", db)
 	ctx = context.WithValue(ctx, "ID", id)
 	ctx = context.WithValue(ctx, "BOT", GROUPME_BOT_ID)
+	ctx = context.WithValue(ctx, "DEBUG", DEBUG)
 
 	// Start server
 	server.Start(ctx, batches)

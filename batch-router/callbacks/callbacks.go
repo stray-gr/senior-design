@@ -38,7 +38,8 @@ func SensorData(ctx context.Context, rdb *redis.Client, sinkQ string) {
 	// Get DB connection pool and facility ID from context
 	db, okDB := ctx.Value("DB").(*gorm.DB)
 	id, okID := ctx.Value("ID").(int32)
-	if !okDB || !okID {
+	DEBUG, okDebug := ctx.Value("DEBUG").(string)
+	if !okDB || !okID || !okDebug {
 		fmt.Println("SERVER | ERROR - SensorData: Unable to retreive values from context")
 		return
 	}
@@ -100,7 +101,7 @@ func SensorData(ctx context.Context, rdb *redis.Client, sinkQ string) {
 		break
 	}
 
-	if DEBUG {
+	if DEBUG == "1" {
 		// Encode LWT message
 		lwt := &msg.LWT{
 			Device: "client",

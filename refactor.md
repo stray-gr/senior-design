@@ -1,3 +1,11 @@
+# Go Path
+In your `.bashrc`:
+```bash
+export PATH="$PATH:/usr/local/go/bin"
+export GOPATH=$HOME/go
+export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
+```
+
 # Protobuf
 Add $GOPATH to env, then:
 ```bash
@@ -5,6 +13,15 @@ go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
 protoc --go_out=. --go_opt=Mmsg.proto={module}/msg  msg.proto
 cd {module}
 go get -u google.golang.org/protobuf/proto
+```
+
+# gRPC
+Add $GOPATH to env, then:
+```bash
+go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
+protoc --go_out=. --go_opt=Mservice.proto={module}/service --go-grpc_out=. --go-grpc_opt=Mservice.proto={module}/service service.proto
+go get google.golang.org/grpc 
+go get google.golang.org/protobuf/proto
 ```
 
 # Integration test
@@ -34,5 +51,9 @@ mqttx sub -h localhost -p 1883 -t "data/sensor" -Pp ./msg.proto -Pmn msg.SensorD
 ```
 
 # TODO
-- [ ] batch-router callbacks
+- [X] batch-router callbacks
 - [ ] TLS for Redis
+- [X] Add debug env var
+- [ ] gRPC API
+- [ ] Update docs
+- [ ] final slides

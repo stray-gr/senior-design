@@ -1,0 +1,17 @@
+syntax = "proto3";
+import "google/protobuf/empty.proto";
+
+package service;
+
+message SensorRows {
+    int32   entry_id = 1;
+    int32   facility_id = 2;
+    string  device = 3;
+    float   temp = 4;
+    float   rh = 5;
+    int64   epoch = 6;
+}
+
+service Query {
+    rpc GetSensorRows (google.protobuf.Empty) returns (stream SensorRows) {}
+}

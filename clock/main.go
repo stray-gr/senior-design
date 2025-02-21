@@ -68,6 +68,15 @@ func main() {
 
 	itr := 0
 	for {
+		// If DEBUG, update itr and maybe exit
+		if DEBUG {
+			if itr < 4 {
+				itr += 1
+			} else {
+				return
+			}
+		}
+
 		// Publish pulse
 		_, err := conn.Publish(ctx, &paho.Publish{
 			QoS:     1,
@@ -76,14 +85,6 @@ func main() {
 		})
 		if err != nil {
 			fmt.Println("CLOCK  | Unable to publish pulse:", err)
-		}
-
-		// If DEBUG, update itr and maybe exit
-		if DEBUG {
-			itr += 1
-			if itr > 5 {
-				return
-			}
 		}
 
 		time.Sleep(CLOCK_DELAY)

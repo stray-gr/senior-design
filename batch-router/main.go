@@ -19,11 +19,12 @@ func main() {
 		"lwt":         server.NewBatch("lwt_src", 1, 2, 5, callbacks.LWT),
 	}
 
-	// Get Postgres environment variables for current facility
+	// Get environment variables for current facility
 	F_CONN_STR, okConn := os.LookupEnv("F_CONN_STR")
 	F_ID, okID := os.LookupEnv("F_ID")
-	if !okConn || !okID {
-		panic("Unable to get environment variables for Postgres")
+	GROUPME_BOT_ID, okBot := os.LookupEnv("GROUPME_BOT_ID")
+	if !okConn || !okID || !okBot {
+		panic("Unable to get environment variables for current facility")
 	}
 
 	// Convert facility ID from string to int32
@@ -50,6 +51,7 @@ func main() {
 	ctx := context.Background()
 	ctx = context.WithValue(ctx, "DB", db)
 	ctx = context.WithValue(ctx, "ID", id)
+	ctx = context.WithValue(ctx, "BOT", GROUPME_BOT_ID)
 
 	// Start server
 	server.Start(ctx, batches)

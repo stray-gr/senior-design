@@ -22,8 +22,9 @@ Make sure to have the following software installed:
     - Make sure to set **Common Name** to the message server's hostname (e.g. "My-PC-Name")
 7. Sign the CSR using the certificate authority we initially created. Make sure to set `<duration>` to the number of days the broker's private key and cert should be valid for: 
     ```
-    openssl x509 -req -in server.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out server.crt -days <duration>
+    openssl x509 -req -in server.csr -extfile <(printf "subjectAltName=DNS:My-PC-Name") -CA ca.crt -CAkey ca.key -CAcreateserial -out server.crt -days <duration>
     ```
+8. View the final result using `openssl x509 -noout -text -in server.crt`
 
 # Database Set Up
 ### Start Database Container using Docker Compose
@@ -51,7 +52,7 @@ Make sure to have the following software installed:
     INSERT INTO data.facility (facility_name) VALUES ('Facility 1'), ('Facility 2');
     create table data.sensor (
         entry_id SERIAL NOT NULL, facility_id SERIAL,
-        device VARCHAR(64) NOT NULL, temp INT, rh REAL, epoch BIGINT NOT NULL,
+        device VARCHAR(64) NOT NULL, temp REAL, rh REAL, epoch BIGINT NOT NULL,
         FOREIGN KEY (facility_id) REFERENCES data.facility(facility_id),
         PRIMARY KEY (entry_id, facility_id)
     );
@@ -68,6 +69,7 @@ Make sure to have the following software installed:
     grant connect on database sddb to facility_n;
     grant usage on schema data to facility_n;
     grant insert on data.sensor to facility_n;
+    grant select on data.sensor to facility_n;
     ```
 4. Since the sensor data table has the 'entry_id' column set to the SERIAL type, issue the following psql command to find its serial sequence:
     ```sql
@@ -99,6 +101,7 @@ Make sure to have the following software installed:
 - `TRUNCATE data.sensor RESTART IDENTITY CASCADE;` clears the sensor data table 
 - `DROP SCHEMA test CASCADE;` removes a schema and its tables
 - `ALTER ROLE user_name WITH PASSWORD 'new_password';` changes a user's password
+- `ALTER TABLE tble ALTER COLUMN col TYPE REAL;` changes a column's type
 - `\conninfo` lists connection info
 
 ### Useful links

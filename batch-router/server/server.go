@@ -11,24 +11,27 @@ import (
 	"github.com/redis/go-redis/v9"
 )
 
-type batch struct {
-	sourceQ  string
-	minSize  int64
-	maxSize  int64
-	timeout  float64
-	callback cb
-	t0       time.Time // ONLY FIELD THAT GETS MUTATED (by queuePoll)
-}
+type (
+	batch struct {
+		sourceQ  string
+		minSize  int64
+		maxSize  int64
+		timeout  float64
+		callback cb
+		t0       time.Time // ONLY FIELD THAT GETS MUTATED (by queuePoll)
+	}
 
-type BatchMap = map[string]*batch
+	BatchMap = map[string]*batch
 
-type cb = func(context.Context, string)
+	cb = func(context.Context, *redis.Client, string)
 
-type task struct {
-	ctx      context.Context
-	sinkQ    string
-	callback cb
-}
+	task struct {
+		ctx      context.Context
+		rdb      *redis.Client
+		sinkQ    string
+		callback cb
+	}
+)
 
 // Creates batch
 func NewBatch(sourceQ string, minSize, maxSize int, timeout float64, callback cb) *batch {
@@ -116,7 +119,7 @@ func queuePoll(ctx context.Context, rdb *redis.Client, batches BatchMap, taskPoo
 				b.t0 = time.Now()
 
 				// Send new task to task pool
-				taskPool <- task{ctx, sinkQ, b.callback}
+				taskPool <- task{ctx, rdb, sinkQ, b.callback}
 			}
 		}
 	}
@@ -148,7 +151,7 @@ func Start(ctx context.Context, batches BatchMap) {
 		go func() {
 			// Wait for new tasks
 			for newTask := range taskChan {
-				newTask.callback(newTask.ctx, newTask.sinkQ)
+				newTask.callback(newTask.ctx, newTask.rdb, newTask.sinkQ)
 			}
 		}()
 	}

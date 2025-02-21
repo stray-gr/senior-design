@@ -18,8 +18,10 @@ RUN go build -o /usr/local/bin/batch-router /main.go
 ###################################
 FROM alpine:3.21 AS main
 
-# Install base SSL certificates, which are needed to send POST requests to GroupMe's chat bot API
+# Upload broker CA cert
 RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
+COPY ca.crt /usr/local/share/ca-certificates/ca.crt
+RUN update-ca-certificates
 
 # Copy the server binary from the previous stage, then run it
 COPY --from=build /usr/local/bin/batch-router /usr/local/bin/batch-router

@@ -37,16 +37,6 @@ Make sure to have the following software installed:
 3. Run `docker-compose up` to start the container
 4. In another terminal, run `docker ps` to find the CONTAINER ID. This will be used to access the container later
 
-CREATE TABLE bar (
-    id SERIAL,
-    bar_created_on ABSTIME,
-    bar_deactivated_on ABSTIME,
-    foo_id INTEGER NOT NULL,
-    foo_created_on ABSTIME NOT NULL,
-    FOREIGN KEY (foo_id, foo_created_on) REFERENCES foo (id, foo_created_on),
-    PRIMARY KEY (id, bar_created_on)
-);
-
 ### Add Facility Schema and Tables
 1. Run `docker exec -it {CONTAINER ID} bash` to open a bash shell within the container as the 'postgres' user
 2. In the container's bash shell, run `createdb sddb` to create the database (sddb is the database name)

@@ -13,8 +13,6 @@ import (
 	"gorm.io/gorm"
 )
 
-const DEBUG = true
-
 // ORM model
 type Sensor struct {
 	EntryId    int32 `gorm:"primaryKey"`

@@ -35,16 +35,17 @@ services:
   ################################
   # Dependently started services #
   ################################
-  batch-router:
+  clock:
     build: 
-      context: ${PWD}/batch-router
+      context: ${PWD}/clock
       dockerfile: Dockerfile
       target: main
     env_file:
       - ${PWD}/.env
     depends_on:
-      - redis
-      - sddb
+      - client
+      - proxy
+      - batch-router
     networks:
       - facility
 
@@ -73,25 +74,39 @@ services:
     networks:
       - facility
 
-  clock:
+  batch-router:
     build: 
-      context: ${PWD}/clock
+      context: ${PWD}/batch-router
       dockerfile: Dockerfile
       target: main
     env_file:
       - ${PWD}/.env
     depends_on:
-      - batch-router
-      - client
-      - proxy
+      - redis
+      - sddb
     networks:
       - facility
 
+  api:
+    build:
+      context: ${PWD}/api
+      dockerfile: Dockerfile
+      target: main
+    env_file:
+      - ${PWD}/.env
+    ports:
+      - "3000:3000"
+    depends_on:
+      - sddb
+    networks:
+      - api
+
 networks:
+  api:
   broker:
-  redis:
   database:
   facility:
+  redis:
 
 volumes: 
   db:

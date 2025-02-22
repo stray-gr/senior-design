@@ -38,9 +38,9 @@ def run_fail() -> None:
 if __name__ == '__main__':
     run_success()
 
-    # try:
-    #     run_fail()
-    # except:
-    #     print('Tests passed')
-    # else:
-    #     print('Tests failed, client with bad certs still connected')
+    try:
+        run_fail()
+    except:
+        print('Tests passed')
+    else:
+        print('Tests failed, client with bad certs still connected')

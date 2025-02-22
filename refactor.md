@@ -52,8 +52,9 @@ mqttx sub -h localhost -p 1883 -t "data/sensor" -Pp ./msg.proto -Pmn msg.SensorD
 
 # TODO
 - [X] batch-router callbacks
-- [ ] TLS for Redis
 - [X] Add debug env var
-- [ ] gRPC API
+- [X] gRPC API
+- [ ] TLS for Redis
 - [ ] Update docs
 - [ ] final slides
+- [ ] Remove `old/api` and `old/server` before merging

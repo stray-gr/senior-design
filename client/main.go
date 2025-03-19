@@ -23,11 +23,10 @@ const (
 )
 
 func mqttPoll(ctx context.Context) {
-	// Retrieve env vars
 	BROKER_URI, uriOk := os.LookupEnv("BROKER_URI")
 	PASS, passOk := os.LookupEnv("MQTT_CLIENT_PASS")
 	if !uriOk || !passOk {
-		panic("Unable to get environment variables for Mosquitto")
+		panic("Unable to get env vars for Mosquitto")
 	}
 
 	// Parse broker URI

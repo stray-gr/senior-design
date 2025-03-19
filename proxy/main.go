@@ -90,7 +90,6 @@ func mqttPoll(ctx context.Context, rdb *redis.Client) {
 
 	// PROXY ROUTER
 	for mqttMsg := range msgChan {
-		fmt.Println("PROXY  | Got MQTT message on:", mqttMsg.Topic)
 		switch mqttMsg.Topic {
 		case CONNECT_TOPIC:
 			// Decode connect message
@@ -118,6 +117,7 @@ func mqttPoll(ctx context.Context, rdb *redis.Client) {
 
 		default:
 			// Forward message
+			fmt.Println("PROXY  | Got MQTT message on:", mqttMsg.Topic)
 			rdb.Publish(ctx, mqttMsg.Topic, mqttMsg.Payload)
 		}
 	}

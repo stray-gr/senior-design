@@ -69,7 +69,7 @@ func main() {
 	itr := 0
 	for {
 		// If DEBUG, update itr and maybe exit
-		if DEBUG == "1" {
+		if DEBUG != "0" {
 			if itr < 4 {
 				itr += 1
 			} else {

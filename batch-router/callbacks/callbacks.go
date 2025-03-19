@@ -30,22 +30,21 @@ func (Sensor) TableName() string {
 }
 
 // NOTE: Make sure to RPOP when consuming
-func SensorData(ctx context.Context, rdb *redis.Client, sinkQ string) {
-	fmt.Println("SERVER | SensorData callback on:", sinkQ)
+func SensorData(ctx context.Context, sinkQ string) {
+	fmt.Println("SensorData | Callback with queue:", sinkQ)
 
-	// Get DB connection pool and facility ID from context
 	db, okDB := ctx.Value("DB").(*gorm.DB)
 	id, okID := ctx.Value("ID").(int32)
+	rdb, okRDB := ctx.Value("REDIS_CLIENT").(*redis.Client)
 	DEBUG, okDebug := ctx.Value("DEBUG").(string)
-	if !okDB || !okID || !okDebug {
-		fmt.Println("SERVER | ERROR - SensorData: Unable to retreive values from context")
-		return
+	if !okDB || !okID || !okRDB || !okDebug {
+		panic("Unable to retreive values from context")
 	}
 
 	// Read queue length
 	sinkLen, err := rdb.LLen(ctx, sinkQ).Result()
 	if err != nil {
-		fmt.Println("SERVER | ERROR - SensorData:", err)
+		fmt.Println("SensorData | ERROR - LLen:", err)
 		return
 	}
 
@@ -56,7 +55,7 @@ func SensorData(ctx context.Context, rdb *redis.Client, sinkQ string) {
 			// Consume protobuf message or try again
 			pb, err := rdb.RPop(ctx, sinkQ).Bytes()
 			if err != nil {
-				fmt.Println("SERVER | ERROR - SensorData:", err)
+				fmt.Println("SensorData | ERROR - RPop:", err)
 				continue
 			}
 
@@ -67,7 +66,7 @@ func SensorData(ctx context.Context, rdb *redis.Client, sinkQ string) {
 			in := &msg.SensorData{}
 			err = proto.Unmarshal(pb, in)
 			if err != nil {
-				fmt.Println("SERVER | ERROR - SensorData:", err)
+				fmt.Println("SensorData | ERROR - PB Unmarshal:", err)
 				continue
 			}
 
@@ -93,47 +92,37 @@ func SensorData(ctx context.Context, rdb *redis.Client, sinkQ string) {
 	for {
 		err := rdb.Del(ctx, sinkQ).Err()
 		if err != nil {
-			fmt.Println("SERVER | ERROR - SensorData:", err)
+			fmt.Println("SensorData | ERROR - Del:", err)
 			continue
 		}
 		break
 	}
 
-	if DEBUG == "1" {
-		// Encode LWT message
-		lwt := &msg.LWT{
-			Device: "client",
-			Delay:  0,
-		}
-		out, err := proto.Marshal(lwt)
-		if err != nil {
-			return
-		}
-
+	if DEBUG != "0" {
 		// Create test queue
-		rdb.LPush(ctx, "test", out)
-		rdb.LPush(ctx, "test", out)
+		rdb.LPush(ctx, "test", "client")
+		rdb.LPush(ctx, "test", "client")
 
 		// Call LWT
-		LWT(ctx, rdb, "test")
+		LWT(ctx, "test")
 	}
 }
 
 // NOTE: Make sure to RPOP when consuming
-func LWT(ctx context.Context, rdb *redis.Client, sinkQ string) {
-	fmt.Println("SERVER | LWT callback on:", sinkQ)
+func LWT(ctx context.Context, sinkQ string) {
+	fmt.Println("LWT | Callback with queue:", sinkQ)
 
-	// Get Bot ID from context
+	// Get Bot ID and Redis client from context
 	botID, okBot := ctx.Value("BOT").(string)
-	if !okBot {
-		fmt.Println("SERVER | ERROR - LWT: Unable to retreive values from context")
-		return
+	rdb, okRDB := ctx.Value("REDIS_CLIENT").(*redis.Client)
+	if !okBot || !okRDB {
+		panic("Unable to retreive values from context")
 	}
 
 	// Read queue length
 	sinkLen, err := rdb.LLen(ctx, sinkQ).Result()
 	if err != nil {
-		fmt.Println("SERVER | ERROR - LWT:", err)
+		fmt.Println("LWT | ERROR - LLen:", err)
 		return
 	}
 
@@ -144,25 +133,17 @@ func LWT(ctx context.Context, rdb *redis.Client, sinkQ string) {
 	i := 0
 	for i < int(sinkLen) {
 		// Consume protobuf message or try again
-		pb, err := rdb.RPop(ctx, sinkQ).Bytes()
+		devName, err := rdb.RPop(ctx, sinkQ).Result()
 		if err != nil {
-			fmt.Println("SERVER | ERROR - LWT:", err)
+			fmt.Println("LWT | ERROR - RPop:", err)
 			continue
 		}
 
 		// Message consumed, update count
 		i += 1
 
-		// Decode protobuf message or skip it
-		in := &msg.LWT{}
-		err = proto.Unmarshal(pb, in)
-		if err != nil {
-			fmt.Println("SERVER | ERROR - LWT:", err)
-			continue
-		}
-
 		// Collect data into string
-		sb.WriteString(fmt.Sprintf("> %s\n", in.Device))
+		sb.WriteString(fmt.Sprintf("> %s\n", devName))
 	}
 
 	// Send outage report
@@ -175,16 +156,16 @@ func LWT(ctx context.Context, rdb *redis.Client, sinkQ string) {
 		"application/x-www-form-urlencoded", nil,
 	)
 	if err != nil {
-		fmt.Println("SERVER | ERROR - LWT:", err)
+		fmt.Println("LWT | ERROR - Post:", err)
 	} else {
-		fmt.Println("SERVER | LWT:", resp.Status)
+		fmt.Println("LWT | INFO - Post:", resp.Status)
 	}
 
 	// Make sure sink queue gets deleted
 	for {
 		err := rdb.Del(ctx, sinkQ).Err()
 		if err != nil {
-			fmt.Println("SERVER | ERROR - LWT:", err)
+			fmt.Println("LWT | ERROR - Del:", err)
 			continue
 		}
 		break

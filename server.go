@@ -11,6 +11,7 @@ import (
 	"github.com/redis/go-redis/v9"
 )
 
+// TODO: Split into routines.go types.go
 type (
 	batch struct {
 		sourceQ  string
@@ -47,7 +48,7 @@ func NewBatch(sourceQ string, minSize, maxSize int, timeout float64, callback cb
 	return &b
 }
 
-// Queues new messages
+// TODO: Routes new MQTT messages to Redis
 func msgPoll(ctx context.Context, rdb *redis.Client, batches BatchMap) {
 	// Make array to store topic names
 	topicNames := make([]string, len(batches))
@@ -72,7 +73,9 @@ func msgPoll(ctx context.Context, rdb *redis.Client, batches BatchMap) {
 	}
 }
 
-// Monitors each queue
+// TODO: devicePoll, listens to key expiry events and routes them back to mqtt
+
+// Monitors each redis queue
 func queuePoll(ctx context.Context, rdb *redis.Client, batches BatchMap, taskPool chan task) {
 	for {
 		// Monitor queues of each batch
@@ -125,7 +128,7 @@ func queuePoll(ctx context.Context, rdb *redis.Client, batches BatchMap, taskPoo
 	}
 }
 
-func Start(ctx context.Context, batches BatchMap) {
+func falseStart(ctx context.Context, batches BatchMap) {
 	// Get CPU count
 	cpus := runtime.GOMAXPROCS(0)
 

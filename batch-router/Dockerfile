@@ -24,9 +24,7 @@ COPY ca.crt /usr/local/share/ca-certificates/ca.crt
 RUN update-ca-certificates
 
 # Upload client certs
-# RUN
-COPY client.crt /certs/client.crt
-COPY client.key /certs/client.key
+COPY certs/ /certs/
 
 # Copy the server binary from the previous stage, then run it
 COPY --from=build /usr/local/bin/batch-router /usr/local/bin/batch-router

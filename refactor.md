@@ -52,7 +52,7 @@ mqttx sub -h localhost -p 1883 -t "data/sensor" -Pp ./msg.proto -Pmn msg.SensorD
 - [X] batch-router callbacks
 - [X] Add debug env var
 - [X] gRPC API
-- [ ] TLS and persistence for Redis
+- [X] TLS and persistence for Redis
 - [X] Remove `old/api`, `old/server`, and `proxy` 
 - [ ] Update docs
 - [ ] final slides
@@ -62,4 +62,4 @@ mqttx sub -h localhost -p 1883 -t "data/sensor" -Pp ./msg.proto -Pmn msg.SensorD
     1. connect topic - mqtt proxy will set redis key by device name (no expiration) for each message
     2. lwt topic - mqtt proxy will set redis key by device name (expiration defined by message) for each message
     3. lwt queue - timeout poll will forward the device names of expired keys to here for processing. set lwt to false to disable
-- All other channels are user-defined w/out special rules and restrictions
+- All other topics are user-defined w/out special rules and restrictions. Queues use topic names

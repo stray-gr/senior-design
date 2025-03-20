@@ -17,6 +17,8 @@ services:
     build: redis/
     ports:
       - "6379:6379"
+    volumes:
+      - rdb:/rdb
     networks:
       - redis
 
@@ -97,3 +99,4 @@ networks:
 
 volumes: 
   db:
+  rdb:

@@ -6,9 +6,11 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+	"time"
 
 	"github.com/redis/go-redis/v9"
 	"github.com/stray-gr/senior-design/batch-router/msg"
+	"github.com/stray-gr/senior-design/batch-router/server"
 	"google.golang.org/protobuf/proto"
 	"gorm.io/gorm"
 )
@@ -33,11 +35,10 @@ func (Sensor) TableName() string {
 func SensorData(ctx context.Context, sinkQ string) {
 	fmt.Println("SensorData | Callback with queue:", sinkQ)
 
-	db, okDB := ctx.Value("DB").(*gorm.DB)
-	id, okID := ctx.Value("ID").(int32)
+	facility, okFacility := ctx.Value("PG_CLIENT").(*server.PgClient)
 	rdb, okRDB := ctx.Value("REDIS_CLIENT").(*redis.Client)
 	DEBUG, okDebug := ctx.Value("DEBUG").(string)
-	if !okDB || !okID || !okRDB || !okDebug {
+	if !okFacility || !okRDB || !okDebug {
 		panic("Unable to retreive values from context")
 	}
 
@@ -49,7 +50,7 @@ func SensorData(ctx context.Context, sinkQ string) {
 	}
 
 	// Commit data to DB
-	db.Transaction(func(tx *gorm.DB) error {
+	facility.DB.Transaction(func(tx *gorm.DB) error {
 		i := 0
 		for i < int(sinkLen) {
 			// Consume protobuf message or try again
@@ -72,7 +73,7 @@ func SensorData(ctx context.Context, sinkQ string) {
 
 			// Insert data into DB or rollback transaction
 			entry := &Sensor{
-				FacilityId: id,
+				FacilityId: facility.ID,
 				Device:     in.Device,
 				Temp:       in.Temp,
 				Rh:         in.Rh,
@@ -99,12 +100,8 @@ func SensorData(ctx context.Context, sinkQ string) {
 	}
 
 	if DEBUG != "0" {
-		// Create test queue
-		rdb.LPush(ctx, "test", "client")
-		rdb.LPush(ctx, "test", "client")
-
-		// Call LWT
-		LWT(ctx, "test")
+		// Add device key with 250ms expiration time
+		rdb.Set(ctx, "test", "", time.Duration(250)*time.Millisecond)
 	}
 }
 

@@ -29,16 +29,14 @@ go get google.golang.org/protobuf/proto
 sudo service mosquitto stop
 sudo service redis-server stop
 
-mosquitto
-redis-server
+dc build && dc up
 
-redis-cli config set notify-keyspace-events Ex
+# Wait, then check groupme for two outage reports
 
-# New terminals
-cd proxy/ && go run main.go
-cd batch-router/ && go run main.go
-cd client/ && go run main.go
-cd clock/ && go run main.go 
+# New terminal
+cd api/client/
+source .venv/bin/activate
+python client/main.py  # Next test should yield 1 - 16 (at 12 rn)
 ```
 
 # MQTTX PUB/SUB using protobuf
@@ -55,7 +53,7 @@ mqttx sub -h localhost -p 1883 -t "data/sensor" -Pp ./msg.proto -Pmn msg.SensorD
 - [X] Add debug env var
 - [X] gRPC API
 - [ ] TLS and persistence for Redis
-- [ ] Remove `old/api`, `old/server`, and `proxy` 
+- [X] Remove `old/api`, `old/server`, and `proxy` 
 - [ ] Update docs
 - [ ] final slides
 

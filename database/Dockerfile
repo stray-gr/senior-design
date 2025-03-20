@@ -1,5 +1,5 @@
 #########################################################
-# Inherit the Postgres 17 Debian Bookworm  docker image #
+# Inherit the Postgres 17 Debian Bookworm docker image #
 #########################################################
 FROM postgres:17-bookworm
 
@@ -18,4 +18,4 @@ USER postgres
 # Open port 5432 on the container
 EXPOSE 5432
 
-# WARNING: DO NOT ADD AN ENTRYPOINT OR CMD... ISSUES DOCKER VOLUMES WILL ARISE
+# WARNING: DO NOT ADD AN ENTRYPOINT OR CMD... DOCKER VOLUME ISSUES WILL ARISE

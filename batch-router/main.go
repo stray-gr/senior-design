@@ -11,8 +11,8 @@ import (
 func main() {
 	// Create batches
 	batches := server.BatchMap{
-		"data/sensor": server.NewBatch("sen_src", 1, 2, 5, callbacks.SensorData),
-		"lwt":         server.NewBatch("lwt_src", 1, 2, 5, callbacks.LWT),
+		"data/sensor": server.NewBatch(1, 2, 5, callbacks.SensorData),
+		"lwt":         server.NewBatch(1, 2, 5, callbacks.LWT),
 	}
 
 	GROUPME_BOT_ID, okBot := os.LookupEnv("GROUPME_BOT_ID")

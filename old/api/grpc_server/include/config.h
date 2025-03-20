@@ -1,6 +1,0 @@
-#ifndef PROJECT_CONFIG
-#define PROJECT_CONFIG
-
-#define MAX_DB_CONN_POOL_SIZE 4
-
-#endif

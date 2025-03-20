@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"crypto/tls"
 	"fmt"
 	"net/url"
 	"os"
@@ -19,7 +20,6 @@ import (
 // Private types
 type (
 	batch struct {
-		sourceQ  string
 		minSize  int64
 		maxSize  int64
 		timeout  float64
@@ -34,11 +34,6 @@ type (
 		msgChan chan *paho.Publish
 	}
 
-	pgClient struct {
-		id int32
-		db *gorm.DB
-	}
-
 	task struct {
 		ctx      context.Context
 		sinkQ    string
@@ -49,12 +44,16 @@ type (
 // Public types
 type (
 	BatchMap = map[string]*batch
+
+	PgClient struct {
+		ID int32
+		DB *gorm.DB
+	}
 )
 
 // Type constructors
-func NewBatch(sourceQ string, minSize, maxSize int, timeout float64, callback cb) *batch {
+func NewBatch(minSize, maxSize int, timeout float64, callback cb) *batch {
 	return &batch{
-		sourceQ,
 		int64(minSize),
 		int64(maxSize),
 		timeout,
@@ -124,7 +123,7 @@ func NewMqttClient(ctx context.Context) *mqttClient {
 	}
 }
 
-func NewPgClient() *pgClient {
+func NewPgClient() *PgClient {
 	// Get postgres env vars
 	F_CONN_STR, okConn := os.LookupEnv("F_CONN_STR")
 	F_ID, okID := os.LookupEnv("F_ID")
@@ -153,9 +152,9 @@ func NewPgClient() *pgClient {
 	sqlDB.SetMaxOpenConns(runtime.GOMAXPROCS(0))
 
 	// Return client
-	return &pgClient{
-		id: id,
-		db: db,
+	return &PgClient{
+		ID: id,
+		DB: db,
 	}
 }
 
@@ -166,6 +165,12 @@ func NewRedisClient() *redis.Client {
 		panic("Mising env vars for RedisClient")
 	}
 
+	// Paths defined in Dockerfile
+	cert, err := tls.LoadX509KeyPair("/certs/client.crt", "/certs/client.key")
+	if err != nil {
+		panic(err)
+	}
+
 	// Create and return client
 	return redis.NewClient(&redis.Options{
 		Addr:     REDIS_ADDR,
@@ -173,5 +178,8 @@ func NewRedisClient() *redis.Client {
 		Password: "",
 		DB:       0,
 		PoolSize: runtime.GOMAXPROCS(0),
+		TLSConfig: &tls.Config{
+			Certificates: []tls.Certificate{cert},
+		},
 	})
 }

@@ -54,7 +54,6 @@ func mqttPoll(ctx context.Context) {
 		ConnectUsername:               USER,
 		ConnectPassword:               []byte(PASS),
 		WillMessage: &paho.WillMessage{
-			Retain:  true,
 			QoS:     1,
 			Topic:   LWT_TOPIC,
 			Payload: out,

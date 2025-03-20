@@ -56,12 +56,10 @@ func mqttProxy(ctx context.Context, batches BatchMap) {
 
 		// Forward message to queue
 		default:
-			b, found := batches[mqttMsg.Topic]
-			if !found {
-				fmt.Println("mqttProxy | Warning - Got MQTT message on:", mqttMsg.Topic)
-				continue
+			_, found := batches[mqttMsg.Topic]
+			if found {
+				rdb.LPush(ctx, mqttMsg.Topic, mqttMsg.Payload)
 			}
-			rdb.LPush(ctx, b.sourceQ, mqttMsg.Payload)
 		}
 	}
 }
@@ -98,7 +96,7 @@ func queueManager(ctx context.Context, batches BatchMap, taskPool chan task) {
 			b := batches[topic]
 
 			// Get source queue size
-			srcLen, err := rdb.LLen(ctx, b.sourceQ).Result()
+			srcLen, err := rdb.LLen(ctx, topic).Result()
 			if err != nil {
 				fmt.Println("queueManager | ERROR - Unable to get source queue size:", err)
 				continue
@@ -119,7 +117,7 @@ func queueManager(ctx context.Context, batches BatchMap, taskPool chan task) {
 				sinkQ := uuid.New().String()
 
 				// Transfer messages to sink queue
-				err := rdb.Copy(ctx, b.sourceQ, sinkQ, 0, true).Err()
+				err := rdb.Copy(ctx, topic, sinkQ, 0, true).Err()
 				if err != nil {
 					fmt.Println("queueManager | ERROR - Unable to transfer messages to sink queue:", err)
 					continue
@@ -127,7 +125,7 @@ func queueManager(ctx context.Context, batches BatchMap, taskPool chan task) {
 
 				// Make sure source queue gets reset
 				for {
-					err = rdb.Del(ctx, b.sourceQ).Err()
+					err = rdb.Del(ctx, topic).Err()
 					if err != nil {
 						fmt.Println("queueManager | ERROR - Unable to clear source queue:", err)
 						continue

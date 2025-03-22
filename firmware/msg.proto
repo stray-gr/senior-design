@@ -1,0 +1,6 @@
+syntax = "proto3";
+
+message Cat {
+    string name = 1;
+    int32  age  = 2;
+}

@@ -1,3 +1,11 @@
 [firmware]
 wifi_ssid = ""
 wifi_pass = ""
+broker_uri = ""
+mqtt_user = ""
+mqtt_pass = ""
+connect_topic = ""
+pulse_topic = ""
+data_topic = ""
+lwt_topic = ""
+lwt_delay = 0

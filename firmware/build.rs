@@ -3,7 +3,9 @@ fn build_msg() {
     let mut pb_gen = micropb_gen::Generator::new();
     pb_gen
         .use_container_heapless()
-        .configure(".Cat.name", micropb_gen::Config::new().max_bytes(36))
+        .configure(".Connect.device", micropb_gen::Config::new().max_bytes(36))
+        .configure(".LWT.device", micropb_gen::Config::new().max_bytes(36))
+        .configure(".SensorData.device", micropb_gen::Config::new().max_bytes(36))
         .compile_protos(
             &["msg.proto"], 
             "src/msg.rs",

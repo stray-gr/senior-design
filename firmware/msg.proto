@@ -1,6 +1,17 @@
 syntax = "proto3";
 
-message Cat {
-    string name = 1;
-    int32  age  = 2;
+message Connect {
+    string device = 1;
+}
+
+message LWT {
+    string device = 1;
+    int64  delay = 2;
+}
+
+message SensorData {
+    string device = 1;
+    float  temp = 2;
+    float  rh = 3;
+    int64  epoch = 4;
 }

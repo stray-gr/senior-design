@@ -1,11 +1,26 @@
-use log::*;
-use std::str::FromStr;
+use std::{str::FromStr, time::{Duration, SystemTime}};
 
+use log::*;
 use esp_idf_svc::{
-    eventloop::EspSystemEventLoop, hal::prelude::Peripherals, mqtt::client::{
-        EspMqttClient, EspMqttConnection, EventPayload, LwtConfiguration, MqttClientConfiguration, MqttProtocolVersion, QoS
-    }, nvs::EspDefaultNvsPartition, sntp, sys::EspError, tls::X509, wifi::{
-        AuthMethod, BlockingWifi, ClientConfiguration, Configuration, EspWifi
+    eventloop::EspSystemEventLoop, 
+    hal::prelude::Peripherals, 
+    mqtt::client::{
+        EspMqttClient, 
+        EspMqttConnection, 
+        EventPayload, 
+        LwtConfiguration, 
+        MqttClientConfiguration, 
+        MqttProtocolVersion, 
+        QoS
+    }, 
+    nvs::EspDefaultNvsPartition, 
+    sntp, sys::EspError, tls::X509, 
+    wifi::{
+        AuthMethod, 
+        BlockingWifi, 
+        ClientConfiguration, 
+        Configuration, 
+        EspWifi
     }
 };
 use micropb::{
@@ -60,41 +75,12 @@ fn main() {
     let _sntp = sntp::EspSntp::new_default().unwrap();
     info!("Set up SNTP");
 
-    // Create LWT message
-    let lwt_msg= msg::LWT {
-        device: String::from_str(CONFIG.mqtt_user).unwrap(),
-        delay: CONFIG.lwt_delay,
-    };
-
-    // Encode LWT message
-    let mut lwt_encoder = PbEncoder::new(Vec::<u8, 44>::new());
-    lwt_msg.compute_size();
-    lwt_msg.encode(&mut lwt_encoder).unwrap();
-    let lwt_payload = lwt_encoder.into_writer();
-
     // Create MQTT client 
-    let (mut mqtt_client, mut mqtt_conn) = EspMqttClient::new(
-        CONFIG.broker_uri,
-        &MqttClientConfiguration {
-            protocol_version: Some(MqttProtocolVersion::V3_1_1),
-            lwt: Some(LwtConfiguration{
-                topic: CONFIG.lwt_topic,
-                payload: &lwt_payload,
-                qos: QoS::AtLeastOnce,
-                retain: false,
-            }),
-            buffer_size: 1024,
-            out_buffer_size: 1024,
-            // username: Some(CONFIG.mqtt_user),
-            // password: Some(CONFIG.mqtt_pass),
-            server_certificate: Some(X509::pem_until_nul(CA_CERT.as_bytes())),
-            ..Default::default()
-        }
-    ).unwrap();
+    let (mut mqtt_client, mut mqtt_conn) = init_mqtt().unwrap();
     info!("MQTT Client created");
 
+    // Poll MQTT broker
     poll_mqtt(&mut mqtt_client, &mut mqtt_conn).unwrap();
-
 }
 
 fn init_wifi() -> Result<BlockingWifi<EspWifi<'static>>, EspError> {
@@ -108,7 +94,6 @@ fn init_wifi() -> Result<BlockingWifi<EspWifi<'static>>, EspError> {
         EspWifi::new(periph.modem, sys_loop.clone(), Some(nvs))?, 
         sys_loop
     )?;
-
 
     // Config wifi client
     wifi_client.set_configuration(&Configuration::Client(ClientConfiguration {
@@ -125,50 +110,68 @@ fn init_wifi() -> Result<BlockingWifi<EspWifi<'static>>, EspError> {
     wifi_client.connect()?;
     wifi_client.wait_netif_up()?;
 
-    // Return client to calling scope
-    return Ok(wifi_client);
+    Ok(wifi_client)
+}
+
+fn init_mqtt() -> Result<(EspMqttClient<'static>, EspMqttConnection), EspError> {
+    // Create LWT message
+    let lwt_msg= msg::LWT {
+        device: String::from_str(CONFIG.mqtt_user).unwrap(),
+        delay: CONFIG.lwt_delay,
+    };
+
+    // Encode LWT message
+    let mut encoder = PbEncoder::new(Vec::<u8, 44>::new());
+    lwt_msg.compute_size();
+    lwt_msg.encode(&mut encoder).unwrap();
+    let payload = encoder.into_writer();
+
+    // Create MQTT client 
+    let (mqtt_client, mqtt_conn) = EspMqttClient::new(
+        CONFIG.broker_uri,
+        &MqttClientConfiguration {
+            protocol_version: Some(MqttProtocolVersion::V3_1_1),
+            lwt: Some(LwtConfiguration{
+                topic: CONFIG.lwt_topic,
+                payload: &payload,
+                qos: QoS::AtLeastOnce,
+                retain: false,
+            }),
+            buffer_size: 1024,
+            out_buffer_size: 1024,
+            // username: Some(CONFIG.mqtt_user),
+            // password: Some(CONFIG.mqtt_pass),
+            server_certificate: Some(X509::pem_until_nul(CA_CERT.as_bytes())),
+            ..Default::default()
+        }
+    )?;
+
+    Ok((mqtt_client, mqtt_conn))
 }
 
 fn poll_mqtt(client: &mut EspMqttClient<'_>, conn: &mut EspMqttConnection) -> Result<(), EspError> {
+    let (tx, rx) = std::sync::mpsc::sync_channel::<bool>(0);
+
+    // Iterate over connection events or exit on fail
     std::thread::scope(|s| {
-        // Iterate over connection events or exit on fail
         std::thread::Builder::new().stack_size(6000).spawn_scoped(s, move || {
             while let Ok(event) = conn.next() {
                 match event.payload() {
-                    // On connection to broker, send a connect message
-                    EventPayload::Connected(true) => {
-                        let payload = create_connect_msg().unwrap();
-                        client.enqueue(
-                            CONFIG.connect_topic, 
-                            QoS::AtLeastOnce, 
-                            false, 
-                            &payload
-                        ).unwrap();
-                    }
-
                     // Handle subscription message event by topic
                     EventPayload::Received { 
                         id: _,
                         topic, 
-                        data: _, 
+                        data: _,
                         details : _,
                     } => {
                         match topic {
                             // Topic exists
                             Some(topic) => {
                                 info!("Recieved message from {}", topic);
+                                
+                                // Got a pulse, send sensor data
                                 if topic == CONFIG.pulse_topic {
-                                    if let Ok(payload) = create_sensor_data() {
-                                        client.enqueue(
-                                            CONFIG.data_topic, 
-                                            QoS::AtLeastOnce, 
-                                            false, 
-                                            &payload
-                                        ).unwrap();
-                                        info!("Sent sensor data message")
-                                    } else {
-                                        error!("Unable to encode sensor data message")
-                                    }
+                                    tx.send(true).unwrap();
                                 }
                             },
 
@@ -183,8 +186,50 @@ fn poll_mqtt(client: &mut EspMqttClient<'_>, conn: &mut EspMqttConnection) -> Re
             }
         }).unwrap();
 
-        Ok(())
-    })
+        // Subscribe to pulse topic
+        loop {
+            match client.subscribe(CONFIG.pulse_topic, QoS::AtLeastOnce) {
+                Err(e) => {
+                    error!("Unable to subscribe to {}: {:?}", CONFIG.pulse_topic, e);
+                    std::thread::sleep(Duration::from_millis(500));
+                    continue;
+                }
+                Ok(_) => {
+                    info!("Subscribed to {}", CONFIG.pulse_topic);
+                    break;
+                }
+            }
+        }
+
+        // Send connection message
+        let payload = create_connect_msg().unwrap();
+        client.enqueue(
+            CONFIG.connect_topic, 
+            QoS::AtLeastOnce, 
+            false, 
+            &payload
+        ).unwrap();
+        info!("Connection message sent");
+
+        info!("Listening for pulses");
+        while let Ok(_) = rx.recv() {
+            // NOTE: Could replace channel type with an Enum if more message types are needed
+            match create_sensor_data() {
+                Ok(payload) => {
+                    client.enqueue(
+                        CONFIG.data_topic, 
+                        QoS::AtLeastOnce, 
+                        false, 
+                        &payload
+                    ).unwrap();
+                    info!("Sent sensor data message")
+                },
+                Err(e) => error!("{:?}", e),
+            }
+        }
+    });
+
+    Ok(())
 }
 
 fn create_connect_msg() -> Result<Vec<u8, 36>, EspError> {
@@ -202,19 +247,24 @@ fn create_connect_msg() -> Result<Vec<u8, 36>, EspError> {
     Ok(payload)
 }
 
-fn create_sensor_data() -> Result<Vec<u8, 52>, EspError> {
+fn create_sensor_data() -> Result<Vec<u8, 52>, ()> {
+    // Get current time
+    let now = SystemTime::now();
+    let epoch_u64 = now.duration_since(SystemTime::UNIX_EPOCH).unwrap().as_secs();
+    let epoch_i64 = epoch_u64 as i64;
+
     // Create sensor data message
     let data_msg = msg::SensorData {
         device: String::from_str(CONFIG.mqtt_user).unwrap(),
         temp: 30.1,
         rh: 50.5,
-        epoch: 10,
+        epoch: epoch_i64,
     };
 
     // Encode connect message
     let mut encoder = PbEncoder::new(Vec::<u8, 52>::new());
     data_msg.compute_size();
-    data_msg.encode(&mut encoder).unwrap();
+    data_msg.encode(&mut encoder)?;
     let payload = encoder.into_writer();
 
     Ok(payload)

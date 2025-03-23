@@ -27,6 +27,8 @@ log = "0.4"
 esp-idf-svc = { version = "0.51", features = ["critical-section", "embassy-time-driver", "embassy-sync"] }
 micropb = {version = "0.1.0", features = ["container-heapless"]}
 toml-cfg = "0.2.0"
+esp-idf-hal = "0.45.2"
+embedded-dht-rs = { version = "0.4.0", features = ["dht22"] }
 
 [build-dependencies]
 embuild = "0.33"

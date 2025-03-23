@@ -1,9 +1,12 @@
 use std::{str::FromStr, time::{Duration, SystemTime}};
 
 use log::*;
+use embedded_dht_rs::dht22;
+use esp_idf_hal::{
+    delay, gpio, prelude::Peripherals
+};
 use esp_idf_svc::{
     eventloop::EspSystemEventLoop, 
-    hal::prelude::Peripherals, 
     mqtt::client::{
         EspMqttClient, 
         EspMqttConnection, 
@@ -248,6 +251,15 @@ fn create_connect_msg() -> Result<Vec<u8, 36>, EspError> {
 }
 
 fn create_sensor_data() -> Result<Vec<u8, 52>, ()> {
+    // // Grab system peripherals
+    let periph = Peripherals::take().unwrap();
+    let p = gpio::PinDriver::input_output_od(periph.pins.gpio4).unwrap();
+    let d = delay::Delay::new_default();
+
+    // Read temp and relative humidity
+    let mut sensor = dht22::Dht22::new(p, d);
+    let data = sensor.read().unwrap();
+
     // Get current time
     let now = SystemTime::now();
     let epoch_u64 = now.duration_since(SystemTime::UNIX_EPOCH).unwrap().as_secs();
@@ -256,8 +268,8 @@ fn create_sensor_data() -> Result<Vec<u8, 52>, ()> {
     // Create sensor data message
     let data_msg = msg::SensorData {
         device: String::from_str(CONFIG.mqtt_user).unwrap(),
-        temp: 30.1,
-        rh: 50.5,
+        temp: data.temperature,
+        rh: data.humidity,
         epoch: epoch_i64,
     };
 

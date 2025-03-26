@@ -1,10 +1,7 @@
-use std::{str::FromStr, time::{Duration, SystemTime}};
-
+// Official crates
 use log::*;
-use embedded_dht_rs::dht22;
-use esp_idf_hal::{
-    delay, gpio, prelude::Peripherals
-};
+use std::{str::FromStr, time::{Duration, SystemTime}};
+use esp_idf_hal::{delay, gpio::{self, Gpio4}, modem::Modem, prelude::Peripherals};
 use esp_idf_svc::{
     eventloop::EspSystemEventLoop, 
     mqtt::client::{
@@ -26,11 +23,18 @@ use esp_idf_svc::{
         EspWifi
     }
 };
+
+// Third-party crates
+use embedded_dht_rs::dht22;
 use micropb::{
     heapless::{String, Vec},
     MessageEncode, PbEncoder
 };
 
+// CA Cert
+const CA_CERT: &str = concat!(include_str!("mosquitto.org.crt"), '\0');
+
+// Env vars
 #[toml_cfg::toml_config]
 pub struct Config {
     #[default("")]
@@ -57,8 +61,13 @@ pub struct Config {
     lwt_delay: i64,
 }
 
-const CA_CERT: &str = concat!(include_str!("mosquitto.org.crt"), '\0');
+// Protobuf message types
+enum MsgType {
+    Pulse,
+}
 
+
+// Protobuf message definitions
 mod msg {
     #![allow(clippy::all)]
     #![allow(nonstandard_style, unused, irrefutable_let_patterns)]
@@ -69,9 +78,14 @@ fn main() {
     // Init board
     esp_idf_svc::sys::link_patches();
     esp_idf_svc::log::EspLogger::initialize_default();
+    
+    // Grab system peripherals
+    let periph = Peripherals::take().unwrap();
+    let modem = periph.modem;
+    let mut pin4 = periph.pins.gpio4;
 
     // Connect to wifi
-    let _wifi = init_wifi().unwrap();
+    let _wifi = init_wifi(modem).unwrap();
     info!("Connected to wifi");
 
     // Set up SNTP
@@ -83,18 +97,16 @@ fn main() {
     info!("MQTT Client created");
 
     // Poll MQTT broker
-    poll_mqtt(&mut mqtt_client, &mut mqtt_conn).unwrap();
+    poll_mqtt(&mut mqtt_client, &mut mqtt_conn, &mut pin4).unwrap();
 }
 
-fn init_wifi() -> Result<BlockingWifi<EspWifi<'static>>, EspError> {
-    // Grab system peripherals
-    let periph = Peripherals::take().unwrap();
+fn init_wifi(modem: Modem) -> Result<BlockingWifi<EspWifi<'static>>, EspError> {
     let sys_loop = EspSystemEventLoop::take().unwrap();
     let nvs = EspDefaultNvsPartition::take().unwrap();
 
     // Create wifi client
     let mut wifi_client = BlockingWifi::wrap(
-        EspWifi::new(periph.modem, sys_loop.clone(), Some(nvs))?, 
+        EspWifi::new(modem, sys_loop.clone(), Some(nvs))?, 
         sys_loop
     )?;
 
@@ -152,10 +164,15 @@ fn init_mqtt() -> Result<(EspMqttClient<'static>, EspMqttConnection), EspError> 
     Ok((mqtt_client, mqtt_conn))
 }
 
-fn poll_mqtt(client: &mut EspMqttClient<'_>, conn: &mut EspMqttConnection) -> Result<(), EspError> {
-    let (tx, rx) = std::sync::mpsc::sync_channel::<bool>(0);
+fn poll_mqtt(
+    client: &mut EspMqttClient<'_>, 
+    conn: &mut EspMqttConnection,
+    pin4: &mut Gpio4
+) -> Result<(), EspError> {
+    // Create bounded mpsc channel between connection and message eval loops
+    let (tx, rx) = std::sync::mpsc::sync_channel::<MsgType>(0);
 
-    // Iterate over connection events or exit on fail
+    // Connection Loop: Iterate over connection events or exit on fail
     std::thread::scope(|s| {
         std::thread::Builder::new().stack_size(6000).spawn_scoped(s, move || {
             while let Ok(event) = conn.next() {
@@ -174,7 +191,7 @@ fn poll_mqtt(client: &mut EspMqttClient<'_>, conn: &mut EspMqttConnection) -> Re
                                 
                                 // Got a pulse, send sensor data
                                 if topic == CONFIG.pulse_topic {
-                                    tx.send(true).unwrap();
+                                    tx.send(MsgType::Pulse).unwrap();
                                 }
                             },
 
@@ -212,22 +229,26 @@ fn poll_mqtt(client: &mut EspMqttClient<'_>, conn: &mut EspMqttConnection) -> Re
             false, 
             &payload
         ).unwrap();
-        info!("Connection message sent");
 
-        info!("Listening for pulses");
-        while let Ok(_) = rx.recv() {
-            // NOTE: Could replace channel type with an Enum if more message types are needed
-            match create_sensor_data() {
-                Ok(payload) => {
-                    client.enqueue(
-                        CONFIG.data_topic, 
-                        QoS::AtLeastOnce, 
-                        false, 
-                        &payload
-                    ).unwrap();
-                    info!("Sent sensor data message")
-                },
-                Err(e) => error!("{:?}", e),
+        info!("Connection message sent, listening for pulses");
+
+        // Message Eval Loop: Send sensor data for every mpsc notification
+        while let Ok(msg_type) = rx.recv() {
+            match msg_type {
+                MsgType::Pulse => {
+                    match create_sensor_data(pin4) {
+                        Ok(payload) => {
+                            client.enqueue(
+                                CONFIG.data_topic, 
+                                QoS::AtLeastOnce, 
+                                false, 
+                                &payload
+                            ).unwrap();
+                            info!("Sent sensor data message")
+                        },
+                        Err(e) => error!("{:?}", e),
+                    }
+                }
             }
         }
     });
@@ -250,10 +271,9 @@ fn create_connect_msg() -> Result<Vec<u8, 36>, EspError> {
     Ok(payload)
 }
 
-fn create_sensor_data() -> Result<Vec<u8, 52>, ()> {
+fn create_sensor_data(pin4: &mut Gpio4) -> Result<Vec<u8, 52>, ()> {
     // // Grab system peripherals
-    let periph = Peripherals::take().unwrap();
-    let p = gpio::PinDriver::input_output_od(periph.pins.gpio4).unwrap();
+    let p = gpio::PinDriver::input_output_od(pin4).unwrap();
     let d = delay::Delay::new_default();
 
     // Read temp and relative humidity

@@ -17,15 +17,15 @@
 # Helpers
 Connect:
 ```bash
-mqttx sub -t 2a6e2757e512a3b35aee981c1264992f -V 3.1.1 -h test.mosquitto.org -p 8883 -l mqtts --ca src/mosquitto.org.crt -Pp msg.proto -Pmn Connect
+mqttx sub -t 2a6e2757e512a3b35aee981c1264992f -h test.mosquitto.org -p 8883 -l mqtts --ca src/mosquitto.org.crt -Pp msg.proto -Pmn Connect
 ```
 
 Data:
 ```bash
-mqttx sub -t f64893d750df7bacdae2aafa7744e425 -V 3.1.1 -h test.mosquitto.org -p 8883 -l mqtts --ca src/mosquitto.org.crt -Pp msg.proto -Pmn SensorData
+mqttx sub -t f64893d750df7bacdae2aafa7744e425 -h test.mosquitto.org -p 8883 -l mqtts --ca src/mosquitto.org.crt -Pp msg.proto -Pmn SensorData
 ```
 
 Pulse:
 ```bash
-mqttx pub -t 5d4ff171536e1f3c63afcf6709574876 -m "" -V 3.1.1 -h test.mosquitto.org -p 8883 -l mqtts --ca src/mosquitto.org.crt
+mqttx pub -t 5d4ff171536e1f3c63afcf6709574876 -m "" -h test.mosquitto.org -p 8883 -l mqtts --ca src/mosquitto.org.crt
 ```

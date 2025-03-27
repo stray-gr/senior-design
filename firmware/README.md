@@ -42,7 +42,7 @@ This firmware project demonstrates how ESP32s can be used by data pipelines to c
 1. Connect a red jumper cable from the `3.3V` pin to the DHT22 module's `VCC` pin (+)
 2. Connect a black jumper cable from one of the `GND` pins to the DHT22 module's `GND` pin (-)
 3. Connect another jumper cable from the `D4` GPIO pin to the DHT22 module's `Data` pin (out)
-> **WARNING:** The DHT22 sensor modules come with a 10kΩ pull up resistor and has 3 pins. This is in contrast to a bare DHT22 sensor, which requires an external 10kΩ resistor and has 4 pins
+> **WARNING:** The DHT22 sensor modules have 3 pins and come with an internal 10kΩ pull up resistor. This is in contrast to a bare DHT22 sensor, which requires an external 10kΩ resistor and has 4 pins
 
 # Project Set Up
 1. Install [Espflash](https://github.com/esp-rs/espflash/tree/main/espflash):

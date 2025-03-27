@@ -66,7 +66,6 @@ enum MsgType {
     Pulse,
 }
 
-
 // Protobuf message definitions
 mod msg {
     #![allow(clippy::all)]

@@ -1,4 +1,6 @@
-# Table of Contents
+# Firmware Documentation
+
+## Table of Contents
 - [Project Description](#project-description)
 - [Prerequisites](#prerequisites)
     1. [Hardware Components](#hardware-components)
@@ -11,18 +13,18 @@
 - [Useful References](#useful-references)
 - [Credit](#credit)
 
-# Project Description
-This firmware project demonstrates how ESP32s can be used by data pipelines to collect temperature and humidity readings from sensors such as the DHT22. This project also illustrates how to develop firmware for the ESP32 using Rust, a relatively new programming language that offers improved memory and thread saftey when compared to other languages used for firmware development (e.g. C and C++). Rust also forces explicit error handling via the `Result` and `Option` types. These qualities make it easier to develop more robust firmware
+## Project Description
+This firmware project demonstrates how ESP32s can be used by data pipelines to collect temperature and humidity readings from sensors such as the DHT22. This project also illustrates how to develop firmware for the ESP32 using Rust, a relatively new programming language that offers improved memory and thread saftey when compared to other low level languages (e.g. C and C++). Rust also forces explicit error handling via the `Result` and `Option` types. These qualities make it easier to develop more robust firmware
 
-# Prerequisites
-## Hardware Components
+## Prerequisites
+### Hardware Components
 1. ESP32-WROOM-32 boards
 2. DHT22 sensor modules
 3. Breadboard and jumper cables
     - **WARNING:** The breadboard must have a minimum of 10 rows 
 4. USB to Micro-USB cables
 
-## Software Requirements
+### Software Requirements
 1. Unix-like OS, preferably Ubuntu 24.04 (**WSL works**)
 2. Protobuf compiler (can be installed via `sudo apt install protobuf-compiler` on Ubuntu)
 3. [Visual Studio Code](https://code.visualstudio.com/download), with the following plugins:
@@ -38,13 +40,13 @@ This firmware project demonstrates how ESP32s can be used by data pipelines to c
 9. [Development Requirements](https://docs.esp-rs.org/book/installation/std-requirements.html) for Rust on ESP
 10. If you're using WSL, then use [this](https://learn.microsoft.com/en-us/windows/wsl/connect-usb) guide to install `usbipd` for USB passthrough
 
-# Hardware Set Up
+## Hardware Set Up
 1. Connect a red jumper cable from the `3.3V` pin to the DHT22 module's `VCC` pin (+)
 2. Connect a black jumper cable from one of the `GND` pins to the DHT22 module's `GND` pin (-)
 3. Connect another jumper cable from the `D4` GPIO pin to the DHT22 module's `Data` pin (out)
 > **WARNING:** The DHT22 sensor modules have 3 pins and come with an internal 10kΩ pull up resistor. This is in contrast to a bare DHT22 sensor, which requires an external 10kΩ resistor and has 4 pins
 
-# Project Set Up
+## Project Set Up
 1. Install [Espflash](https://github.com/esp-rs/espflash/tree/main/espflash):
     ```
     cargo binstall espflash
@@ -67,7 +69,7 @@ This firmware project demonstrates how ESP32s can be used by data pipelines to c
     - Select `v5.2` for the ESP-IDf version
     - Select `false` for the remaining options. This will skip dev container creation, Wokwi VS Code extension download, and CI file creation
 
-    ![example](./docs/generate.png)
+    ![example](docs/generate.png)
 
 4. Open the project in VS Code and wait for the *rust-analyzer* plugin to finish initializing 
 5. Add any additional project dependencies (including build and dev dependencies) to the project's ***Cargo.toml***
@@ -79,18 +81,21 @@ This firmware project demonstrates how ESP32s can be used by data pipelines to c
 8. With the project's dependencies and environment variables configured, begin developing your project's firmware until you are ready to flash the board with your firmware
     - **WARNING:** The *rust-analyzer* plugin can sometimes slow down considerably. To remedy this behavior, try refreshing the code editor window by hitting `CTRL + SHIFT + P` and selecting `Developer: Reload Window`
 
-# Flashing Firmware
+## Flashing Firmware
 1. Plug the ESP32 board into your PC using a USB to Micro-USB cable
 2. If you are using WSL, follow [these](https://learn.microsoft.com/en-us/windows/wsl/connect-usb#attach-a-usb-device) instructions to enable USB passthrough to WSL for the ESP32
     - **NOTE:** The ESP32 will likely show up as **CP2102 USB to UART Bridge Controller** when listed
 3. Double check that the ESP32 is detected by running `lsusb` and searching for **Silicon Labs CP210x UART Bridge**
+
+    ![lsusb](docs/lsusb.png)
+
 4. Run `cargo build` to compile the firmware. Doing so may reveal compile-time errors that need to be resolved
 5. Run `cargo run` to flash your firmware to the board
 6. Once the firmware is done flashing, the program will immediately start. The terminal will then serve as a serial monitor which displays the program's output
 7. To exit the serial monitor, hit `CTRL + C`. To reopen serial monitor, run `espflash monitor`
 8. If the program needs to be permanently stopped, exit the serial monitor and run `espflash erase-flash` to wipe the board's flash memory
 
-# Integration Testing
+## Integration Testing
 1. Flash firmware to the board by running `cargo run`
 2. When the firmware is almost done flashing, open a 2nd terminal and subscribe to the *connect* MQTT topic. Then wait for a message to appear:
     ```bash
@@ -108,7 +113,7 @@ This firmware project demonstrates how ESP32s can be used by data pipelines to c
     - **NOTE:** https://www.epochconverter.com/ can be used to quickly convert epoch to timestamp
 6. To disconnect the board from the MQTT broker, switch to the 1st terminal. Then `CTRL + C` out of the serial monitor and run `espflash erase-flash`
 
-# Protobuf Message Definitions
+## Protobuf Message Definitions
 ### Pulse Messages
 - **Topic Name:** `pulse`
 - **Publisher:** Clock App
@@ -156,7 +161,7 @@ This firmware project demonstrates how ESP32s can be used by data pipelines to c
     }
     ```
 
-# Useful References
+## Useful References
 - [The Rust Programming Language Book](https://doc.rust-lang.org/stable/book/title-page.html)
 - [The Rustonomicon](https://doc.rust-lang.org/nightly/nomicon/lifetimes.html)
 - [Rust by Example](https://doc.rust-lang.org/stable/rust-by-example/index.html)
@@ -165,7 +170,7 @@ This firmware project demonstrates how ESP32s can be used by data pipelines to c
 - [DHT22 Datasheet](https://components101.com/sensors/dht22-pinout-specs-datasheet)
 
 
-# Credit
+## Credit
 Special thanks to:
 - GitHub user *ivmarkov* for creating the [SNTP](https://github.com/esp-rs/esp-idf-svc/blob/v0.51.0/examples/sntp.rs) and [MQTT](https://github.com/esp-rs/esp-idf-svc/blob/v0.51.0/examples/mqtt_client.rs) `esp-idf-svc` examples. These examples were which were used by this project to set up SNTP and MQTT
 - GitHub users *embediver*, *ivmarkov*, and *torkleyy* for their contributions to the [TLS](https://github.com/esp-rs/esp-idf-svc/blob/v0.51.0/examples/tls.rs) `esp-idf-svc` example. This example was used by this project set up wifi and TLS

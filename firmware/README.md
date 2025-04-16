@@ -124,7 +124,7 @@ This firmware project demonstrates how ESP32s can be used by data pipelines to c
 ### Connect Messages
 - **Topic Name:** `connect`
 - **Publisher:** Each ESP32 board
-- **Subscribers:** Batch Router
+- **Subscribers:** Batch-Router
 - **QoS:** 1 (at least once)
 - **Payload:**
     ```protobuf
@@ -136,7 +136,7 @@ This firmware project demonstrates how ESP32s can be used by data pipelines to c
 ### LWT Messages
 - **Topic Name:** `lwt`
 - **Publisher:** Each ESP32 board
-- **Subscribers:** Batch Router
+- **Subscribers:** Batch-Router
 - **QoS:** 1 (at least once)
 - **Payload:**
     ```protobuf
@@ -149,7 +149,7 @@ This firmware project demonstrates how ESP32s can be used by data pipelines to c
 ### Sensor Data Messages
 - **Topic Name:** `data/sensor`
 - **Publisher:** Each ESP32 board
-- **Subscribers:** Batch Router
+- **Subscribers:** Batch-Router
 - **QoS:** 1 (at least once)
 - **Payload:**
     ```protobuf

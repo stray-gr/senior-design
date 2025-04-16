@@ -12,9 +12,13 @@
 - [Credit](#credit)
 
 ## Project Description
-This project demonstrates how a data pipeline can be created using microservices that can be deployed locally or in the cloud. This project also illustrates how such microservices can be implemented using Go, a programming language that prioritizes simplicity without heavily sacrificing performance. This is due to Go's straightforward syntax, dependency management, build process, and concurrency management when compared to other systems level languages (e.g. C++).
+This project demonstrates how a data pipeline can be created using microservices written in Go, a programming language that prioritizes simplicity without heavily sacrificing performance. This is due to Go's straightforward syntax, build process, and concurrency management when compared to other systems level languages (e.g. C++). 
 
-TODO: Talk about each microservice
+Listed below is a brief description of each microservice in this project's repo:
+1. [API](api/) - **TODO**
+2. [Batch-Router](batch-router/) - **TODO** 
+3. [Client](client/) - **TODO** 
+4. [Clock](clock/) - **TODO** 
 
 ## Prerequisites
 1. Unix-like OS, preferably Ubuntu 24.04 (**WSL works**)
@@ -96,7 +100,9 @@ TODO: Talk about each microservice
     - Start by installing some dependecies using `go get`. Then add these dependencies to your source code **before** running `go mod tidy`. Doing so will generate a *go.sum* file, which outlines the full dependency tree of your module. As a result, make sure to run `go mod tidy` before committing changes upstream or building your module. That way, others can install the needed dependencies or build the module
     - **WARNING:** Running `go mod tidy` will also remove any unused dependencies. This includes dependencies that you've added but have not yet used in your source code. Therefore, make sure your project's source code is at a good stopping or saving point before running this command. That way, you won't have to re-add any dependencies that haven't been used just quite yet
 
-9. Once you're ready to build and test your microservice, create a *Dockerfile* to build your microservice and include any necessary files (e.g. TLS certs). This *Dockerfile* can then be used to define the microservice in the project's [docker compose](#docker-compose-configuration) file. For an example, refer to the section covering [microservice dockerfile configuration](#microservice-dockerfile-configuration).
+9. If your microservice plans on using a GroupMe chat bot... **TODO**, make sure to shoutout example in batch-router
+
+10. Once you're ready to build and test your microservice, create a *Dockerfile* to build your microservice and include any necessary files (e.g. TLS certs). This *Dockerfile* can then be used to define the microservice in the project's [docker compose](#docker-compose-configuration) file. For an example, refer to the section covering [microservice dockerfile configuration](#microservice-dockerfile-configuration).
 
 ## Microservice Dockerfile Configuration
 The *Dockerfile* used by each microservice in this example repo follows the same overall structure:
@@ -159,8 +165,19 @@ ENTRYPOINT [ "batch-router" ]
 
 ## Docker Compose Configuration
 
-
 ## Integration Testing
+1. Build the services outlined by the project's docker compose using:
+    ```bash
+    docker-compose build
+    ```
+
+    Then, run the services by using
+    ```bash
+    docker-compose run
+    ```
+
+2. Once the services start running, check your GroupMe chat bot if applicable... **TODO** 
+
 ```bash
 sudo service mosquitto stop
 sudo service redis-server stop
@@ -175,27 +192,59 @@ source .venv/bin/activate
 python client/main.py  # Next test should yield 1 - 16 (at 12 rn)
 ```
 
-# MQTTX PUB/SUB using protobuf
-```bash
-cat a.proto | protoc --encode=msg.Cat ./msg.proto | mqttx pub -h localhost -p 1883 -t idk -s
+## Protobuf Message Definitions
+### Pulse Messages
+- **Topic Name:** `pulse`
+- **Publisher:** Clock App
+- **Subscribers:** Each ESP32 board
+- **QoS:** 1 (at least once)
+- **Payload:** empty
 
-mqttx sub -h localhost -p 1883 -t "connect" -Pp ./msg.proto -Pmn msg.Connect
-mqttx sub -h localhost -p 1883 -t "lwt" -Pp ./msg.proto -Pmn msg.LWT
-mqttx sub -h localhost -p 1883 -t "data/sensor" -Pp ./msg.proto -Pmn msg.SensorData
-```
+### Connect Messages
+- **Topic Name:** `connect`
+- **Publisher:** Each ESP32 board
+- **Subscribers:** Batch-Router
+- **QoS:** 1 (at least once)
+- **Payload:**
+    ```protobuf
+    message Connect {
+        string device = 1; // Device name
+    }
+    ```
 
-# TODO
-- [X] batch-router callbacks
-- [X] Add debug env var
-- [X] gRPC API
-- [X] TLS and persistence for Redis
-- [X] Remove `old/api`, `old/server`, and `proxy` 
-- [ ] Update docs
-- [ ] final slides
+### LWT Messages
+- **Topic Name:** `lwt`
+- **Publisher:** Each ESP32 board
+- **Subscribers:** Batch-Router
+- **QoS:** 1 (at least once)
+- **Payload:**
+    ```protobuf
+    message LWT {
+        string device = 1; // Device name
+        int64  delay  = 2; // LWT delay interval (seconds)
+    }
+    ```
 
-# Idea
-- 2 reserved topics and 1 reserved redis queue
-    1. connect topic - mqtt proxy will set redis key by device name (no expiration) for each message
-    2. lwt topic - mqtt proxy will set redis key by device name (expiration defined by message) for each message
-    3. lwt queue - timeout poll will forward the device names of expired keys to here for processing. set lwt to false to disable
-- All other topics are user-defined w/out special rules and restrictions. Queues use topic names
+### Sensor Data Messages
+- **Topic Name:** `data/sensor`
+- **Publisher:** Each ESP32 board
+- **Subscribers:** Batch-Router
+- **QoS:** 1 (at least once)
+- **Payload:**
+    ```protobuf
+    message SensorData {
+        string device = 1; // Device name
+        float  temp   = 2; // Temperature reading (°C)
+        float  rh     = 3; // Relative humidity reading (%)
+        int64  epoch  = 4; // Unix epoch time (seconds)
+    }
+    ```
+
+
+## Useful References
+- Go Redis docs
+- Protobuf docs
+- gRPC docs
+
+## Credit
+- Autopaho examples

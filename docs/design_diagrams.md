@@ -78,21 +78,23 @@ flowchart LR
 ```
 
 ### Data Schema Tables
+
 ```mermaid
 erDiagram
 Facility {
-  serial **facility_id**
-  varchar(128) facility_name
+  SERIAL facility_id PK
+  VARCHAR(128) facility_name
 }
 Sensor {
-  serial **entry_id**
-  serial ***facility_id***
-  varchar(64) device
-  real temp
-  real rh
-  bigint epoch
+  SERIAL entry_id PK
+  SERIAL facility_id PK,FK
+  VARCHAR(64) device "device ID, NOT NULL"
+  REAL temp "°C"
+  REAl rh "%"
+  BIGINT epoch "timestamp, NOT NULL"
 }
 ```
+
 
 ## Design Diagram D2
 

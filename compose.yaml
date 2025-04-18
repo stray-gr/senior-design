@@ -1,6 +1,4 @@
 # Integration test between broker, local server, and database
-# Steps: `docker-compose build && docker-compose up`
-# Individual: `dc start service` and `dc stop service`
 
 services:
   ##################################

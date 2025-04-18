@@ -1,48 +1,30 @@
 # Integration test between broker, local server, and database
 
-# Steps: 
-# docker-compose build && docker-compose up 
-# <new terminal> cd server/
-# ./run.sh build/client
-# <new terminal> docker-compose restart clock
-
 services:
+  ##################################
+  # Independently started services #
+  ##################################
   broker:
     build: broker/
     ports:
       - "8885:8885"
     networks:
-      - facility
-
-  server:
-    build: 
-      context: ${PWD}/server
-      dockerfile: Dockerfile
-      target: server
-    env_file:
-      - ${PWD}/server/.env
-    depends_on:
       - broker
-    networks:
-      - facility
 
-  clock:
-    build: 
-      context: ${PWD}/server
-      dockerfile: Dockerfile
-      target: clock
-    env_file:
-      - ${PWD}/server/.env
-    depends_on:
-      - server
+  redis:
+    build: redis/
+    ports:
+      - "6379:6379"
+    volumes:
+      - rdb:/rdb
     networks:
-      - facility
+      - redis
 
   sddb:
     build: database/
     command: postgres -c config_file=/etc/postgres.conf
     env_file:
-      - ${PWD}/database/.env
+      - ${PWD}/.env
     ports:
       - "5432:5432"
     volumes:
@@ -50,9 +32,69 @@ services:
     networks:
       - database
 
+  ################################
+  # Dependently started services #
+  ################################
+  api:
+    build:
+      context: ${PWD}/api
+      dockerfile: Dockerfile
+      target: main
+    env_file:
+      - ${PWD}/.env
+    ports:
+      - "3000:3000"
+    depends_on:
+      - sddb
+    networks:
+      - api
+
+  clock:
+    build: 
+      context: ${PWD}/clock
+      dockerfile: Dockerfile
+      target: main
+    env_file:
+      - ${PWD}/.env
+    depends_on:
+      - client
+      - batch-router
+    networks:
+      - facility
+
+  client:
+    build: 
+      context: ${PWD}/client
+      dockerfile: Dockerfile
+      target: main
+    env_file:
+      - ${PWD}/.env
+    depends_on:
+      - broker
+    networks:
+      - facility
+
+  batch-router:
+    build: 
+      context: ${PWD}/batch-router
+      dockerfile: Dockerfile
+      target: main
+    env_file:
+      - ${PWD}/.env
+    depends_on:
+      - broker
+      - redis
+      - sddb
+    networks:
+      - facility
+
 networks:
-  facility:
+  api:
+  broker:
   database:
+  facility:
+  redis:
 
 volumes: 
   db:
+  rdb:

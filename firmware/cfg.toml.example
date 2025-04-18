@@ -1,0 +1,11 @@
+[firmware]
+wifi_ssid = "wifi-network-name"
+wifi_pass = "wifi-password"
+broker_uri = "mqtts://test.mosquitto.org:8883"
+mqtt_user = ""
+mqtt_pass = ""
+connect_topic = "connect"
+pulse_topic = "pulse"
+data_topic = "data/sensor"
+lwt_topic = "lwt"
+lwt_delay = 0

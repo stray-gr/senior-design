@@ -1,4 +1,4 @@
-# Team GR
+# Team GR IoT Data Pipeline Template
 
 ## Team Members
 - Gabriel Rodriguez-Padilla

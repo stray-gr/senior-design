@@ -4,7 +4,7 @@
 - [Project Description](docs/project-description.md)
 - [Test Plan](docs/test-plan.md)
 - [User Manual](#user-manual)
-- [PPT Presentation](docs/presentations/fall-design-slides.pdf)
+- [Final Presentation Slides](docs/presentations/final-presentation.pdf)
 - [Initial Capstone Assesment](docs/essays/capstone-assessment-gr.pdf)
 - [Final Capstone Assesment](docs/essays/final-capstone-assessment.md)
 - [Summary of Expenses](#summary-of-expenses)

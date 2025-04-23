@@ -1,11 +1,13 @@
-# Table of Contents
+# Mosquitto MQTT Broker Documentation
+
+## Table of Contents
 1. [Prerequisites](#prerequisites)
 2. [TLS Cert Creation](#tls-cert-creation)
 3. [User Creation](#user-creation)
 4. [Message Broker Usage and Testing](#message-broker-usage-and-testing)
 5. [Dockerfile](#dockerfile)
 
-# Prerequisites
+## Prerequisites
 Make sure to have the following software installed:
 - [Mosquitto Message Broker](https://mosquitto.org/download/)
 - [MQTTX CLI Tool](https://mqttx.app/cli)
@@ -15,7 +17,7 @@ Also make sure the following folders are present:
 - broker/certs/
 - broker/creds
 
-# TLS Cert Creation
+## TLS Cert Creation
 1. `cd` into the certs/ folder 
 2. Create the certificate authority's private key and cert. Make sure to set `<duration>` to the number of days the key and cert should be valid for: 
     ```
@@ -32,7 +34,7 @@ Also make sure the following folders are present:
     ```
 6. View the final result using `openssl x509 -noout -text -in broker.crt`
 
-# User Creation
+## User Creation
 ### Overview
 1. Open a terminal and change the current working directory to the broker/ folder
 2. Give the script execute permissions by running:  `chmod a+x create_users.sh`
@@ -50,7 +52,7 @@ Here's a brief overview of what the `create_users.sh` script does:
     - **plain.txt** - contains user names and plain text passwords (maps each user/password)
     - **users.txt** - contains user names and hashed passwords (used by server for auth)
 
-# Message Broker Usage and Testing
+## Message Broker Usage and Testing
 ### Mosquitto MQTT Message Broker
 - If you are using an Ubuntu-based system, run: `sudo service mosquitto stop`
     > This will shutdown the message broker and give you direct control over when it's running.
@@ -66,7 +68,7 @@ Here's a brief overview of what the `create_users.sh` script does:
     mqttx pub -h {My-PC-Name} -p 8885 -l mqtts -V 5 --ca broker/certs/ca.crt -u {USER} -P {PASSWORD} -t "{TOPIC}" -m "{MESSAGE}"
     ```
 
-# Dockerfile
+## Dockerfile
 ### Purpose
 - The broker's Dockerfile is to be used for message broker deployment to facilities in an operating system agnostic way. However, a natively installed instance of the broker using Moquitto should work fine on any unix-like operating system 
 

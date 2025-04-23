@@ -1,4 +1,4 @@
-# Team GR IoT Data Pipeline Template
+# Team GR IoT Data Pipeline Template Design Diagrams
 
 ## Design Diagram D0
 

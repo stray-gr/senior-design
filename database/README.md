@@ -1,16 +1,18 @@
-# Table of Contents
+# Database Documentation
+
+## Table of Contents
 1. [Prerequisites](#prerequisites)
 2. [TLS Cert Creation](#tls-cert-creation)
 3. [Database Set Up](#database-set-up)
 4. [Dockerfile](#dockerfile)
 
-# Prerequisites
+## Prerequisites
 Make sure to have the following software installed:
 - Openssl
 - Rancher Desktop
     - If you are on Windows, make sure to install as admin
 
-# TLS Cert Creation
+## TLS Cert Creation
 1. `cd` into the database/ folder and create the certs/ folder
 2. `cd` into the newly created certs/ folder 
 3. Create the certificate authority's private key and cert. Make sure to set `<duration>` to the number of days the key and cert should be valid for: 
@@ -26,7 +28,7 @@ Make sure to have the following software installed:
     ```
 8. View the final result using `openssl x509 -noout -text -in server.crt`
 
-# Database Set Up
+## Database Set Up
 ### Start Database Container using Docker Compose
 1. `cd` into the database/ folder and the example.env file into a .env file
 2. Set the password of the 'postgres' user. This password will be used when connecting remotely to the container as the database's admin
@@ -111,7 +113,7 @@ Make sure to have the following software installed:
 - https://www.slingacademy.com/article/grant-privileges-user-postgresql/
 - https://stackoverflow.com/a/30509741
 
-# Dockerfile
+## Dockerfile
 ### Purpose
 - The database's Dockerfile is to be used for potential deployment to hardware or the cloud in an operating system agnostic way
 - Docker also utilizes Docker Volumes to persist data. This approach is also more file system agnostic. To work with these volumes, see the output from `docker volumes --help`

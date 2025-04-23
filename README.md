@@ -6,7 +6,7 @@
 - [User Manual](#user-manual)
 - [PPT Presentation](docs/presentations/fall-design-slides.pdf)
 - [Initial Capstone Assesment](docs/essays/capstone-assessment-gr.pdf)
-- [Final Capstone Assesment](docs/essays/final-capstone-assesment.md)
+- [Final Capstone Assesment](docs/essays/final-capstone-assessment.md)
 - [Summary of Expenses](#summary-of-expenses)
 - [Appendix](#appendix)
 

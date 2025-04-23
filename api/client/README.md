@@ -1,4 +1,4 @@
-# gRPC API Client
+# gRPC API Client Documentation
 
 ## Table of Contents
 - [Prerequisites](#prerequisites)
